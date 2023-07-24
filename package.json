@@ -9,6 +9,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "2.1.0",
+    "axios": "1.4.0",
+    "dayjs": "1.11.9",
+    "element-plus": "2.3.8",
+    "js-cookie": "3.0.5",
+    "lodash-es": "4.17.21",
+    "normalize.css": "8.0.1",
+    "nprogress": "0.2.0",
+    "path-to-regexp": "6.2.1",
+    "pinia": "2.1.4",
+    "screenfull": "6.0.2",
+    "vue-router": "4.2.4",
+    "vxe-table": "4.4.1",
+    "vxe-table-plugin-element": "3.0.7",
+    "xe-utils": "3.5.11",
     "path-browserify": "^1.0.1",
     "vue": "^3.3.4"
   },
