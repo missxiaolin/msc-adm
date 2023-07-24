@@ -1,10 +1,13 @@
 import { defineConfig } from 'vite'
 import path, { resolve } from "path"
 import vue from '@vitejs/plugin-vue'
+import vueJsx from "@vitejs/plugin-vue-jsx"
+import svgLoader from "vite-svg-loader"
+import UnoCSS from "unocss/vite"
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons"
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
   resolve: {
     alias: {
       /** @ 符号指向 src 目录 */
@@ -55,4 +58,18 @@ export default defineConfig({
     /** 打包后静态资源目录 */
     assetsDir: "static"
   },
+  /** Vite 插件 */
+  plugins: [
+    vue(),
+    vueJsx(),
+    /** 将 SVG 静态图转化为 Vue 组件 */
+    svgLoader({ defaultImport: "url" }),
+    /** SVG */
+    createSvgIconsPlugin({
+      iconDirs: [path.resolve(process.cwd(), "src/icons/svg")],
+      symbolId: "icon-[dir]-[name]"
+    }),
+    /** UnoCSS */
+    UnoCSS()
+  ],
 })
