@@ -3,6 +3,7 @@ import './style.css'
 import App from './App.vue'
 import router from "@/router"
 import { loadPlugins } from "@/plugins"
+import { loadDirectives } from "@/directives"
 
 // css
 import "uno.css"
