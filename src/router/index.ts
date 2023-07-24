@@ -5,8 +5,42 @@ import {
   createWebHistory,
 } from "vue-router";
 
+const Layouts = () => import("@/layouts/index.vue")
+
 /** 常驻路由 */
-export const constantRoutes: RouteRecordRaw[] = [];
+export const constantRoutes: RouteRecordRaw[] = [
+  {
+    path: "/",
+    component: Layouts,
+    redirect: "/dashboard",
+    children: [
+      {
+        path: "dashboard",
+        component: () => import("@/views/dashboard/index.vue"),
+        name: "Dashboard",
+        meta: {
+          title: "首页",
+          affix: true
+        }
+      }
+    ]
+  },
+  {
+    path: "/403",
+    component: () => import("@/views/error-page/403.vue"),
+    meta: {
+      hidden: true
+    }
+  },
+  {
+    path: "/404",
+    component: () => import("@/views/error-page/404.vue"),
+    meta: {
+      hidden: true
+    },
+    alias: "/:pathMatch(.*)*"
+  },
+];
 
 /**
  * 动态路由
