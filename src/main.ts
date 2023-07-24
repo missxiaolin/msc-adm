@@ -4,6 +4,7 @@ import App from './App.vue'
 import router from "@/router"
 import { loadPlugins } from "@/plugins"
 import { loadDirectives } from "@/directives"
+import { loadSvg } from "@/icons"
 
 // css
 import "uno.css"
@@ -17,6 +18,8 @@ const app = createApp(App)
 loadPlugins(app)
 /** 加载自定义指令 */
 loadDirectives(app)
+/** 加载全局 SVG */
+loadSvg(app)
 
 app.use(router)
 
