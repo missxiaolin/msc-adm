@@ -9,10 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "path-browserify": "^1.0.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@types/path-browserify": "^1.0.0",
     "@vitejs/plugin-vue": "^4.2.3",
+    "path": "^0.12.7",
+    "terser": "^5.19.2",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vue-tsc": "^1.8.5"
