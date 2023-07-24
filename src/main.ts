@@ -5,6 +5,7 @@ import router from "@/router"
 import { loadPlugins } from "@/plugins"
 import { loadDirectives } from "@/directives"
 import { loadSvg } from "@/icons"
+import store from "@/store"
 
 // css
 import "uno.css"
@@ -21,7 +22,7 @@ loadDirectives(app)
 /** 加载全局 SVG */
 loadSvg(app)
 
-app.use(router)
+app.use(store).use(router)
 
 router.isReady().then(() => {
   app.mount("#app")

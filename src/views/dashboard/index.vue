@@ -1,15 +1,14 @@
 <template>
-  <div>
-    sss
+  <div class="app-container center">
+    <el-empty description="admin" />
   </div>
 </template>
 
-<script>
-export default {
-
+<style lang="scss" scoped>
+.center {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-</script>
-
-<style>
-
 </style>
