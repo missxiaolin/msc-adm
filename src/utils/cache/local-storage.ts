@@ -2,6 +2,10 @@ import CacheKey from "@/constants/cache-key";
 import { type SidebarOpened, type SidebarClosed } from "@/constants/app-key";
 import { type LayoutSettings } from "@/config/layouts";
 
+export const removeConfigLayout = () => {
+  localStorage.removeItem(CacheKey.CONFIG_LAYOUT);
+};
+
 /**
  * region 侧边栏状态
  * @returns

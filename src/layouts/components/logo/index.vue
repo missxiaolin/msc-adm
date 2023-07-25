@@ -23,7 +23,7 @@
 <script lang="ts">
 import { storeToRefs } from "pinia";
 import { useSettingsStore } from "@/store/modules/settings";
-import logo from "@/assets/img/logo.jpeg?url";
+import logo from "@/assets/img/logo.png?url";
 
 interface Props {
   collapse?: boolean;

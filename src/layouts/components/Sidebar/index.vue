@@ -2,38 +2,115 @@
   <div :class="{ 'has-logo': isLogo }">
     <Logo v-if="isLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
-        
+      <el-menu
+        :default-active="activeMenu"
+        :collapse="isCollapse && !isTop"
+        :background-color="backgroundColor"
+        :text-color="textColor"
+        :active-text-color="activeTextColor"
+        :unique-opened="true"
+        :collapse-transition="false"
+        :mode="isTop && !isMobile ? 'horizontal' : 'vertical'"
+      >
+        <SidebarItem
+          v-for="route in routes"
+          :key="route.path"
+          :item="route"
+          :hidden="route.hidden"
+          :base-path="route.path"
+          :is-collapse="isCollapse"
+          :is-top="isTop"
+        />
+      </el-menu>
     </el-scrollbar>
   </div>
 </template>
 
 <script lang="ts">
 import { computed } from "vue";
+import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
 import Logo from "../logo/index.vue";
 import SidebarItem from "./sidebarItem.vue";
+import { getCssVariableValue } from "@/utils";
+import { DeviceEnum } from "@/constants/app-key";
+
+const routes = [
+  {
+    path: "/403",
+    hidden: false,
+    meta: {
+      title: "403",
+      elIcon: 'Grid'
+    },
+  },
+  {
+    path: "/404",
+    meta: {
+      title: "404",
+      elIcon: 'Grid'
+    },
+    hidden: false,
+  },
+];
 
 export default {
   components: {
     Logo,
-    SidebarItem
+    SidebarItem,
   },
   setup() {
     const appStore = useAppStore();
+    const route = useRoute();
     const { sidebar, device } = storeToRefs(appStore);
 
     const isCollapse = computed(() => !sidebar.value.opened);
     const settingsStore = useSettingsStore();
     const { layoutMode, showLogo } = storeToRefs(settingsStore);
+    const v3SidebarMenuBgColor = getCssVariableValue(
+      "--v3-sidebar-menu-bg-color"
+    );
+    const v3SidebarMenuTextColor = getCssVariableValue(
+      "--v3-sidebar-menu-text-color"
+    );
+    const v3SidebarMenuActiveTextColor = getCssVariableValue(
+      "--v3-sidebar-menu-active-text-color"
+    );
 
     const isLeft = computed(() => layoutMode.value === "left");
     const isLogo = computed(() => isLeft.value && showLogo.value);
+    const isTop = computed(() => layoutMode.value === "top");
+    const backgroundColor = computed(() =>
+      isLeft.value ? v3SidebarMenuBgColor : undefined
+    );
+    const textColor = computed(() =>
+      isLeft.value ? v3SidebarMenuTextColor : undefined
+    );
+    const activeTextColor = computed(() =>
+      isLeft.value ? v3SidebarMenuActiveTextColor : undefined
+    );
+    const isMobile = computed(() => device.value === DeviceEnum.Mobile);
+
+    const activeMenu = computed(() => {
+      const {
+        meta: { activeMenu },
+        path,
+      } = route;
+      return activeMenu ? activeMenu : path;
+    });
 
     return {
       isLogo,
       isCollapse,
+      activeMenu,
+      isTop,
+      backgroundColor,
+      textColor,
+      activeTextColor,
+      isMobile,
+      routes,
     };
   },
 };
