@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import LeftTopMode from "./LeftTopMode.vue"
+import LeftTopMode from "./leftTopMode.vue"
 import { storeToRefs } from "pinia";
 
 export default {

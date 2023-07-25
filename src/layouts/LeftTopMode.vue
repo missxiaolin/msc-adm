@@ -1,7 +1,12 @@
 <template>
   <div :class="layoutClasses" class="app-wrapper">
     <!-- 头部导航栏和标签栏 -->
-    <div class="fixed-header layout-header"></div>
+    <div class="fixed-header layout-header">
+      <Logo v-if="showLogo" :collapse="false" class="logo" />
+      <div class="content">
+        
+      </div>
+    </div>
     <!-- 主容器 -->
     <div class="main-container">
       <!-- 左侧边栏 -->
@@ -13,18 +18,22 @@
 </template>
 
 <script lang="ts">
-import { AppMain, Sidebar } from "./components";
+import { AppMain, Sidebar, Logo } from "./components";
+import { storeToRefs } from "pinia";
 import { computed } from "vue";
-import { useAppStore } from "@/store/modules/app"
-
+import { useAppStore } from "@/store/modules/app";
+import { useSettingsStore } from "@/store/modules/settings";
 
 export default {
   components: {
     Sidebar,
     AppMain,
+    Logo
   },
   setup() {
-    const appStore = useAppStore()
+    const appStore = useAppStore();
+    const settingsStore = useSettingsStore();
+    const { showTagsView, showLogo } = storeToRefs(settingsStore);
     /** 定义计算属性 layoutClasses，用于控制布局的类名 */
     const layoutClasses = computed(() => {
       return {
@@ -33,8 +42,10 @@ export default {
     });
 
     return {
-      layoutClasses
-    }
+      layoutClasses,
+      showTagsView,
+      showLogo,
+    };
   },
 };
 </script>
