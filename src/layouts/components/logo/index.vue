@@ -55,7 +55,7 @@ export default {
     display: none;
   }
   .layout-logo-text {
-    height: 100%;
+    height: 50px;
     vertical-align: middle;
   }
 }
