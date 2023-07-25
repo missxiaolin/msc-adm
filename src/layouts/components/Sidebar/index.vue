@@ -43,14 +43,14 @@ const routes = [
     hidden: false,
     meta: {
       title: "403",
-      elIcon: 'Grid'
+      elIcon: "Grid",
     },
   },
   {
     path: "/404",
     meta: {
       title: "404",
-      elIcon: 'Grid'
+      elIcon: "Grid",
     },
     hidden: false,
   },
@@ -101,6 +101,18 @@ export default {
       return activeMenu ? activeMenu : path;
     });
 
+    const sidebarMenuItemHeight = computed(() => {
+      return layoutMode.value !== "top"
+        ? getCssVariableValue("--v3-sidebar-menu-item-height")
+        : getCssVariableValue("--v3-navigationbar-height");
+    });
+
+    const sidebarMenuHoverBgColor = computed(() => {
+      return layoutMode.value !== "top"
+        ? getCssVariableValue("--v3-sidebar-menu-hover-bg-color")
+        : "transparent";
+    });
+
     return {
       isLogo,
       isCollapse,
@@ -111,6 +123,8 @@ export default {
       activeTextColor,
       isMobile,
       routes,
+      sidebarMenuItemHeight,
+      sidebarMenuHoverBgColor,
     };
   },
 };
@@ -128,14 +142,12 @@ export default {
     background-color: var(--v3-sidebar-menu-tip-line-bg-color);
   }
 }
-
 .has-logo {
   .el-scrollbar {
     // 多 1% 是为了在左侧模式时侧边栏最底部不显示 1px 左右的白色线条
     height: calc(101% - var(--v3-header-height));
   }
 }
-
 .el-scrollbar {
   // 多 5% 是为了在顶部模式时不显示垂直滚动条
   height: 105%;
@@ -171,7 +183,6 @@ export default {
   &:hover {
     background-color: v-bind(sidebarMenuHoverBgColor);
   }
-  display: block;
   * {
     vertical-align: middle;
   }

@@ -45,8 +45,7 @@
 </template>
 
 <script lang="ts">
-import { computed, withDefaults, defineProps } from "vue";
-import { type RouteRecordRaw } from "vue-router";
+import { computed } from "vue";
 import SidebarItemLink from "./sidebarItemLink.vue";
 import { isExternal } from "@/utils/validate";
 import path from "path-browserify";
