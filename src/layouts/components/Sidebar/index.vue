@@ -43,17 +43,30 @@ const routes = [
     hidden: false,
     meta: {
       title: "403",
-      elIcon: "Grid",
+      elIcon: "help",
     },
   },
   {
     path: "/404",
     meta: {
       title: "404",
-      elIcon: "Grid",
+      elIcon: "camera",
     },
     hidden: false,
   },
+  {
+    path: "/",
+    hidden: false,
+    children: [
+      {
+        path: "dashboard",
+        meta: {
+          title: "首页",
+          elIcon: "eleme",
+        },
+      }
+    ]
+  }
 ];
 
 export default {
