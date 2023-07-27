@@ -1,5 +1,5 @@
 <template>
-  <div :class="classes">
+  <div :class="classes" class="main-content">
     <!-- 左侧模式 -->
     <leftMode
       v-if="layoutMode === 'left' || appStore.device === DeviceEnum.Mobile"
@@ -63,5 +63,10 @@ export default {
 
 .showColorWeakness {
   filter: invert(0.8);
+}
+.main-content {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
 }
 </style>

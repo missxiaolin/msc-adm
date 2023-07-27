@@ -113,6 +113,7 @@ $transition-time: 0.35s;
 }
 
 .app-main {
+  width: auto !important;
   min-height: calc(100vh - var(--v3-navigationbar-height));
   position: relative;
   overflow: hidden;
