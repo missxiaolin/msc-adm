@@ -99,7 +99,7 @@ export default {
 
     /** 显示的子菜单 */
     const showingChildren = computed(() => {
-      return item.children?.filter((child: any) => !hidden) ?? [];
+      return item.children?.filter(() => !hidden) ?? [];
     });
     /** 显示的子菜单数量 */
     const showingChildNumber = computed(() => {

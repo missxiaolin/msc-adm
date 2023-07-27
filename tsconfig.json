@@ -5,7 +5,7 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    
+
     /* Bundler mode */
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
@@ -15,7 +15,9 @@
     "noEmit": true,
     "jsx": "preserve",
     "types": [
-      "node"
+      "node" 
+      /** Element Plus 的 Volar 插件支持 */,
+      "element-plus/global"
     ],
     /* Linting */
     "strict": true,
@@ -29,7 +31,13 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "types/**/*.d.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }],
   /** 编译器默认排除的编译文件 */
   "exclude": ["node_modules", "dist"]

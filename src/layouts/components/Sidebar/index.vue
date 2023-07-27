@@ -64,9 +64,9 @@ const routes = [
           title: "首页",
           elIcon: "eleme",
         },
-      }
-    ]
-  }
+      },
+    ],
+  },
 ];
 
 export default {
@@ -126,6 +126,10 @@ export default {
         : "transparent";
     });
 
+    const tipLineWidth = computed(() => {
+      return layoutMode.value !== "top" ? "2px" : "0px";
+    });
+
     return {
       isLogo,
       isCollapse,
@@ -138,6 +142,7 @@ export default {
       routes,
       sidebarMenuItemHeight,
       sidebarMenuHoverBgColor,
+      tipLineWidth,
     };
   },
 };

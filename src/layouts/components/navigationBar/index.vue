@@ -7,7 +7,7 @@
       @toggle-click="toggleSidebar"
     />
     <breadcrumb v-if="!isTop || isMobile" class="breadcrumb" />
-    <sidebar v-if="isTop && !isMobile" class="side-bar"></sidebar>
+    <side-bar v-if="isTop && !isMobile" class="side-bar"></side-bar>
     <div class="right-menu">
       <screenfull v-if="showScreenfull" class="right-menu-item" />
       <themeSwitch v-if="showThemeSwitch" class="right-menu-item" />
