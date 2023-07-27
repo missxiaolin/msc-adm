@@ -22,10 +22,10 @@ import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
 import hamburger from "../hamburger/index.vue";
-import breadcrumb from "../breadcrumb/index.vue"
-import screenfull from "@/components/screenfull/index.vue"
-import sidebar from "../sidebar/index.vue"
-import themeSwitch from "@/components/themeSwitch/index.vue"
+import breadcrumb from "../breadcrumb/index.vue";
+import screenfull from "@/components/screenfull/index.vue";
+import sidebar from "../sidebar/index.vue";
+import themeSwitch from "@/components/themeSwitch/index.vue";
 
 import { DeviceEnum } from "@/constants/app-key";
 
@@ -35,7 +35,7 @@ export default {
     breadcrumb,
     sidebar,
     screenfull,
-    themeSwitch
+    themeSwitch,
   },
   setup() {
     const appStore = useAppStore();
@@ -57,7 +57,8 @@ export default {
       sidebar,
       toggleSidebar,
       showScreenfull,
-      showThemeSwitch
+      showThemeSwitch,
+      showNotify,
     };
   },
 };
