@@ -11,11 +11,29 @@
     <div class="right-menu">
       <screenfull v-if="showScreenfull" class="right-menu-item" />
       <themeSwitch v-if="showThemeSwitch" class="right-menu-item" />
+      <el-dropdown class="right-menu-item">
+        <div class="right-menu-avatar">
+          <el-avatar :icon="UserFilled" :size="30" />
+          <span>admin</span>
+        </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <router-link :to="{ path: '/info', query: { setid: 123456 } }">
+              <el-dropdown-item>个人信息</el-dropdown-item>
+            </router-link>
+            <el-dropdown-item divided @click="logout">
+              <span style="display: block">退出登录</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { useRouter } from "vue-router";
+import { UserFilled } from "@element-plus/icons-vue";
 import { computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/modules/app";
@@ -38,6 +56,7 @@ export default {
   },
   setup() {
     const appStore = useAppStore();
+    const router = useRouter();
     const settingsStore = useSettingsStore();
     const { sidebar, device } = storeToRefs(appStore);
     const { layoutMode, showNotify, showThemeSwitch, showScreenfull } =
@@ -50,7 +69,13 @@ export default {
       appStore.toggleSidebar(false);
     };
 
+    /** 登出 */
+    const logout = () => {
+      router.push("/login");
+    };
+
     return {
+      UserFilled,
       isMobile,
       isTop,
       sidebar,
@@ -58,6 +83,7 @@ export default {
       showScreenfull,
       showThemeSwitch,
       showNotify,
+      logout,
     };
   },
 };
