@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="classes">
     <!-- 左侧模式 -->
     <leftMode
       v-if="layoutMode === 'left' || appStore.device === DeviceEnum.Mobile"
@@ -13,6 +13,7 @@
 </template>
 
 <script lang="ts">
+import { computed } from "vue";
 import leftTopMode from "./leftTopMode.vue";
 import leftMode from "./leftMode.vue";
 import topMode from "./topMode.vue";
@@ -38,11 +39,29 @@ export default {
       showColorWeakness,
     } = storeToRefs(settingsStore);
 
+    const classes = computed(() => {
+      return {
+        showGreyMode: showGreyMode.value,
+        showColorWeakness: showColorWeakness.value,
+      };
+    });
+
     return {
       layoutMode,
       appStore,
       DeviceEnum,
+      classes,
     };
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.showGreyMode {
+  filter: grayscale(1);
+}
+
+.showColorWeakness {
+  filter: invert(0.8);
+}
+</style>

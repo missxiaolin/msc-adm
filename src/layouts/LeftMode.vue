@@ -120,7 +120,7 @@ $transition-time: 0.35s;
 
 .fixed-header + .app-main {
   padding-top: var(--v3-navigationbar-height);
-  height: auto;
+  height: 100vh;
   overflow: auto;
 }
 
