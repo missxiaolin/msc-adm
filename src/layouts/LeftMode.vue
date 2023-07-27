@@ -8,7 +8,7 @@
     <div :class="{ hasTagsView: showTagsView }" class="main-container">
       <!-- 头部导航栏和标签栏 -->
       <div :class="{ 'fixed-header': fixedHeader }" class="layout-header">
-        
+        <NavigationBar />
       </div>
       <!-- 页面主体内容 -->
       <AppMain class="app-main" />
@@ -22,12 +22,13 @@ import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
 import { DeviceEnum } from "@/constants/app-key";
-import { AppMain, Sidebar } from "./components"
+import { AppMain, Sidebar, NavigationBar } from "./components"
 
 export default {
   components: {
     AppMain,
-    Sidebar
+    Sidebar,
+    NavigationBar
   },
   setup() {
     const appStore = useAppStore();

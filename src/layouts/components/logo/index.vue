@@ -8,11 +8,11 @@
   >
     <transition name="layout-logo-fade">
       <router-link v-if="props.collapse" key="collapse" to="/">
-        <img :src="logo" class="layout-logo" />
+        <img :src="logoSamll" class="layout-logo" />
       </router-link>
       <router-link v-else key="expand" to="/">
         <img
-          :src="layoutMode !== 'left' ? logo : logo"
+          :src="layoutMode !== 'left' ? logoSamll : logo"
           class="layout-logo-text"
         />
       </router-link>
@@ -24,6 +24,7 @@
 import { storeToRefs } from "pinia";
 import { useSettingsStore } from "@/store/modules/settings";
 import logo from "@/assets/img/logo.png?url";
+import logoSamll from "@/assets/img/logo-small.png?url";
 
 interface Props {
   collapse?: boolean;
@@ -37,6 +38,7 @@ export default {
       layoutMode,
       logo,
       props,
+      logoSamll
     };
   },
 };
