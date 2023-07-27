@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'has-logo': isLogo }">
-    <Logo v-if="isLogo" :collapse="isCollapse" />
+    <logo v-if="isLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
@@ -12,7 +12,7 @@
         :collapse-transition="false"
         :mode="isTop && !isMobile ? 'horizontal' : 'vertical'"
       >
-        <SidebarItem
+        <sidebarItem
           v-for="route in routes"
           :key="route.path"
           :item="route"
@@ -32,8 +32,8 @@ import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
-import Logo from "../logo/index.vue";
-import SidebarItem from "./sidebarItem.vue";
+import logo from "../logo/index.vue";
+import sidebarItem from "./sidebarItem.vue";
 import { getCssVariableValue } from "@/utils";
 import { DeviceEnum } from "@/constants/app-key";
 
@@ -71,8 +71,8 @@ const routes = [
 
 export default {
   components: {
-    Logo,
-    SidebarItem,
+    logo,
+    sidebarItem,
   },
   setup() {
     const appStore = useAppStore();

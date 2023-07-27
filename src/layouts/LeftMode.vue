@@ -3,15 +3,15 @@
     <!-- mobile 端侧边栏遮罩层 -->
     <div v-if="layoutClasses.mobile && layoutClasses.openSidebar" class="drawer-bg" @click="handleClickOutside" />
     <!-- 左侧边栏 -->
-    <Sidebar class="sidebar-container" />
+    <sidebar class="sidebar-container" />
     <!-- 主容器 -->
     <div :class="{ hasTagsView: showTagsView }" class="main-container">
       <!-- 头部导航栏和标签栏 -->
       <div :class="{ 'fixed-header': fixedHeader }" class="layout-header">
-        <NavigationBar />
+        <navigationBar />
       </div>
       <!-- 页面主体内容 -->
-      <AppMain class="app-main" />
+      <appMain class="app-main" />
     </div>
   </div>
 </template>
@@ -22,13 +22,13 @@ import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
 import { DeviceEnum } from "@/constants/app-key";
-import { AppMain, Sidebar, NavigationBar } from "./components"
+import { appMain, sidebar, navigationBar } from "./components"
 
 export default {
   components: {
-    AppMain,
-    Sidebar,
-    NavigationBar
+    appMain,
+    sidebar,
+    navigationBar
   },
   setup() {
     const appStore = useAppStore();

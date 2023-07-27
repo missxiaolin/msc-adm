@@ -1,13 +1,17 @@
 <template>
   <div class="navigation-bar">
-    <Hamburger
+    <hamburger
       v-if="!isTop || isMobile"
       :is-active="sidebar.opened"
       class="hamburger"
       @toggle-click="toggleSidebar"
     />
-    <Breadcrumb v-if="!isTop || isMobile" class="breadcrumb" />
-    <div class="right-menu"></div>
+    <breadcrumb v-if="!isTop || isMobile" class="breadcrumb" />
+    <sidebar v-if="isTop && !isMobile" class="sidebar" />
+    <div class="right-menu">
+      <screenfull v-if="showScreenfull" class="right-menu-item" />
+      <themeSwitch v-if="showThemeSwitch" class="right-menu-item" />
+    </div>
   </div>
 </template>
 
@@ -17,14 +21,21 @@ import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
-import Hamburger from "../hamburger/index.vue";
-import Breadcrumb from "../breadcrumb/index.vue"
+import hamburger from "../hamburger/index.vue";
+import breadcrumb from "../breadcrumb/index.vue"
+import screenfull from "@/components/screenfull/index.vue"
+import sidebar from "../sidebar/index.vue"
+import themeSwitch from "@/components/themeSwitch/index.vue"
+
 import { DeviceEnum } from "@/constants/app-key";
 
 export default {
   components: {
-    Hamburger,
-    Breadcrumb
+    hamburger,
+    breadcrumb,
+    sidebar,
+    screenfull,
+    themeSwitch
   },
   setup() {
     const appStore = useAppStore();
@@ -44,7 +55,9 @@ export default {
       isMobile,
       isTop,
       sidebar,
-      toggleSidebar
+      toggleSidebar,
+      showScreenfull,
+      showThemeSwitch
     };
   },
 };

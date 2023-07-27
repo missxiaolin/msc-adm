@@ -9,7 +9,7 @@
     <template
       v-if="!alwaysShowRootMenu && theOnlyOneChild && !theOnlyOneChild.children"
     >
-      <SidebarItemLink
+      <sidebarItemLink
         v-if="theOnlyOneChild.meta"
         :to="resolvePath(theOnlyOneChild.path)"
       >
@@ -19,7 +19,7 @@
             {{ theOnlyOneChild.meta.title }}
           </template>
         </el-menu-item>
-      </SidebarItemLink>
+      </sidebarItemLink>
     </template>
     <el-sub-menu v-else :index="resolvePath(item.path)" teleported>
       <template #title>
@@ -46,13 +46,13 @@
 
 <script lang="ts">
 import { computed } from "vue";
-import SidebarItemLink from "./sidebarItemLink.vue";
+import sidebarItemLink from "./sidebarItemLink.vue";
 import { isExternal } from "@/utils/validate";
 import path from "path-browserify";
 
 export default {
   components: {
-    SidebarItemLink,
+    sidebarItemLink,
   },
   props: {
     item: {

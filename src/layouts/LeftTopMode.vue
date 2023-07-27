@@ -2,7 +2,7 @@
   <div :class="layoutClasses" class="app-wrapper">
     <!-- 头部导航栏和标签栏 -->
     <div class="fixed-header layout-header">
-      <Logo v-if="showLogo" :collapse="false" class="logo" />
+      <logo v-if="showLogo" :collapse="false" class="logo" />
       <div class="content">
         
       </div>
@@ -10,15 +10,15 @@
     <!-- 主容器 -->
     <div class="main-container">
       <!-- 左侧边栏 -->
-      <Sidebar class="sidebar-container" />
+      <sidebar class="sidebar-container" />
       <!-- 页面主体内容 -->
-      <AppMain class="app-main" />
+      <appMain class="app-main" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { AppMain, Sidebar, Logo } from "./components";
+import { appMain, sidebar, logo } from "./components";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useAppStore } from "@/store/modules/app";
@@ -26,9 +26,9 @@ import { useSettingsStore } from "@/store/modules/settings";
 
 export default {
   components: {
-    Sidebar,
-    AppMain,
-    Logo
+    sidebar,
+    appMain,
+    logo
   },
   setup() {
     const appStore = useAppStore();
