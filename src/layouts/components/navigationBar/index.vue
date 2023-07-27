@@ -7,7 +7,7 @@
       @toggle-click="toggleSidebar"
     />
     <breadcrumb v-if="!isTop || isMobile" class="breadcrumb" />
-    <sidebar v-if="isTop && !isMobile" class="sidebar" />
+    <sidebar v-if="isTop && !isMobile" class="side-bar"></sidebar>
     <div class="right-menu">
       <screenfull v-if="showScreenfull" class="right-menu-item" />
       <themeSwitch v-if="showThemeSwitch" class="right-menu-item" />
@@ -17,14 +17,13 @@
 
 <script lang="ts">
 import { computed } from "vue";
-import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/modules/app";
 import { useSettingsStore } from "@/store/modules/settings";
 import hamburger from "../hamburger/index.vue";
 import breadcrumb from "../breadcrumb/index.vue";
 import screenfull from "@/components/screenfull/index.vue";
-import sidebar from "../sidebar/index.vue";
+import sideBar from "../sidebar/index.vue";
 import themeSwitch from "@/components/themeSwitch/index.vue";
 
 import { DeviceEnum } from "@/constants/app-key";
@@ -33,7 +32,7 @@ export default {
   components: {
     hamburger,
     breadcrumb,
-    sidebar,
+    sideBar,
     screenfull,
     themeSwitch,
   },
@@ -85,7 +84,7 @@ export default {
       display: none;
     }
   }
-  .sidebar {
+  .side-bar {
     flex: 1;
     // 设置 min-width 是为了让 Sidebar 里的 el-menu 宽度自适应
     min-width: 0px;

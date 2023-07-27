@@ -32,9 +32,7 @@ export default {
     const appStore = useAppStore();
     const settingsStore = useSettingsStore();
     const {
-      showSettings,
       layoutMode,
-      showTagsView,
       showGreyMode,
       showColorWeakness,
     } = storeToRefs(settingsStore);

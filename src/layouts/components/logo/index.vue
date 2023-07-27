@@ -26,11 +26,13 @@ import { useSettingsStore } from "@/store/modules/settings";
 import logo from "@/assets/img/logo.png?url";
 import logoSamll from "@/assets/img/logo-small.png?url";
 
-interface Props {
-  collapse?: boolean;
-}
-
 export default {
+  props: {
+    collapse: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup(props) {
     const settingsStore = useSettingsStore();
     const { layoutMode } = storeToRefs(settingsStore);
