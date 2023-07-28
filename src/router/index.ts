@@ -8,7 +8,7 @@ import {
 const Layouts = () => import("@/layouts/index.vue")
 
 /** 常驻路由 */
-export const constantRoutes: RouteRecordRaw[] = [
+export const constantRoutes: any = [
   {
     path: "/",
     component: Layouts,
@@ -18,8 +18,10 @@ export const constantRoutes: RouteRecordRaw[] = [
         path: "dashboard",
         component: () => import("@/views/dashboard/index.vue"),
         name: "Dashboard",
+        hidden: false,
         meta: {
           title: "首页",
+          elIcon: "eleme",
           affix: true
         }
       }
@@ -28,15 +30,19 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     path: "/403",
     component: () => import("@/views/error-page/403.vue"),
+    hidden: false,
     meta: {
-      hidden: true
+      title: "403",
+      elIcon: "help",
     }
   },
   {
     path: "/404",
     component: () => import("@/views/error-page/404.vue"),
+    hidden: false,
     meta: {
-      hidden: true
+      title: "404",
+      elIcon: "camera",
     },
     alias: "/:pathMatch(.*)*"
   },

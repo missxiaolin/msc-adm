@@ -36,7 +36,7 @@ import logo from "../logo/index.vue";
 import sidebarItem from "./sidebarItem.vue";
 import { getCssVariableValue } from "@/utils";
 import { DeviceEnum } from "@/constants/app-key";
-import routes from "../../../router/routers";
+import { constantRoutes } from "../../../router/index";
 
 export default {
   components: {
@@ -108,7 +108,7 @@ export default {
       textColor,
       activeTextColor,
       isMobile,
-      routes,
+      routes: constantRoutes,
       sidebarMenuItemHeight,
       sidebarMenuHoverBgColor,
       tipLineWidth,
