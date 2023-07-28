@@ -8,7 +8,6 @@
     <topMode v-else-if="layoutMode === 'top'" />
     <!-- 混合模式 -->
     <leftTopMode v-else-if="layoutMode === 'left-top'" />
-    <!-- <router-view></router-view> -->
   </div>
 </template>
 
