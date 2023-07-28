@@ -7,6 +7,7 @@
       ref="scrollbarRef"
       @wheel.passive="wheelScroll"
       @scroll="scroll"
+      class="scrollbar-content"
     >
       <div ref="scrollbarContentRef" class="scrollbar-content">
         <slot />
@@ -166,6 +167,9 @@ export default {
     &.right {
       box-shadow: -5px 0 5px -6px #ccc;
     }
+  }
+  .scrollbar-content {
+    display: flex;
   }
   .el-scrollbar {
     flex: 1;
