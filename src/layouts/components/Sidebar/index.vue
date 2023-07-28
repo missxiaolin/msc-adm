@@ -36,38 +36,7 @@ import logo from "../logo/index.vue";
 import sidebarItem from "./sidebarItem.vue";
 import { getCssVariableValue } from "@/utils";
 import { DeviceEnum } from "@/constants/app-key";
-
-const routes = [
-  {
-    path: "/403",
-    hidden: false,
-    meta: {
-      title: "403",
-      elIcon: "help",
-    },
-  },
-  {
-    path: "/404",
-    meta: {
-      title: "404",
-      elIcon: "camera",
-    },
-    hidden: false,
-  },
-  {
-    path: "/",
-    hidden: false,
-    children: [
-      {
-        path: "dashboard",
-        meta: {
-          title: "首页",
-          elIcon: "eleme",
-        },
-      },
-    ],
-  },
-];
+import routes from "../../../router/routers";
 
 export default {
   components: {
