@@ -30,7 +30,7 @@ export const constantRoutes: any = [
   {
     path: "/403",
     component: () => import("@/views/error-page/403.vue"),
-    hidden: false,
+    hidden: true,
     meta: {
       title: "403",
       elIcon: "help",
@@ -39,7 +39,7 @@ export const constantRoutes: any = [
   {
     path: "/404",
     component: () => import("@/views/error-page/404.vue"),
-    hidden: false,
+    hidden: true,
     meta: {
       title: "404",
       elIcon: "camera",
