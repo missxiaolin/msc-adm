@@ -37,8 +37,7 @@ export const constantRoutes: any = [
         }
       }
     ]
-  },
-  {
+  }, {
     path: "/403",
     component: () => import("@/views/error-page/403.vue"),
     hidden: true,
@@ -46,8 +45,7 @@ export const constantRoutes: any = [
       title: "403",
       elIcon: "help",
     }
-  },
-  {
+  }, {
     path: "/404",
     component: () => import("@/views/error-page/404.vue"),
     hidden: true,
@@ -56,6 +54,19 @@ export const constantRoutes: any = [
       elIcon: "camera",
     },
     alias: "/:pathMatch(.*)*"
+  }, {
+    path: "/link",
+    component: Layouts,
+    children: [
+      {
+        path: "https://wwww.baidu.com",
+        component: () => {},
+        meta: {
+          title: "外链",
+          elIcon: "paperclip"
+        }
+      }
+    ]
   },
 ];
 
