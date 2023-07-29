@@ -4,7 +4,8 @@
     <div class="fixed-header layout-header">
       <logo v-if="showLogo" :collapse="false" class="logo" />
       <div class="content">
-        
+        <navigation-bar />
+        <tags-view v-show="showTagsView" />
       </div>
     </div>
     <!-- 主容器 -->
@@ -18,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { appMain, sidebar, logo } from "./components";
+import { appMain, sidebar, logo, navigationBar, tagsView } from "./components";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useAppStore } from "@/store/modules/app";
@@ -28,7 +29,9 @@ export default {
   components: {
     sidebar,
     appMain,
-    logo
+    logo,
+    navigationBar,
+    tagsView
   },
   setup() {
     const appStore = useAppStore();
@@ -89,6 +92,7 @@ $transition-time: 0.35s;
   height: 100%;
   position: fixed;
   left: 0;
+  top: 30px;
   z-index: 1001;
   overflow: hidden;
   padding-top: var(--v3-navigationbar-height);
