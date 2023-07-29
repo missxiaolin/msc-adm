@@ -13,16 +13,27 @@ export const constantRoutes: any = [
     path: "/",
     component: Layouts,
     redirect: "/dashboard",
+    meta: {
+      title: "首页",
+      elIcon: "eleme",
+    },
     children: [
       {
         path: "dashboard",
         component: () => import("@/views/dashboard/index.vue"),
-        name: "Dashboard",
         hidden: false,
         meta: {
-          title: "首页",
-          elIcon: "eleme",
+          title: "用户",
+          elIcon: "user",
           affix: true
+        }
+      }, {
+        path: "index",
+        component: () => import("@/views/index/index.vue"),
+        hidden: false,
+        meta: {
+          title: "设置",
+          elIcon: "setting",
         }
       }
     ]
