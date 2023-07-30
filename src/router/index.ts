@@ -5,7 +5,7 @@ import {
   createWebHistory,
 } from "vue-router";
 
-const Layouts = () => import("@/layouts/index.vue")
+const Layouts = () => import("@/layouts/index.vue");
 
 /** 常驻路由 */
 export const constantRoutes: any = [
@@ -25,27 +25,30 @@ export const constantRoutes: any = [
         meta: {
           title: "用户",
           elIcon: "user",
-          affix: true
-        }
-      }, {
+          affix: true,
+        },
+      },
+      {
         path: "index",
         component: () => import("@/views/index/index.vue"),
         hidden: false,
         meta: {
           title: "设置",
           elIcon: "setting",
-        }
-      }
-    ]
-  }, {
+        },
+      },
+    ],
+  },
+  {
     path: "/403",
     component: () => import("@/views/error-page/403.vue"),
     hidden: true,
     meta: {
       title: "403",
       elIcon: "help",
-    }
-  }, {
+    },
+  },
+  {
     path: "/404",
     component: () => import("@/views/error-page/404.vue"),
     hidden: true,
@@ -53,8 +56,9 @@ export const constantRoutes: any = [
       title: "404",
       elIcon: "camera",
     },
-    alias: "/:pathMatch(.*)*"
-  }, {
+    alias: "/:pathMatch(.*)*",
+  },
+  {
     path: "/link",
     component: Layouts,
     children: [
@@ -63,18 +67,35 @@ export const constantRoutes: any = [
         component: () => {},
         meta: {
           title: "外链",
-          elIcon: "paperclip"
-        }
-      }
-    ]
-  }, {
+          elIcon: "paperclip",
+        },
+      },
+    ],
+  },
+  {
+    path: "/unocss",
+    component: Layouts,
+    redirect: "/unocss/index",
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/unocss/index.vue"),
+        name: "UnoCSS",
+        meta: {
+          title: "unocss",
+          elIcon: "help",
+        },
+      },
+    ],
+  },
+  {
     path: "/table",
     component: Layouts,
     redirect: "/table/element-plus",
     name: "Table",
     meta: {
       title: "表格",
-      elIcon: "Grid"
+      elIcon: "Grid",
     },
     children: [
       {
@@ -83,8 +104,8 @@ export const constantRoutes: any = [
         name: "ElementPlus",
         meta: {
           title: "Element Plus",
-          keepAlive: true
-        }
+          keepAlive: true,
+        },
       },
       {
         path: "vxe-table",
@@ -92,10 +113,10 @@ export const constantRoutes: any = [
         name: "VxeTable",
         meta: {
           title: "Vxe Table",
-          keepAlive: true
-        }
-      }
-    ]
+          keepAlive: true,
+        },
+      },
+    ],
   },
 ];
 
@@ -104,7 +125,7 @@ export const constantRoutes: any = [
  * 用来放置有权限 (Roles 属性) 的路由
  * 必须带有 Name 属性
  */
-export const asyncRoutes: RouteRecordRaw[] = []
+export const asyncRoutes: RouteRecordRaw[] = [];
 
 const router = createRouter({
   history:
