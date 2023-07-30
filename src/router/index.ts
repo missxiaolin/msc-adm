@@ -67,6 +67,35 @@ export const constantRoutes: any = [
         }
       }
     ]
+  }, {
+    path: "/table",
+    component: Layouts,
+    redirect: "/table/element-plus",
+    name: "Table",
+    meta: {
+      title: "表格",
+      elIcon: "Grid"
+    },
+    children: [
+      {
+        path: "element-plus",
+        component: () => import("@/views/table/element-plus.vue"),
+        name: "ElementPlus",
+        meta: {
+          title: "Element Plus",
+          keepAlive: true
+        }
+      },
+      {
+        path: "vxe-table",
+        component: () => import("@/views/table/vxe-table.vue"),
+        name: "VxeTable",
+        meta: {
+          title: "Vxe Table",
+          keepAlive: true
+        }
+      }
+    ]
   },
 ];
 
