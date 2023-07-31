@@ -40,6 +40,13 @@ export const constantRoutes: any = [
     ],
   },
   {
+    path: "/login",
+    component: () => import("@/views/login/index.vue"),
+    meta: {
+      hidden: true
+    }
+  },
+  {
     path: "/403",
     component: () => import("@/views/error-page/403.vue"),
     hidden: true,
