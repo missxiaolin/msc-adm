@@ -114,15 +114,6 @@ export const constantRoutes: any = [
           keepAlive: true,
         },
       },
-      {
-        path: "vxe-table",
-        component: () => import("@/views/table/vxe-table.vue"),
-        name: "VxeTable",
-        meta: {
-          title: "Vxe Table",
-          keepAlive: true,
-        },
-      },
     ],
   },
 ];

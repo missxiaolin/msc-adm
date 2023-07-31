@@ -34,6 +34,13 @@
     "@types/path-browserify": "^1.0.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "@typescript-eslint/eslint-plugin": "6.1.0",
+    "@typescript-eslint/parser": "6.1.0",
+    "@vue/eslint-config-prettier": "8.0.0",
+    "@vue/eslint-config-typescript": "11.0.3",
+    "eslint": "8.45.0",
+    "eslint-plugin-prettier": "5.0.0",
+    "eslint-plugin-vue": "9.15.1",
     "path": "^0.12.7",
     "sass": "^1.64.1",
     "terser": "^5.19.2",
@@ -44,5 +51,17 @@
     "vite-svg-loader": "4.0.0",
     "vitest": "^0.33.0",
     "vue-tsc": "^1.8.5"
+  },
+  "lint-staged": {
+    "*.{vue,js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,less,scss,html,md}": [
+      "prettier --write"
+    ],
+    "package.json": [
+      "prettier --write"
+    ]
   }
 }
