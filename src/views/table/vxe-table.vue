@@ -31,6 +31,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck # 忽略全文
 import { nextTick, reactive, ref } from "vue";
 import { type GetTableResponseData } from "@/api/table/types/table";
 import RoleColumnSolts from "./tsx/RoleColumnSolts";
@@ -386,7 +387,9 @@ export default {
     return {
       xGridDom,
       xGridOpt,
-      xModalOpt
+      xModalOpt,
+      crudStore,
+      xFormOpt
     };
   },
 };
