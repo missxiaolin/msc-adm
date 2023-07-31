@@ -42,8 +42,9 @@ export const constantRoutes: any = [
   {
     path: "/login",
     component: () => import("@/views/login/index.vue"),
+    hidden: true,
     meta: {
-      hidden: true
+      
     }
   },
   {
@@ -68,6 +69,7 @@ export const constantRoutes: any = [
   {
     path: "/link",
     component: Layouts,
+    hidden: false,
     children: [
       {
         path: "https://wwww.baidu.com",
@@ -83,6 +85,7 @@ export const constantRoutes: any = [
     path: "/unocss",
     component: Layouts,
     redirect: "/unocss/index",
+    hidden: false,
     children: [
       {
         path: "index",
@@ -100,6 +103,7 @@ export const constantRoutes: any = [
     component: Layouts,
     redirect: "/table/element-plus",
     name: "Table",
+    hidden: false,
     meta: {
       title: "表格",
       elIcon: "Grid",
