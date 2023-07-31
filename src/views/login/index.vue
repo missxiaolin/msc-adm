@@ -33,7 +33,13 @@
               show-password
             />
           </el-form-item>
-          <el-button :loading="loading" type="primary" size="large" @click.prevent="handleLogin">登 录</el-button>
+          <el-button
+            :loading="loading"
+            type="primary"
+            size="large"
+            @click.prevent="handleLogin"
+            >登 录</el-button
+          >
         </el-form>
       </div>
     </div>
@@ -46,8 +52,8 @@ import { useRouter } from "vue-router";
 import themeSwitch from "@/components/themeSwitch/index.vue";
 import { type LoginRequestData } from "@/api/login/types/login";
 import { type FormInstance, FormRules } from "element-plus";
-import { User, Lock, Key, Picture, Loading } from "@element-plus/icons-vue"
-// import { useUserStore } from "@/store/modules/user"
+import { User, Lock } from "@element-plus/icons-vue";
+import { useUserStore } from "@/store/modules/user";
 
 export default {
   components: {
@@ -80,23 +86,22 @@ export default {
       loginFormRef.value?.validate((valid: boolean, fields) => {
         if (valid) {
           loading.value = true;
-          //   useUserStore()
-          //     .login(loginFormData)
-          //     .then(() => {
-          //       router.push({ path: "/" });
-          //     })
-          //     .catch(() => {
-          //       loginFormData.password = "";
-          //     })
-          //     .finally(() => {
-          //       loading.value = false;
-          //     });
+          useUserStore()
+            .login(loginFormData)
+            .then(() => {
+              router.push({ path: "/" });
+            })
+            .catch(() => {
+              loginFormData.password = "";
+            })
+            .finally(() => {
+              loading.value = false;
+            });
         } else {
           console.error("表单校验不通过", fields);
         }
       });
     };
-
 
     return {
       loginFormData,
@@ -104,7 +109,7 @@ export default {
       handleLogin,
       User,
       Lock,
-      loading
+      loading,
     };
   },
 };
