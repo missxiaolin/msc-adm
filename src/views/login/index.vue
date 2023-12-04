@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import themeSwitch from "@/components/themeSwitch/index.vue";
 import { type LoginRequestData } from "@/api/login/types/login";
@@ -77,13 +77,15 @@ export default {
     };
 
     /** 登录表单元素的引用 */
-    const loginFormRef = ref<FormInstance | null>(null);
+    const loginFormRef = ref<any>(null);
     /** 登录按钮 Loading */
     const loading = ref(false);
-
+    onMounted(() => {
+      console.log(loginFormRef.value);
+    });
     /** 登录逻辑 */
     const handleLogin = () => {
-      loginFormRef.value?.validate((valid: boolean, fields) => {
+      loginFormRef.value?.validate((valid: boolean, fields: any) => {
         if (valid) {
           loading.value = true;
           useUserStore()
