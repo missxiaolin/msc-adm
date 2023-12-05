@@ -24,6 +24,7 @@ module.exports = {
     },
   },
   rules: {
+    "vue/no-setup-props-destructure": "off",
     "vue/html-self-closing": "off",
     "prettier/prettier": "off",
     "prefer-const": "off",
@@ -54,12 +55,5 @@ module.exports = {
     "vue/require-default-prop": "off",
     "vue/require-explicit-emits": "off",
     "vue/multi-word-component-names": "off",
-    // Prettier
-    "prettier/prettier": [
-      "error",
-      {
-        endOfLine: "auto",
-      },
-    ],
   },
 };
