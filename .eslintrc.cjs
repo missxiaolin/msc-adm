@@ -24,6 +24,7 @@ module.exports = {
     },
   },
   rules: {
+    "vue/html-self-closing": "off",
     "prettier/prettier": "off",
     "prefer-const": "off",
     // TS
@@ -53,18 +54,6 @@ module.exports = {
     "vue/require-default-prop": "off",
     "vue/require-explicit-emits": "off",
     "vue/multi-word-component-names": "off",
-    "vue/html-self-closing": [
-      "error",
-      {
-        html: {
-          void: "always",
-          normal: "always",
-          component: "always",
-        },
-        svg: "always",
-        math: "always",
-      },
-    ],
     // Prettier
     "prettier/prettier": [
       "error",

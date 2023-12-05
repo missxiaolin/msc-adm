@@ -25,6 +25,7 @@ export const constantRoutes: any = [
         meta: {
           title: "应用概览",
           elIcon: "Operation",
+          keepAlive: false,
           affix: true,
         },
       },
@@ -71,7 +72,7 @@ export const constantRoutes: any = [
         hidden: false,
         meta: {
           title: "页面性能列表",
-          keepAlive: true,
+          keepAlive: false,
           elIcon: "Odometer",
           affix: true,
         },

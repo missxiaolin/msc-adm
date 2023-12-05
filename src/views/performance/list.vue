@@ -101,43 +101,15 @@
               >
             </el-table-column>
           </el-table-column>
-          <el-table-column label="性能图表" fixed="right">
+          <el-table-column label="性能图表" fixed="right" align="center">
             <template #default="{ row }">
-              <el-button type="text"> 指标 </el-button>
+              <el-button type="text" @click="handleDetail(row)">
+                <el-icon style="vertical-align: middle">
+                  <Histogram />
+                </el-icon>
+              </el-button>
             </template>
           </el-table-column>
-          <!-- <el-table-column prop="roles" label="角色" align="center">
-            <template #default="scope">
-              <el-tag v-if="scope.row.roles === 'admin'" effect="plain"
-                >admin</el-tag
-              >
-              <el-tag v-else type="warning" effect="plain">{{
-                scope.row.roles
-              }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="phone" label="手机号" align="center" />
-          <el-table-column prop="email" label="邮箱" align="center" />
-          <el-table-column prop="status" label="状态" align="center">
-            <template #default="scope">
-              <el-tag v-if="scope.row.status" type="success" effect="plain"
-                >启用</el-tag
-              >
-              <el-tag v-else type="danger" effect="plain">禁用</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" align="center" />
-          <el-table-column
-            fixed="right"
-            label="操作"
-            width="150"
-            align="center"
-          >
-            <template #default="scope">
-              <el-button type="primary" text bg size="small">修改</el-button>
-              <el-button type="danger" text bg size="small">删除</el-button>
-            </template>
-          </el-table-column> -->
         </el-table>
       </div>
       <div class="pager-wrapper">
@@ -154,10 +126,12 @@
       </div>
     </el-card>
   </div>
+  <PerfDetail v-if="perfNode.simpleUrl" :perfNode="perfNode" />
 </template>
 
 <script lang="ts">
-import { onMounted, ref, watch } from "vue";
+import PerfDetail from "./components/perfDetail.vue";
+import { nextTick, onMounted, ref, watch } from "vue";
 import { timeQuantum } from "@/utils/index";
 import { performanceList } from "@/api/performance/index";
 import {
@@ -170,15 +144,18 @@ import {
 } from "@element-plus/icons-vue";
 import { type PerformanceListData } from "@/api/performance/types/performance";
 import { usePagination } from "@/hooks/usePagination";
-import { ro } from "element-plus/es/locale";
 export default {
-  name: "ElementPlus",
+  name: "Performance",
+  components: {
+    PerfDetail,
+  },
   setup() {
     const loading = ref<boolean>(false);
     const searchData = ref({
       pageUrl: "",
       data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
     });
+    const perfNode = ref({});
     const tableData = ref<PerformanceListData[]>([]);
     const { paginationData, handleCurrentChange, handleSizeChange } =
       usePagination();
@@ -232,6 +209,16 @@ export default {
       return !row.nt && !time ? "-" : time.toFixed(2) + "ms";
     };
 
+    /**
+     * @description: 查看性能详情
+     * @param {*} row
+     * @return {*}
+     */
+    const handleDetail = (row: any) => {
+      perfNode.value = {};
+      nextTick(() => (perfNode.value = row));
+    };
+
     return {
       loading,
       searchData,
@@ -248,6 +235,8 @@ export default {
       handleCurrentChange,
       handleSizeChange,
       ntFormat,
+      handleDetail,
+      perfNode,
     };
   },
 };

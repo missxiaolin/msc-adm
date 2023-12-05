@@ -146,6 +146,8 @@ export default {
       ArrowLeft,
       ArrowRight,
       settingsStore,
+      scrollbarContentRef,
+      scrollbarRef,
     };
   },
 };
