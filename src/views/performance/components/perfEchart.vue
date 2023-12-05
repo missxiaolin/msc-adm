@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row justify-around" style="width: 100%">
+  <div class="flex flex-row justify-between" style="width: 100%">
     <el-statistic title="白屏时间" :value="ntFormat('FP')"></el-statistic>
     <el-statistic title="首字节" :value="ntFormat('FirseByte')"></el-statistic>
     <el-statistic
