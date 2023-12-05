@@ -1,0 +1,58 @@
+<template>
+  <el-table :data="NFTable" stripe max-height="500">
+    <el-table-column prop="name" label="资源名称" fixed width="200" />
+    <el-table-column prop="transferSize" label="资源大小" fixed />
+    <el-table-column prop="initiatorType" label="资源类型" />
+    <el-table-column prop="startTime" label="开始时间" />
+    <el-table-column prop="responseEnd" label="结束时间" />
+    <el-table-column prop="duration" label="资源的总耗时" />
+    <el-table-column prop="dns" label="DNS" />
+    <el-table-column prop="tcp" label="TCP" />
+    <el-table-column prop="ssl" label="SSL" />
+    <el-table-column prop="ttfb" label="请求耗时" />
+    <el-table-column prop="contentDownload" label="资源下载时间" />
+    <el-table-column
+      prop="renderBlockingStatus"
+      label="否有渲染阻塞"
+      fixed="right"
+    />
+    <el-table-column prop="isCache" label="命中缓存" fixed="right" />
+  </el-table>
+</template>
+
+<script setup lang="ts">
+import { computed } from "vue";
+
+const prop = defineProps({
+  data: {
+    type: Array,
+    defualt: () => [],
+  },
+});
+
+const NFTable = computed(() => {
+  const fileds = [
+    "startTime",
+    "responseEnd",
+    "duration",
+    "dns",
+    "tcp",
+    "ssl",
+    "ttfb",
+    "contentDownload",
+  ];
+  if (!prop.data || !prop.data.length) return [];
+  const list = prop.data.map((item: any) => {
+    //
+    for (let key in item) {
+      if (fileds.includes(key)) {
+        item[key] = (item[key] || 0).toFixed(2) + "ms";
+      }
+    }
+    return item;
+  });
+  return list;
+});
+</script>
+
+<style scoped></style>

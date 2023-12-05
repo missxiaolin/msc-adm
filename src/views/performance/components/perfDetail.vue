@@ -86,6 +86,19 @@
             <div>
               <PerfEchart :options="perfEchartOPtion"></PerfEchart>
             </div>
+            <h2 class="title">会话性能指标</h2>
+            <div>
+							<template v-if="perfNode?.fp">
+								<h3 class="title">FP 白屏资源</h3>
+								<PerfResTable :data="perfNode?.fp?.RF"></PerfResTable>
+							</template>
+							<template v-if="perfNode?.fcp">
+								<h3 class="title">FCP 灰屏资源</h3>
+								<PerfResTable :data="perfNode?.fcp?.RF"></PerfResTable>
+							</template>
+							<h3 class="title">RF 资源</h3>
+							<PerfResTable :data="perfNode?.rf"></PerfResTable>
+						</div>
           </div>
         </el-scroll>
       </div>
@@ -95,10 +108,12 @@
 
 <script lang="ts">
 import PerfEchart from "./perfEchart.vue";
+import PerfResTable from "./perfResTable.vue";
 import { computed, ref } from "vue";
 export default {
   components: {
     PerfEchart,
+    PerfResTable
   },
   props: {
     perfNode: {
