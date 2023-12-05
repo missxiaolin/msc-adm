@@ -24,6 +24,8 @@ module.exports = {
     },
   },
   rules: {
+    "prettier/prettier": "off",
+    "prefer-const": "off",
     // TS
     "@typescript-eslint/no-explicit-any": "off",
     "no-debugger": "off",

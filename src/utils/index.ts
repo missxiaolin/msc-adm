@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import moment from "moment";
 import { removeConfigLayout } from "@/utils/cache/local-storage";
 
 /** 格式化时间 */
@@ -39,4 +40,19 @@ export const setCssVariableValue = (
 export const resetConfigLayout = () => {
   removeConfigLayout();
   location.reload();
+};
+
+/**
+ * 日期
+ * @param formatting 
+ * @returns 
+ */
+export const timeQuantum = (formatting: { subtractDay?: 0; format?: [] }) => {
+  let { subtractDay = 0, format = <any>[] } = formatting;
+  format = format.length ? format : ["HH:mm:ss", "HH:mm:ss"];
+  let startDateTime = moment()
+      .subtract("days", subtractDay)
+      .format(`YYYY-MM-DD ${format[0]}`),
+    endDateTime = moment().format(`YYYY-MM-DD ${format[1]}`);
+  return [startDateTime, endDateTime];
 };
