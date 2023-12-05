@@ -157,8 +157,11 @@ export default {
     });
     const perfNode = ref({});
     const tableData = ref<PerformanceListData[]>([]);
+
     const { paginationData, handleCurrentChange, handleSizeChange } =
-      usePagination();
+      usePagination(() => {
+        handleSearch();
+      });
 
     onMounted(() => {
       handleSearch();
@@ -186,14 +189,10 @@ export default {
       handleSearch();
     };
 
-    watch(paginationData, (newValue, oldValue) => {
-      if (newValue.currentPage != oldValue.currentPage) {
-        handleSearch();
-      }
-      if (newValue.pageSize != oldValue.pageSize) {
-        handleSearch();
-      }
-    });
+    // watch(paginationData, (newValue, oldValue) => {
+    //   console.log(newValue, oldValue)
+    //   handleSearch();
+    // });
 
     const ntFormat = (row: any, label: string) => {
       // 默认去NT里时间

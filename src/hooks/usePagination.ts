@@ -25,7 +25,7 @@ const defaultPaginationData: DefaultPaginationData = {
   layout: "total, sizes, prev, pager, next, jumper",
 };
 
-export function usePagination(initialPaginationData: PaginationData = {}) {
+export function usePagination(cal: any, initialPaginationData: PaginationData = {}) {
   /** 合并分页参数 */
   const paginationData = reactive({
     ...defaultPaginationData,
@@ -34,10 +34,12 @@ export function usePagination(initialPaginationData: PaginationData = {}) {
   /** 改变当前页码 */
   const handleCurrentChange = (value: number) => {
     paginationData.currentPage = value;
+    cal()
   };
   /** 改变页面大小 */
   const handleSizeChange = (value: number) => {
     paginationData.pageSize = value;
+    cal()
   };
 
   return { paginationData, handleCurrentChange, handleSizeChange };
