@@ -189,11 +189,6 @@ export default {
       handleSearch();
     };
 
-    // watch(paginationData, (newValue, oldValue) => {
-    //   console.log(newValue, oldValue)
-    //   handleSearch();
-    // });
-
     const ntFormat = (row: any, label: string) => {
       // 默认去NT里时间
       let time = (row.nt && row.nt[label]) || 0;
