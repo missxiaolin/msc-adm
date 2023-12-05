@@ -23,18 +23,9 @@ export const constantRoutes: any = [
         component: () => import("@/views/dashboard/index.vue"),
         hidden: false,
         meta: {
-          title: "用户",
-          elIcon: "user",
+          title: "应用概览",
+          elIcon: "Operation",
           affix: true,
-        },
-      },
-      {
-        path: "index",
-        component: () => import("@/views/index/index.vue"),
-        hidden: false,
-        meta: {
-          title: "设置",
-          elIcon: "setting",
         },
       },
     ],
@@ -43,9 +34,7 @@ export const constantRoutes: any = [
     path: "/login",
     component: () => import("@/views/login/index.vue"),
     hidden: true,
-    meta: {
-      
-    }
+    meta: {},
   },
   {
     path: "/403",
@@ -67,55 +56,24 @@ export const constantRoutes: any = [
     alias: "/:pathMatch(.*)*",
   },
   {
-    path: "/link",
+    path: "/performance",
     component: Layouts,
-    hidden: false,
-    children: [
-      {
-        path: "https://wwww.baidu.com",
-        component: () => {},
-        meta: {
-          title: "外链",
-          elIcon: "paperclip",
-        },
-      },
-    ],
-  },
-  {
-    path: "/unocss",
-    component: Layouts,
-    redirect: "/unocss/index",
-    hidden: false,
-    children: [
-      {
-        path: "index",
-        component: () => import("@/views/unocss/index.vue"),
-        name: "UnoCSS",
-        meta: {
-          title: "unocss",
-          elIcon: "help",
-        },
-      },
-    ],
-  },
-  {
-    path: "/table",
-    component: Layouts,
-    redirect: "/table/element-plus",
-    name: "Table",
-    hidden: false,
+    redirect: "/performance/list",
+    name: "Performance",
     meta: {
-      title: "表格",
-      elIcon: "Grid",
+      title: "页面性能",
+      elIcon: "Odometer",
     },
     children: [
       {
-        path: "element-plus",
-        component: () => import("@/views/table/element-plus.vue"),
-        name: "ElementPlus",
+        path: "list",
+        component: () => import("@/views/performance/list.vue"),
+        hidden: false,
         meta: {
-          title: "Element Plus",
+          title: "页面性能列表",
           keepAlive: true,
+          elIcon: "Odometer",
+          affix: true,
         },
       },
     ],
