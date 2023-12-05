@@ -25,9 +25,88 @@
     <el-card v-loading="loading" shadow="never">
       <div class="table-wrapper">
         <el-table :data="tableData">
-          <el-table-column type="selection" width="50" align="center" />
-          <el-table-column prop="username" label="用户名" align="center" />
-          <el-table-column prop="roles" label="角色" align="center">
+          <el-table-column prop="monitorAppId" label="项目ID" align="center" />
+          <el-table-column prop="pageUrl" label="url" align="center" />
+          <el-table-column label="会话性能指标" align="center">
+            <el-table-column label="Navigation 指标" align="center">
+              <el-table-column label="DNS 查询"
+                ><template #default="{ row }">
+                  {{ ntFormat(row, "DNS") }}
+                </template></el-table-column
+              >
+              <el-table-column label="TCP 链接"
+                ><template #default="{ row }">
+                  {{ ntFormat(row, "TCP") }}
+                </template></el-table-column
+              >
+              <el-table-column label="SSL 建连"
+                ><template #default="{ row }">
+                  {{ ntFormat(row, "SSL") }}
+                </template></el-table-column
+              >
+              <el-table-column label="TTFB 请求响应"
+                ><template #default="{ row }">
+                  {{ ntFormat(row, "TTFB") }}
+                </template></el-table-column
+              >
+
+              <el-table-column label="TRANS 内容传输"
+                ><template #default="{ row }">
+                  {{ ntFormat(row, "Trans") }}
+                </template></el-table-column
+              >
+
+              <el-table-column label="DOM 解析"
+                ><template #default="{ row }">
+                  {{ ntFormat(row, "DomParse") }}
+                </template></el-table-column
+              >
+              <el-table-column label="RES 资源加载">
+                <template #default="{ row }">
+                  {{ ntFormat(row, "Res") }}
+                </template></el-table-column
+              >
+            </el-table-column>
+            <el-table-column label="性能关键指标" align="center">
+              <el-table-column label="白屏时间">
+                <template #default="{ row }">
+                  {{ ntFormat(row, "FP") }}
+                </template></el-table-column
+              >
+              <el-table-column label="FCP 灰屏时间"
+                ><template #default="{ row }">
+                  {{ ntFormat(row, "FPC") }}
+                </template></el-table-column
+              >
+              <el-table-column label="FirseByte 首字节">
+                <template #default="{ row }">
+                  {{ ntFormat(row, "FirseByte") }}
+                </template></el-table-column
+              >
+              <!-- <el-table-column label=" TTI 可交互时间"
+                ><template #default="{ row }">
+                  {{ ntFormat(row, "TTI") }}
+                </template></el-table-column
+              > -->
+              <el-table-column label="DOMReady"
+                ><template #default="{ row }">
+                  {{ ntFormat(row, "DomReady") }}
+                </template></el-table-column
+              >
+
+              <el-table-column label="LOAD 加载完成"
+                ><template #default="{ row }">
+                  {{ ntFormat(row, "Load") }}
+                </template></el-table-column
+              >
+            </el-table-column>
+          </el-table-column>
+          <el-table-column label="性能图表" fixed="right">
+            <template #default="{ row }">
+              <el-button type="text"> 指标 </el-button>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column prop="roles" label="角色" align="center">
             <template #default="scope">
               <el-tag v-if="scope.row.roles === 'admin'" effect="plain"
                 >admin</el-tag
@@ -58,7 +137,7 @@
               <el-button type="primary" text bg size="small">修改</el-button>
               <el-button type="danger" text bg size="small">删除</el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
       </div>
       <div class="pager-wrapper">
@@ -78,7 +157,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { timeQuantum } from "@/utils/index";
 import { performanceList } from "@/api/performance/index";
 import {
@@ -91,6 +170,7 @@ import {
 } from "@element-plus/icons-vue";
 import { type PerformanceListData } from "@/api/performance/types/performance";
 import { usePagination } from "@/hooks/usePagination";
+import { ro } from "element-plus/es/locale";
 export default {
   name: "ElementPlus",
   setup() {
@@ -118,7 +198,7 @@ export default {
       let res = await performanceList(param);
       if (res.success) {
         paginationData.total = res.model.count;
-        tableData.value = res.model.list
+        tableData.value = res.model.list;
       }
     };
     const resetSearch = () => {
@@ -127,6 +207,29 @@ export default {
         data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
       };
       handleSearch();
+    };
+
+    watch(paginationData, (newValue, oldValue) => {
+      if (newValue.currentPage != oldValue.currentPage) {
+        handleSearch();
+      }
+      if (newValue.pageSize != oldValue.pageSize) {
+        handleSearch();
+      }
+    });
+
+    const ntFormat = (row: any, label: string) => {
+      // 默认去NT里时间
+      let time = (row.nt && row.nt[label]) || 0;
+      const fp = row.fp; // 白屏时间
+      const fpc = row.fpc; //灰屏时间
+      if (label == "fp" && fp) {
+        time = fp.startTime;
+      }
+      if (label == "fpc" && fpc) {
+        time = fpc.startTime;
+      }
+      return !row.nt && !time ? "-" : time.toFixed(2) + "ms";
     };
 
     return {
@@ -144,6 +247,7 @@ export default {
       paginationData,
       handleCurrentChange,
       handleSizeChange,
+      ntFormat,
     };
   },
 };
