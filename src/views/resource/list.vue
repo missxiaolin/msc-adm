@@ -6,10 +6,7 @@
           <el-input v-model="searchData.pageUrl" placeholder="请输入" />
         </el-form-item>
         <el-form-item prop="resourceType" label="资源类型">
-          <el-select
-            v-model="searchData.resourceType"
-            placeholder="请选择"
-          >
+          <el-select v-model="searchData.resourceType" placeholder="请选择">
             <el-option
               v-for="item in resourceTypes"
               :key="item.value"
@@ -31,17 +28,24 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :icon="Search" @click="handleSearch"
+          <el-button type="primary" :icon="Search" @click="init"
             >查询</el-button
           >
           <el-button :icon="Refresh" @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
+    <el-card v-if="echartsOptions.seriesName" shadow="always" class="mt20 mb20">
+        <ResHoursEchart :echartsOptions="echartsOptions"></ResHoursEchart>
+    </el-card>
     <el-card v-loading="loading" shadow="never">
       <div class="table-wrapper">
         <el-table :data="tableData">
-          <el-table-column prop="resourceType" label="错误类型" align="center" />
+          <el-table-column
+            prop="resourceType"
+            label="错误类型"
+            align="center"
+          />
           <el-table-column prop="errorMsg" label="错误信息" align="center" />
           <el-table-column prop="html" label="HTML内容" align="center" />
           <el-table-column prop="pageUrl" label="上报页面" align="center" />
@@ -72,9 +76,10 @@
 </template>
 
 <script lang="ts">
+import ResHoursEchart from './components/resHoursEchart.vue'
 import { nextTick, onMounted, ref } from "vue";
 import { timeQuantum } from "@/utils/index";
-import { resourceList } from "@/api/resource/index";
+import { resourceList, resourceHour } from "@/api/resource/index";
 import {
   Search,
   Refresh,
@@ -87,20 +92,25 @@ import { type ResourceResponseData } from "@/api/resource/types/resource";
 import { usePagination } from "@/hooks/usePagination";
 export default {
   name: "Resource",
-  components: {},
+  components: {
+    ResHoursEchart
+  },
   setup() {
     const loading = ref<boolean>(false);
+    const echartsOptions = ref({})
     const resourceTypes = ref([
       {
         value: "IMG",
         label: "IMG",
-      }, {
+      },
+      {
         value: "LINK",
         label: "LINK",
-      }, {
+      },
+      {
         value: "SCRIPT",
         label: "SCRIPT",
-      }
+      },
     ]);
     const searchData = ref({
       pageUrl: "",
@@ -118,7 +128,13 @@ export default {
 
     onMounted(() => {
       handleSearch();
+      handleTb();
     });
+
+    const init = async () => {
+      handleSearch();
+      handleTb();
+    };
 
     const handleSearch = async () => {
       let param = {
@@ -136,6 +152,17 @@ export default {
         tableData.value = res.model.list;
       }
     };
+
+    const handleTb = async () => {
+      let param = {
+        startTime: searchData.value.data[0],
+        endTime: searchData.value.data[1],
+      };
+      let res = await resourceHour(param);
+      if (res.success) {
+        echartsOptions.value = res.model
+      }
+    };
     const resetSearch = () => {
       searchData.value = {
         pageUrl: "",
@@ -144,20 +171,7 @@ export default {
         data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
       };
       handleSearch();
-    };
-
-    const ntFormat = (row: any, label: string) => {
-      // 默认去NT里时间
-      let time = (row.nt && row.nt[label]) || 0;
-      const fp = row.fp; // 白屏时间
-      const fpc = row.fpc; //灰屏时间
-      if (label == "fp" && fp) {
-        time = fp.startTime;
-      }
-      if (label == "fpc" && fpc) {
-        time = fpc.startTime;
-      }
-      return !row.nt && !time ? "-" : time.toFixed(2) + "ms";
+      handleTb();
     };
 
     /**
@@ -186,9 +200,10 @@ export default {
       paginationData,
       handleCurrentChange,
       handleSizeChange,
-      ntFormat,
       handleDetail,
       perfNode,
+      init,
+      echartsOptions
     };
   },
 };

@@ -12,3 +12,16 @@ export function resourceList(data: Resource.ResourceListRequestData) {
     data,
   });
 }
+
+/**
+ * 图表数据
+ * @param data 
+ * @returns 
+ */
+export function resourceHour(data: Resource.ResourceHourRequestData) {
+  return request<Resource.ResourceHourResponseData>({
+    url: "/adm/resource/hour",
+    method: "post",
+    data,
+  });
+}
