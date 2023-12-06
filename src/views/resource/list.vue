@@ -5,6 +5,22 @@
         <el-form-item prop="pageUrl" label="页面链接">
           <el-input v-model="searchData.pageUrl" placeholder="请输入" />
         </el-form-item>
+        <el-form-item prop="resourceType" label="资源类型">
+          <el-select
+            v-model="searchData.resourceType"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in resourceTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="url" label="资源链接">
+          <el-input v-model="searchData.url" placeholder="请输入" />
+        </el-form-item>
         <el-form-item prop="phone" label="日期">
           <el-date-picker
             v-model="searchData.data"
@@ -25,88 +41,15 @@
     <el-card v-loading="loading" shadow="never">
       <div class="table-wrapper">
         <el-table :data="tableData">
-          <el-table-column prop="monitorAppId" label="项目ID" align="center" />
-          <el-table-column prop="pageUrl" label="url" align="center" />
-          <el-table-column label="会话性能指标" align="center">
-            <el-table-column label="Navigation 指标" align="center">
-              <el-table-column label="DNS 查询"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "DNS") }}
-                </template></el-table-column
-              >
-              <el-table-column label="TCP 链接"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "TCP") }}
-                </template></el-table-column
-              >
-              <el-table-column label="SSL 建连"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "SSL") }}
-                </template></el-table-column
-              >
-              <el-table-column label="TTFB 请求响应"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "TTFB") }}
-                </template></el-table-column
-              >
-
-              <el-table-column label="TRANS 内容传输"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "Trans") }}
-                </template></el-table-column
-              >
-
-              <el-table-column label="DOM 解析"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "DomParse") }}
-                </template></el-table-column
-              >
-              <el-table-column label="RES 资源加载">
-                <template #default="{ row }">
-                  {{ ntFormat(row, "Res") }}
-                </template></el-table-column
-              >
-            </el-table-column>
-            <el-table-column label="性能关键指标" align="center">
-              <el-table-column label="白屏时间">
-                <template #default="{ row }">
-                  {{ ntFormat(row, "FP") }}
-                </template></el-table-column
-              >
-              <el-table-column label="FCP 灰屏时间"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "FPC") }}
-                </template></el-table-column
-              >
-              <el-table-column label="FirseByte 首字节">
-                <template #default="{ row }">
-                  {{ ntFormat(row, "FirseByte") }}
-                </template></el-table-column
-              >
-              <!-- <el-table-column label=" TTI 可交互时间"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "TTI") }}
-                </template></el-table-column
-              > -->
-              <el-table-column label="DOMReady"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "DomReady") }}
-                </template></el-table-column
-              >
-
-              <el-table-column label="LOAD 加载完成"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "Load") }}
-                </template></el-table-column
-              >
-            </el-table-column>
-          </el-table-column>
-          <el-table-column label="性能图表" fixed="right" align="center">
+          <el-table-column prop="resourceType" label="错误类型" align="center" />
+          <el-table-column prop="errorMsg" label="错误信息" align="center" />
+          <el-table-column prop="html" label="HTML内容" align="center" />
+          <el-table-column prop="pageUrl" label="上报页面" align="center" />
+          <el-table-column prop="happenTime" label="上报时间" align="center" />
+          <el-table-column label="操作" fixed="right" align="center">
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">
-                <el-icon style="vertical-align: middle">
-                  <Histogram />
-                </el-icon>
+                查看详情
               </el-button>
             </template>
           </el-table-column>
@@ -126,14 +69,12 @@
       </div>
     </el-card>
   </div>
-  <PerfDetail v-if="perfNode.simpleUrl" :perfNode="perfNode" />
 </template>
 
 <script lang="ts">
-import PerfDetail from "./components/perfDetail.vue";
 import { nextTick, onMounted, ref } from "vue";
 import { timeQuantum } from "@/utils/index";
-import { performanceList } from "@/api/performance/index";
+import { resourceList } from "@/api/resource/index";
 import {
   Search,
   Refresh,
@@ -142,21 +83,33 @@ import {
   Download,
   RefreshRight,
 } from "@element-plus/icons-vue";
-import { type PerformanceListData } from "@/api/performance/types/performance";
+import { type ResourceResponseData } from "@/api/resource/types/resource";
 import { usePagination } from "@/hooks/usePagination";
 export default {
-  name: "Performance",
-  components: {
-    PerfDetail,
-  },
+  name: "Resource",
+  components: {},
   setup() {
     const loading = ref<boolean>(false);
+    const resourceTypes = ref([
+      {
+        value: "IMG",
+        label: "IMG",
+      }, {
+        value: "LINK",
+        label: "LINK",
+      }, {
+        value: "SCRIPT",
+        label: "SCRIPT",
+      }
+    ]);
     const searchData = ref({
       pageUrl: "",
+      url: "",
+      resourceType: "",
       data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
     });
     const perfNode = ref({});
-    const tableData = ref<PerformanceListData[]>([]);
+    const tableData = ref<ResourceResponseData[]>([]);
 
     const { paginationData, handleCurrentChange, handleSizeChange } =
       usePagination(() => {
@@ -169,13 +122,15 @@ export default {
 
     const handleSearch = async () => {
       let param = {
+        url: searchData.value.url,
         pageUrl: searchData.value.pageUrl,
+        resourceType: searchData.value.resourceType,
         startTime: searchData.value.data[0],
         endTime: searchData.value.data[1],
         page: paginationData.currentPage,
         pageSize: paginationData.pageSize,
       };
-      let res = await performanceList(param);
+      let res = await resourceList(param);
       if (res.success) {
         paginationData.total = res.model.count;
         tableData.value = res.model.list;
@@ -184,6 +139,8 @@ export default {
     const resetSearch = () => {
       searchData.value = {
         pageUrl: "",
+        url: "",
+        resourceType: "",
         data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
       };
       handleSearch();
@@ -214,6 +171,7 @@ export default {
     };
 
     return {
+      resourceTypes,
       loading,
       searchData,
       resetSearch,

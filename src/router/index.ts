@@ -79,6 +79,29 @@ export const constantRoutes: any = [
       },
     ],
   },
+  {
+    path: "/resource",
+    component: Layouts,
+    redirect: "/resource/list",
+    name: "Resource",
+    meta: {
+      title: "资源错误",
+      elIcon: "ScaleToOriginal",
+    },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/resource/list.vue"),
+        hidden: false,
+        meta: {
+          title: "资源错误列表",
+          keepAlive: false,
+          elIcon: "ScaleToOriginal",
+          affix: true,
+        },
+      },
+    ],
+  },
 ];
 
 /**
