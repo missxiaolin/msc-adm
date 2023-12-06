@@ -5,7 +5,7 @@
 
 <script lang="ts">
 import Echarts from "@/components/echarts/index.vue";
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import moment from "moment";
 export default {
   components: {
