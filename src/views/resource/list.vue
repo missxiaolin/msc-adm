@@ -73,10 +73,12 @@
       </div>
     </el-card>
   </div>
+  <DetailPopup v-if="perfNode.resourceType" :perfNode="perfNode" />
 </template>
 
 <script lang="ts">
 import ResHoursEchart from './components/resHoursEchart.vue'
+import DetailPopup from '../../components/detailPopup.vue'
 import { nextTick, onMounted, ref } from "vue";
 import { timeQuantum } from "@/utils/index";
 import { resourceList, resourceHour } from "@/api/resource/index";
@@ -93,7 +95,8 @@ import { usePagination } from "@/hooks/usePagination";
 export default {
   name: "Resource",
   components: {
-    ResHoursEchart
+    ResHoursEchart,
+    DetailPopup
   },
   setup() {
     const loading = ref<boolean>(false);
