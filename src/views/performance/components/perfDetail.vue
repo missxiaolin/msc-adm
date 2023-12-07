@@ -4,8 +4,9 @@
     ref="drawerRef"
     title="性能指标查看"
     direction="rtl"
-    size="80%"
-    :z-index="999"
+    size="95%"
+    :z-index="9999"
+    :append-to-body="true"
   >
     <section class="detail-wapper flex-1">
       <div class="detail-top-content">

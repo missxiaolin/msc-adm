@@ -4,8 +4,9 @@
     ref="drawerRef"
     title="详情"
     direction="rtl"
-    size="80%"
-    :z-index="999"
+    size="95%"
+    :append-to-body="true"
+    :z-index="9999"
   >
     <div class="js-error-detail-content flex flex-1">
       <el-scroll
