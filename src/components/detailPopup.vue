@@ -4,7 +4,7 @@
     ref="drawerRef"
     title="详情"
     direction="rtl"
-    size="95%"
+    size="80%"
     :append-to-body="true"
     :z-index="9999"
   >
@@ -37,6 +37,9 @@
         <div>
           <dl class="line2">
             <dd class="flex flex-wrap">
+              <p>
+                <label>ip:</label><label>{{ perfNode.ip || "" }}</label>
+              </p>
               <p>
                 <label>区域:</label><label>{{ perfNode.country || "" }}</label>
               </p>
