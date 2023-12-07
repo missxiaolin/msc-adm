@@ -1,11 +1,12 @@
 <template>
   <section class="app-main">
     <div class="app-scrollbar">
-      <router-view v-slot="{ Component }">
+      <!-- <router-view v-slot="{ Component }">
         <transition name="el-fade-in" mode="out-in">
           <component :is="Component" :key="key" />
         </transition>
-      </router-view>
+      </router-view> -->
+      <router-view></router-view>
     </div>
   </section>
 </template>
