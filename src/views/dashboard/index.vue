@@ -270,6 +270,7 @@ export default {
         analyseTime: data.analyseTime,
       };
       let res = await indexAnalyseCore(params);
+      console.log(res)
       if (!res.success) {
         return false;
       }

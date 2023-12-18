@@ -34,6 +34,7 @@ function createService() {
         return logout();
       } else if (!apiData.success) {
         ElMessage.error(apiData.errorMessage);
+        return apiData;
       } else {
         return apiData;
       }
