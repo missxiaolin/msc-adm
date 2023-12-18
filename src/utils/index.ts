@@ -56,3 +56,16 @@ export const timeQuantum = (formatting: { subtractDay?: 0; format?: [] }) => {
     endDateTime = moment().format(`YYYY-MM-DD ${format[1]}`);
   return [startDateTime, endDateTime];
 };
+
+
+/**
+ * @d 当前日期
+ * @returns
+ */
+export const currentDate = (subtractDay: number = 0) => {
+	let now = moment().format("YYYY-MM-DD");
+	if (subtractDay) {
+		now = moment().subtract("days", subtractDay).format("YYYY-MM-DD");
+	}
+	return now;
+};
