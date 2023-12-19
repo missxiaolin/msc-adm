@@ -75,6 +75,42 @@
       <div class="top-title">实时数据</div>
       <pageHoursEchart :params="hourPvUvParam" />
     </el-card>
+    <dl class="home-title flex">
+      <dt>综合数据</dt>
+      <dd class="flex-1">
+        <el-radio-group
+          v-model="chart.showNum"
+          @change="handleTopNumChange"
+          size="small"
+        >
+          <el-radio-button :label="10">10</el-radio-button>
+          <el-radio-button :label="20">20</el-radio-button>
+          <el-radio-button :label="30">30</el-radio-button>
+        </el-radio-group>
+      </dd>
+    </dl>
+    <section class="synthetic-data flex">
+      <div class="synthetic-data flex">
+        <div class="e-col">
+          <colItem :chart="chart" :optionData="data" :title="'页面访问量TOP'" :tip="'统计网站的访问数量'" />
+        </div>
+        <div class="e-col">
+          <colItem :chart="chart" :optionData="data" :title="'城市名称访问用户量TOP'" :tip="'在不同城市访问网站的用户量分布情况。ps: 城市是根据ip地址查询出来的，并不是每个ip都能查询出来，查询出来的结果也未必准确，只作为趋势参考'" />
+        </div>
+        <div class="e-col">
+          <colItem :chart="chart" :optionData="data" :title="'浏览设备访问用户量TOP'" :tip="'数值代表使用的浏览设备的数量'" />
+        </div>
+        <div class="e-col">
+          <colItem :chart="chart" :optionData="data" :title="'系统版本访问用户量TOP'" :tip="'不同设备星号的用户量分布情况'" />
+        </div>
+        <div class="e-col">
+          <colItem :chart="chart" :optionData="data" :title="'浏览器版本访问用户量TOP'" :tip="'数值代表使用的浏览器版本的数量'" />
+        </div>
+        <div class="e-col">
+          <colItem :chart="chart" :optionData="data" :title="'设备分辨率访问用户量TOP'" :tip="'数值代表设备的物理分辨率'" />
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -83,8 +119,10 @@ import { reactive, onMounted, computed } from "vue";
 import { currentDate } from "@/utils/index";
 import { AnalyseCoreResponse } from "@/api/index/types/modules";
 import { indexAnalyseCore } from "@/api/index/index";
+import { pageEchartByUuId } from "@/api/page/index"
 import dataCardItem from "./components/dataCardItem.vue";
 import pageHoursEchart from "@/components/page/pageHoursEchart.vue";
+import colItem from "./components/colItem.vue"
 
 interface TopData {
   analyseTime: string;
@@ -95,6 +133,7 @@ export default {
   components: {
     dataCardItem,
     pageHoursEchart,
+    colItem
   },
   setup() {
     let data = reactive<TopData>({
@@ -137,6 +176,7 @@ export default {
     };
     const initQuery = () => {
       queryCoreAnalyseData();
+      getPageEchartByUuId()
     };
     /**
      * @description: 重置 happenDate
@@ -145,16 +185,50 @@ export default {
      */
     const happenDateFormat = computed(() => {
       return {
-        startTime:  `${data.analyseTime} 00:00:00`,
+        startTime: `${data.analyseTime} 00:00:00`,
         endTime: `${data.analyseTime} 23:59:59`,
       };
     });
 
     const hourPvUvParam = computed(() => {
       return {
-        ...happenDateFormat.value
+        ...happenDateFormat.value,
       };
     });
+
+    // 综合数据
+    let chart = reactive({
+      topEchartModel: <any>{},
+      simpleUrlEchartModel: <any>{},
+      ipcregion: <any>[],
+      showNum: 10,
+      echartHeight: 200,
+    });
+    /**
+     * @description: TOP 数量
+     *
+     * */
+    const handleTopNumChange = (val: any) => {
+      const height: any = {
+        10: 300,
+        20: 400,
+        30: 500,
+      };
+      chart.echartHeight = height[val];
+    };
+
+    // 获取综合数据
+    const getPageEchartByUuId = async () => {
+      const params = {
+        ...happenDateFormat.value,
+        limit: 30,
+      };
+      const res = await pageEchartByUuId(params);
+      if (!res.success) {
+        return false
+      }
+
+    }
 
     onMounted(() => {
       data.analyseTime = currentDate();
@@ -166,6 +240,8 @@ export default {
       disabledDate,
       initQuery,
       hourPvUvParam,
+      chart,
+      handleTopNumChange,
     };
   },
 };
@@ -199,5 +275,24 @@ export default {
       margin-left: 5px;
     }
   }
+}
+.synthetic-data {
+	width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-around;
+  flex-wrap: wrap;
+  .e-col {
+		flex-direction: column;
+		background-color: #fff;
+		border-radius: 6px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+		border-radius: 10px;
+		background-color: #fff;
+    width: 32.5%;
+    &:nth-child(4), &:nth-child(5), &:nth-child(6) {
+      margin-top: 10px;
+    }
+	}
 }
 </style>

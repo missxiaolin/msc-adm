@@ -13,3 +13,16 @@ export function pageHour(data: Page.PageHourRequestData) {
     data,
   });
 }
+
+/**
+ * 综合图表数据
+ * @param data 
+ * @returns 
+ */
+export function pageEchartByUuId(data: Page.PageEchartByUuIdRequestData) {
+  return request<Page.PageEchartByUuIdResponseData>({
+    url: "/adm/page/echart/by/uuid",
+    method: "post",
+    data,
+  });
+}
