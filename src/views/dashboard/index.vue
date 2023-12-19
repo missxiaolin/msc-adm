@@ -28,199 +28,26 @@
       </div>
       <el-row :gutter="24">
         <el-col :span="4">
-          <el-statistic :value="data.analyseData.todayData.pvCount">
-            <template #title> 浏览量(PV) </template>
-          </el-statistic>
-          <div class="footer-item">
-            <span>较昨日</span>
-            <span class="green">
-              {{
-                riseTrendCompout(
-                  data.analyseData.todayData.pvCount,
-                  data.analyseData.yesterdayData.pvCount,
-                  data.analyseData.todayData.pvCount >
-                    data.analyseData.yesterdayData.pvCount
-                )
-              }}
-              <el-icon size="14">
-                <CaretTop
-                  v-if="
-                    data.analyseData.todayData.pvCount >
-                    data.analyseData.yesterdayData.pvCount
-                  "
-                />
-                <CaretBottom
-                  v-if="
-                    data.analyseData.todayData.pvCount <
-                    data.analyseData.yesterdayData.pvCount
-                  "
-                />
-              </el-icon>
-            </span>
-          </div>
+          <dataCardItem :optionData="data" :title="'浏览量(PV)'" :objKey="'pvCount'" />
         </el-col>
         <el-col :span="4">
-          <el-statistic :value="data.analyseData.todayData.uvCount">
-            <template #title> 访客数(UV) </template>
-          </el-statistic>
-          <div class="footer-item">
-            <span>较昨日</span>
-            <span class="green">
-              {{
-                riseTrendCompout(
-                  data.analyseData.todayData.uvCount,
-                  data.analyseData.yesterdayData.uvCount,
-                  data.analyseData.todayData.uvCount >
-                    data.analyseData.yesterdayData.uvCount
-                )
-              }}
-              <el-icon size="14">
-                <CaretTop
-                  v-if="
-                    data.analyseData.todayData.uvCount >
-                    data.analyseData.yesterdayData.uvCount
-                  "
-                />
-                <CaretBottom
-                  v-if="
-                    data.analyseData.todayData.uvCount <
-                    data.analyseData.yesterdayData.uvCount
-                  "
-                />
-              </el-icon>
-            </span>
-          </div>
+          <dataCardItem :optionData="data" :title="'访客数(UV)'" :objKey="'uvCount'" />
         </el-col>
         <el-col :span="4">
-          <el-statistic :value="data.analyseData.todayData.newUvCount">
-            <template #title> 新访客 </template>
-          </el-statistic>
-          <div class="footer-item">
-            <span>较昨日</span>
-            <span class="green">
-              {{
-                riseTrendCompout(
-                  data.analyseData.todayData.newUvCount,
-                  data.analyseData.yesterdayData.newUvCount,
-                  data.analyseData.todayData.newUvCount >
-                    data.analyseData.yesterdayData.newUvCount
-                )
-              }}
-              <el-icon size="14">
-                <CaretTop
-                  v-if="
-                    data.analyseData.todayData.newUvCount >
-                    data.analyseData.yesterdayData.newUvCount
-                  "
-                />
-                <CaretBottom
-                  v-if="
-                    data.analyseData.todayData.newUvCount <
-                    data.analyseData.yesterdayData.newUvCount
-                  "
-                />
-              </el-icon>
-            </span>
-          </div>
+          <dataCardItem :optionData="data" :title="'新访客'" :objKey="'newUvCount'" />
         </el-col>
         <el-col :span="4">
-          <el-statistic :value="data.analyseData.todayData.ipCounct">
-            <template #title> IP数 </template>
-          </el-statistic>
-          <div class="footer-item">
-            <span>较昨日</span>
-            <span class="green">
-              {{
-                riseTrendCompout(
-                  data.analyseData.todayData.ipCounct,
-                  data.analyseData.yesterdayData.ipCounct,
-                  data.analyseData.todayData.ipCounct >
-                    data.analyseData.yesterdayData.ipCounct
-                )
-              }}
-              <el-icon size="14">
-                <CaretTop
-                  v-if="
-                    data.analyseData.todayData.ipCounct >
-                    data.analyseData.yesterdayData.ipCounct
-                  "
-                />
-                <CaretBottom
-                  v-if="
-                    data.analyseData.todayData.ipCounct <
-                    data.analyseData.yesterdayData.ipCounct
-                  "
-                />
-              </el-icon>
-            </span>
-          </div>
+          <dataCardItem :optionData="data" :title="'IP数'" :objKey="'ipCounct'" />
         </el-col>
         <el-col :span="4">
-          <el-statistic :value="data.analyseData.todayData.visitFrequency">
-            <template #title> 频次(人均) </template>
-          </el-statistic>
-          <div class="footer-item">
-            <span>较昨日</span>
-            <span class="green">
-              {{
-                riseTrendCompout(
-                  data.analyseData.todayData.visitFrequency,
-                  data.analyseData.yesterdayData.visitFrequency,
-                  data.analyseData.todayData.visitFrequency >
-                    data.analyseData.yesterdayData.visitFrequency
-                )
-              }}
-              <el-icon size="14">
-                <CaretTop
-                  v-if="
-                    data.analyseData.todayData.visitFrequency <
-                    data.analyseData.yesterdayData.visitFrequency
-                  "
-                />
-                <CaretBottom
-                  v-if="
-                    data.analyseData.todayData.visitFrequency >
-                    data.analyseData.yesterdayData.visitFrequency
-                  "
-                />
-              </el-icon>
-            </span>
-          </div>
+          <dataCardItem :optionData="data" :title="'频次(人均)'" :objKey="'visitFrequency'" />
         </el-col>
         <el-col :span="4">
-          <el-statistic :value="data.analyseData.todayData.jumpCount">
-            <template #title> 跳出率 </template>
-          </el-statistic>
-          <div class="footer-item">
-            <span>较昨日</span>
-            <span class="green">
-              {{
-                riseTrendCompout(
-                  data.analyseData.todayData.jumpCount,
-                  data.analyseData.yesterdayData.jumpCount,
-                  data.analyseData.todayData.jumpCount >
-                    data.analyseData.yesterdayData.jumpCount
-                )
-              }}
-              <el-icon size="14">
-                <CaretTop
-                  v-if="
-                    data.analyseData.todayData.jumpCount >
-                    data.analyseData.yesterdayData.jumpCount
-                  "
-                />
-                <CaretBottom
-                  v-if="
-                    data.analyseData.todayData.jumpCount <
-                    data.analyseData.yesterdayData.jumpCount
-                  "
-                />
-              </el-icon>
-            </span>
-          </div>
+          <dataCardItem :optionData="data" :title="'跳出率'" :objKey="'jumpCount'" />
         </el-col>
       </el-row>
     </el-card>
+    
   </div>
 </template>
 
@@ -229,6 +56,7 @@ import { reactive, onMounted } from "vue";
 import { currentDate } from "@/utils/index";
 import { AnalyseCoreResponse } from "@/api/index/types/modules";
 import { indexAnalyseCore } from "@/api/index/index";
+import dataCardItem from './components/dataCardItem.vue'
 
 interface TopData {
   analyseTime: string;
@@ -236,6 +64,9 @@ interface TopData {
 }
 
 export default {
+  components: {
+    dataCardItem
+  },
   setup() {
     let data = reactive<TopData>({
       analyseTime: "",
@@ -270,7 +101,6 @@ export default {
         analyseTime: data.analyseTime,
       };
       let res = await indexAnalyseCore(params);
-      console.log(res)
       if (!res.success) {
         return false;
       }
@@ -356,11 +186,5 @@ export default {
     }
   }
 }
-.green {
-  justify-content: center;
-  color: var(--el-color-success);
-}
-.red {
-  color: var(--el-color-error);
-}
+
 </style>
