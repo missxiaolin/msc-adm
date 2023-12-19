@@ -28,35 +28,63 @@
       </div>
       <el-row :gutter="24">
         <el-col :span="4">
-          <dataCardItem :optionData="data" :title="'浏览量(PV)'" :objKey="'pvCount'" />
+          <dataCardItem
+            :optionData="data"
+            :title="'浏览量(PV)'"
+            :objKey="'pvCount'"
+          />
         </el-col>
         <el-col :span="4">
-          <dataCardItem :optionData="data" :title="'访客数(UV)'" :objKey="'uvCount'" />
+          <dataCardItem
+            :optionData="data"
+            :title="'访客数(UV)'"
+            :objKey="'uvCount'"
+          />
         </el-col>
         <el-col :span="4">
-          <dataCardItem :optionData="data" :title="'新访客'" :objKey="'newUvCount'" />
+          <dataCardItem
+            :optionData="data"
+            :title="'新访客'"
+            :objKey="'newUvCount'"
+          />
         </el-col>
         <el-col :span="4">
-          <dataCardItem :optionData="data" :title="'IP数'" :objKey="'ipCounct'" />
+          <dataCardItem
+            :optionData="data"
+            :title="'IP数'"
+            :objKey="'ipCounct'"
+          />
         </el-col>
         <el-col :span="4">
-          <dataCardItem :optionData="data" :title="'频次(人均)'" :objKey="'visitFrequency'" />
+          <dataCardItem
+            :optionData="data"
+            :title="'频次(人均)'"
+            :objKey="'visitFrequency'"
+          />
         </el-col>
         <el-col :span="4">
-          <dataCardItem :optionData="data" :title="'跳出率'" :objKey="'jumpCount'" />
+          <dataCardItem
+            :optionData="data"
+            :title="'跳出率'"
+            :objKey="'jumpCount'"
+          />
         </el-col>
       </el-row>
     </el-card>
-    
+    <el-card class="box-card mt20">
+      <div class="top-title">实时数据</div>
+      <pageHoursEchart :params="hourPvUvParam" />
+    </el-card>
   </div>
 </template>
 
 <script lang="ts">
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, computed } from "vue";
 import { currentDate } from "@/utils/index";
 import { AnalyseCoreResponse } from "@/api/index/types/modules";
 import { indexAnalyseCore } from "@/api/index/index";
-import dataCardItem from './components/dataCardItem.vue'
+import dataCardItem from "./components/dataCardItem.vue";
+import pageHoursEchart from "@/components/page/pageHoursEchart.vue";
 
 interface TopData {
   analyseTime: string;
@@ -65,7 +93,8 @@ interface TopData {
 
 export default {
   components: {
-    dataCardItem
+    dataCardItem,
+    pageHoursEchart,
   },
   setup() {
     let data = reactive<TopData>({
@@ -106,23 +135,26 @@ export default {
       }
       data.analyseData = res.model;
     };
-    // 计算百分比
-    const riseTrendCompout = (
-      todayData: number,
-      yesterdayData: number,
-      riseTren: boolean
-    ) => {
-      let data = 0;
-      if (riseTren) {
-        data = (todayData - yesterdayData) / todayData;
-      } else {
-        data = (yesterdayData - todayData) / yesterdayData;
-      }
-      return `${((data || 0) * 100).toFixed(0)} %`;
-    };
     const initQuery = () => {
       queryCoreAnalyseData();
     };
+    /**
+     * @description: 重置 happenDate
+     * @param {*} computed
+     * @return {*}
+     */
+    const happenDateFormat = computed(() => {
+      return {
+        startTime:  `${data.analyseTime} 00:00:00`,
+        endTime: `${data.analyseTime} 23:59:59`,
+      };
+    });
+
+    const hourPvUvParam = computed(() => {
+      return {
+        ...happenDateFormat.value
+      };
+    });
 
     onMounted(() => {
       data.analyseTime = currentDate();
@@ -133,7 +165,7 @@ export default {
       data,
       disabledDate,
       initQuery,
-      riseTrendCompout,
+      hourPvUvParam,
     };
   },
 };
@@ -168,23 +200,4 @@ export default {
     }
   }
 }
-.statistic-overall {
-  dd {
-    h4 {
-      font-size: 40px;
-      font-weight: 600;
-      padding: 10px 0;
-    }
-    .go-up,
-    .go-down {
-      display: flex;
-      align-items: center;
-      span {
-        display: flex;
-        align-items: center;
-      }
-    }
-  }
-}
-
 </style>
