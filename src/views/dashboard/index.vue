@@ -92,7 +92,7 @@
     <section class="synthetic-data flex">
       <div class="synthetic-data flex">
         <div class="e-col">
-          <colItem :chart="chart" :optionData="data" :title="'页面访问量TOP'" :tip="'统计网站的访问数量'" />
+          <colItem :chart="chart" :optionData="data" :chartKey="'simpleUrl'" :title="'页面访问量TOP'" :tip="'统计网站的访问数量'" />
         </div>
         <div class="e-col">
           <colItem :chart="chart" :optionData="data" :title="'城市名称访问用户量TOP'" :tip="'在不同城市访问网站的用户量分布情况。ps: 城市是根据ip地址查询出来的，并不是每个ip都能查询出来，查询出来的结果也未必准确，只作为趋势参考'" />
@@ -199,7 +199,6 @@ export default {
     // 综合数据
     let chart = reactive({
       topEchartModel: <any>{},
-      simpleUrlEchartModel: <any>{},
       ipcregion: <any>[],
       showNum: 10,
       echartHeight: 200,
@@ -227,7 +226,7 @@ export default {
       if (!res.success) {
         return false
       }
-
+      chart.topEchartModel = res.model
     }
 
     onMounted(() => {

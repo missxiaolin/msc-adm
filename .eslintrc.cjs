@@ -24,6 +24,7 @@ module.exports = {
     },
   },
   rules: {
+    'vue/require-valid-default-prop': 'off',
     "vue/no-setup-props-destructure": "off",
     "vue/html-self-closing": "off",
     "prettier/prettier": "off",
