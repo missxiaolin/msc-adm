@@ -28,12 +28,12 @@ export default {
       jseErrorCount: 0,
     });
     // js 图表
-    const handleQueryJsError = async (data: any) => {
+    const handleQueryJsError = async (dataParam: any) => {
       const param = {
-        pageUrl: data.pageUrl,
-        errorMsg: data.errorMsg,
-        startTime: data.data[0],
-        endTime: data.data[1],
+        pageUrl: dataParam.pageUrl,
+        errorMsg: dataParam.errorMsg,
+        startTime: dataParam.data[0],
+        endTime: dataParam.data[1],
       };
       let res = await jsHourEchats(param);
       if (!res.success) {
@@ -84,19 +84,13 @@ export default {
       };
 
       data.jsErrorChartData = jsErrorOption;
-      console.log('ceshi', data)
-      // data.effectUserList = userList;
-      // data.cregionList = cregionList;
-      // data.pageList = pageList;
-      // data.errorTypeList = errorTypeList;
-      // data.jseErrorCount = errorCount;
     };
 
     watch(
       () => props.params,
       (n) => {
         if (Object.keys(n).length) {
-          //   nextTick(() => handleQueryJsError(n));
+            nextTick(() => handleQueryJsError(n));
         }
       },
       {
