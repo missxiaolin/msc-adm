@@ -18,16 +18,19 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :icon="Search" @click="initQuery"
+          <el-button type="primary" @click="initQuery"
             >查询</el-button
           >
-          <el-button :icon="Refresh" @click="resetSearch">重置</el-button>
+          <el-button @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </el-car>
-
-    <!-- 表格 -->
+    <!-- 图表 -->
     <el-card shadow="never">
+      <JsHoursEchart :params="searchData"></JsHoursEchart>
+    </el-card>
+    <!-- 表格 -->
+    <el-card shadow="never" class="mt20">
       <div class="table-wrapper">
         <el-table border :data="tableData">
           <el-table-column prop="type" label="错误类型" align="center" />
@@ -61,12 +64,16 @@
 </template>
 
 <script lang="ts">
-import { reactive, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
+import JsHoursEchart from "./components/jsHoursEchart.vue";
 import { timeQuantum } from "@/utils/index";
 import { jsList } from "@/api/js/index";
 import { usePagination } from "@/hooks/usePagination";
 import { JsListItem } from "@/api/js/types";
 export default {
+  components: {
+    JsHoursEchart,
+  },
   setup() {
     // 表格
     const tableData = ref<JsListItem[]>([]);
@@ -80,6 +87,8 @@ export default {
       usePagination(() => {
         handleSearch();
       });
+
+    // 表格
     const handleSearch = async () => {
       let param = {
         pageUrl: searchData.value.pageUrl,
@@ -101,6 +110,7 @@ export default {
       handleSearch();
     };
 
+    // 重置
     const resetSearch = () => {
       searchData.value = {
         pageUrl: "",
@@ -109,6 +119,7 @@ export default {
       };
       paginationData.currentPage = 1;
     };
+
 
     onMounted(() => {
       initQuery();
@@ -121,6 +132,7 @@ export default {
       handleSizeChange,
       tableData,
       resetSearch,
+      initQuery,
     };
   },
 };

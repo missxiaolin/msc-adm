@@ -46,3 +46,18 @@ export type JsListResponseData = ApiResponseData<{
   list: JsListItem[];
   count: number;
 }>;
+
+// js 每小时图表
+export interface JsHourEchatsRequestData {
+  pageUrl: string;
+  errorMsg: string;
+  startTime: string;
+  endTime: string;
+}
+
+export interface JsHourEchatsItem {
+    axisData: string[];
+    seriesData: number[]
+}
+
+export type JsHourEchatsResponseData = ApiResponseData<JsHourEchatsItem>;

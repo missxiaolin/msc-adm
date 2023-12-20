@@ -6,8 +6,8 @@ import type * as Js from "./types/index";
  * @param data
  * @returns
  */
-export function jsHourEchats(data: Js.JsListRequestData) {
-  return request<Js.JsListResponseData>({
+export function jsHourEchats(data: Js.JsHourEchatsRequestData) {
+  return request<Js.JsHourEchatsResponseData>({
     url: "/adm/js/echart/hour",
     method: "post",
     data,

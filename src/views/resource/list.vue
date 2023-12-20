@@ -28,10 +28,10 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :icon="Search" @click="init"
+          <el-button type="primary" @click="init"
             >查询</el-button
           >
-          <el-button :icon="Refresh" @click="resetSearch">重置</el-button>
+          <el-button @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
