@@ -92,22 +92,58 @@
     <section class="synthetic-data flex">
       <div class="synthetic-data flex">
         <div class="e-col">
-          <colItem :chart="chart" :optionData="data" :chartKey="'simpleUrl'" :title="'页面访问量TOP'" :tip="'统计网站的访问数量'" />
+          <colItem
+            :chart="chart"
+            :optionData="data"
+            :chartKey="'simpleUrl'"
+            :title="'页面访问量TOP'"
+            :tip="'统计网站的访问数量'"
+          />
         </div>
         <div class="e-col">
-          <colItem :chart="chart" :optionData="data" :chartKey="'cregion'" :title="'城市名称访问用户量TOP'" :tip="'在不同城市访问网站的用户量分布情况。ps: 城市是根据ip地址查询出来的，并不是每个ip都能查询出来，查询出来的结果也未必准确，只作为趋势参考'" />
+          <colItem
+            :chart="chart"
+            :optionData="data"
+            :chartKey="'cregion'"
+            :title="'城市名称访问用户量TOP'"
+            :tip="'在不同城市访问网站的用户量分布情况。ps: 城市是根据ip地址查询出来的，并不是每个ip都能查询出来，查询出来的结果也未必准确，只作为趋势参考'"
+          />
         </div>
         <div class="e-col">
-          <colItem :chart="chart" :optionData="data" :chartKey="'device'" :title="'浏览设备访问用户量TOP'" :tip="'数值代表使用的浏览设备的数量'" />
+          <colItem
+            :chart="chart"
+            :optionData="data"
+            :chartKey="'device'"
+            :title="'浏览设备访问用户量TOP'"
+            :tip="'数值代表使用的浏览设备的数量'"
+          />
         </div>
         <div class="e-col">
-          <colItem :chart="chart" :optionData="data" :chartKey="'os'" :title="'系统版本访问用户量TOP'" :tip="'不同设备星号的用户量分布情况'" />
+          <colItem
+            :chart="chart"
+            :optionData="data"
+            :chartKey="'os'"
+            :title="'系统版本访问用户量TOP'"
+            :tip="'不同设备星号的用户量分布情况'"
+          />
         </div>
         <div class="e-col">
-          <colItem :chart="chart" :optionData="data" :chartKey="'browser'" :title="'浏览器版本访问用户量TOP'" :tip="'数值代表使用的浏览器版本的数量'" />
+          <colItem
+            :chart="chart"
+            :optionData="data"
+            :chartKey="'browser'"
+            :title="'浏览器版本访问用户量TOP'"
+            :tip="'数值代表使用的浏览器版本的数量'"
+          />
         </div>
         <div class="e-col">
-          <colItem :chart="chart" :optionData="data" :chartKey="'screen'" :title="'设备分辨率访问用户量TOP'" :tip="'数值代表设备的物理分辨率'" />
+          <colItem
+            :chart="chart"
+            :optionData="data"
+            :chartKey="'screen'"
+            :title="'设备分辨率访问用户量TOP'"
+            :tip="'数值代表设备的物理分辨率'"
+          />
         </div>
       </div>
     </section>
@@ -122,6 +158,7 @@
           <el-icon size="20"><WarningFilled /></el-icon>
         </el-tooltip>
       </div>
+      <MapEcharts :ipCregion="chart.ipcregion" />
     </el-card>
   </div>
 </template>
@@ -131,10 +168,11 @@ import { reactive, onMounted, computed } from "vue";
 import { currentDate } from "@/utils/index";
 import { AnalyseCoreResponse } from "@/api/index/types/modules";
 import { indexAnalyseCore } from "@/api/index/index";
-import { pageEchartByUuId } from "@/api/page/index"
+import { pageEchartByUuId, pageGeoDistribution } from "@/api/page/index";
 import dataCardItem from "./components/dataCardItem.vue";
 import pageHoursEchart from "@/components/page/pageHoursEchart.vue";
-import colItem from "./components/colItem.vue"
+import colItem from "./components/colItem.vue";
+import MapEcharts from '@/components/mapEcharts/index.vue'
 
 interface TopData {
   analyseTime: string;
@@ -145,7 +183,8 @@ export default {
   components: {
     dataCardItem,
     pageHoursEchart,
-    colItem
+    colItem,
+    MapEcharts
   },
   setup() {
     let data = reactive<TopData>({
@@ -188,7 +227,8 @@ export default {
     };
     const initQuery = () => {
       queryCoreAnalyseData();
-      getPageEchartByUuId()
+      getPageEchartByUuId();
+      getPageGeoDistribution()
     };
     /**
      * @description: 重置 happenDate
@@ -211,6 +251,7 @@ export default {
     // 综合数据
     let chart = reactive({
       topEchartModel: <any>{},
+      ipcregion: <any>[],
       showNum: 10,
       echartHeight: 200,
     });
@@ -235,9 +276,21 @@ export default {
       };
       const res = await pageEchartByUuId(params);
       if (!res.success) {
-        return false
+        return false;
       }
-      chart.topEchartModel = res.model
+      chart.topEchartModel = res.model;
+    };
+
+    // 地图数据
+    const getPageGeoDistribution = async () => {
+      const params = {
+        ...happenDateFormat.value,
+      };
+      let res = await pageGeoDistribution(params)
+      if (!res.success) {
+        return false;
+      }
+      chart.ipcregion = res.model
     }
 
     onMounted(() => {
@@ -287,22 +340,24 @@ export default {
   }
 }
 .synthetic-data {
-	width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content:space-around;
+  justify-content: space-around;
   flex-wrap: wrap;
   .e-col {
-		flex-direction: column;
-		background-color: #fff;
-		border-radius: 6px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
-		border-radius: 10px;
-		background-color: #fff;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #fff;
     width: 32.5%;
-    &:nth-child(4), &:nth-child(5), &:nth-child(6) {
+    &:nth-child(4),
+    &:nth-child(5),
+    &:nth-child(6) {
       margin-top: 10px;
     }
-	}
+  }
 }
 </style>
