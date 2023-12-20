@@ -18,7 +18,7 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :icon="Search" @click="init"
+          <el-button type="primary" :icon="Search" @click="initQuery"
             >查询</el-button
           >
           <el-button :icon="Refresh" @click="resetSearch">重置</el-button>
@@ -30,12 +30,12 @@
     <el-card shadow="never">
       <div class="table-wrapper">
         <el-table border :data="tableData">
-            <el-table-column prop="type" label="错误类型" align="center" />
-            <el-table-column prop="errorMsg" label="错误内容" align="center" />
-            <el-table-column prop="simpleUrl" label="上报页面" align="center" />
-            <el-table-column prop="happenTime" label="上报时间" align="center" />
-            <el-table-column prop="uuId" label="上报人" align="center" />
-            <el-table-column label="操作" fixed="right" align="center">
+          <el-table-column prop="type" label="错误类型" align="center" />
+          <el-table-column prop="errorMsg" label="错误内容" align="center" />
+          <el-table-column prop="simpleUrl" label="上报页面" align="center" />
+          <el-table-column prop="happenTime" label="上报时间" align="center" />
+          <el-table-column prop="uuId" label="上报人" align="center" />
+          <el-table-column label="操作" fixed="right" align="center">
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">
                 查看详情
@@ -70,7 +70,7 @@ export default {
   setup() {
     // 表格
     const tableData = ref<JsListItem[]>([]);
-    const searchData = reactive({
+    const searchData = ref({
       pageUrl: "",
       errorMsg: "",
       data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
@@ -82,10 +82,10 @@ export default {
       });
     const handleSearch = async () => {
       let param = {
-        pageUrl: searchData.pageUrl,
-        errorMsg: searchData.errorMsg,
-        startTime: searchData.data[0],
-        endTime: searchData.data[1],
+        pageUrl: searchData.value.pageUrl,
+        errorMsg: searchData.value.errorMsg,
+        startTime: searchData.value.data[0],
+        endTime: searchData.value.data[1],
         page: paginationData.currentPage,
         pageSize: paginationData.pageSize,
       };
@@ -101,6 +101,15 @@ export default {
       handleSearch();
     };
 
+    const resetSearch = () => {
+      searchData.value = {
+        pageUrl: "",
+        errorMsg: "",
+        data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
+      };
+      paginationData.currentPage = 1;
+    };
+
     onMounted(() => {
       initQuery();
     });
@@ -111,6 +120,7 @@ export default {
       handleCurrentChange,
       handleSizeChange,
       tableData,
+      resetSearch,
     };
   },
 };

@@ -186,6 +186,7 @@ export default {
         pageUrl: "",
         data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
       };
+      paginationData.currentPage = 1
       handleSearch();
     };
 
