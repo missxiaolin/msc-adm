@@ -26,3 +26,16 @@ export function pageEchartByUuId(data: Page.PageEchartByUuIdRequestData) {
     data,
   });
 }
+
+/**
+ * 首页地图数据
+ * @param data 
+ * @returns 
+ */
+export function pageGeoDistribution(data: Page.PageGeoDistributionRequestData) {
+  return request<Page.PageGeoDistributionResponseData>({
+    url: "/adm/page/echart/geo/distribution",
+    method: "post",
+    data,
+  });
+}

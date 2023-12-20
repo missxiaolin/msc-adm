@@ -111,6 +111,18 @@
         </div>
       </div>
     </section>
+    <el-card class="box-card mt20">
+      <div class="top-title">
+        地理分布
+        <el-tooltip
+          effect="dark"
+          content="城市是根据ip地址查询出来的，并不是每个ip都能查询出结果，查询出来的结果也未必准确，只作为趋势参考。"
+          placement="right"
+        >
+          <el-icon size="20"><WarningFilled /></el-icon>
+        </el-tooltip>
+      </div>
+    </el-card>
   </div>
 </template>
 
