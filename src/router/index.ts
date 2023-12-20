@@ -102,6 +102,29 @@ export const constantRoutes: any = [
       },
     ],
   },
+  {
+    path: "/js",
+    component: Layouts,
+    redirect: "/js/list",
+    name: "JS",
+    meta: {
+      title: "JS错误",
+      elIcon: "HelpFilled",
+    },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/js/list.vue"),
+        hidden: false,
+        meta: {
+          title: "JS错误",
+          keepAlive: false,
+          elIcon: "HelpFilled",
+          affix: true,
+        },
+      },
+    ],
+  }
 ];
 
 /**

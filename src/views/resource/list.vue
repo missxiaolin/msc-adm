@@ -40,7 +40,7 @@
     </el-card>
     <el-card v-loading="loading" shadow="never">
       <div class="table-wrapper">
-        <el-table :data="tableData">
+        <el-table border :data="tableData">
           <el-table-column
             prop="resourceType"
             label="错误类型"

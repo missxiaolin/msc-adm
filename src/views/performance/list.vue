@@ -24,7 +24,7 @@
     </el-card>
     <el-card v-loading="loading" shadow="never">
       <div class="table-wrapper">
-        <el-table :data="tableData">
+        <el-table border :data="tableData">
           <el-table-column prop="monitorAppId" label="项目ID" align="center" />
           <el-table-column prop="pageUrl" label="url" align="center" />
           <el-table-column label="会话性能指标" align="center">
