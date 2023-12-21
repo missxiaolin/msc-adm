@@ -65,6 +65,17 @@ export interface PageListRequestData {
   startTime: string;
   endTime: string;
   simpleUrl: string;
+  pageSize: number;
+  page: number;
 }
 
-export type PageListResponseData = ApiResponseData<any>;
+export interface PageListItem {
+  count: number;
+  pvCount: number;
+  list: {
+    pageCount: number;
+    simpleUrl: string;
+  }[];
+}
+
+export type PageListResponseData = ApiResponseData<PageListItem>;

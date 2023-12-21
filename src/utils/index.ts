@@ -69,3 +69,20 @@ export const currentDate = (subtractDay: number = 0) => {
 	}
 	return now;
 };
+
+/**
+ * 数值转换 千，万
+ */
+export const numberFormat = (value: any = "") => {
+	let k = 10000;
+	let sizes = ["", "万", "亿", "万亿"];
+	let i, lastNum;
+	if (value < k) {
+		value = value;
+	} else {
+		i = Math.floor(Math.log(value) / Math.log(k));
+		lastNum = value / Math.pow(k, i);
+		value = Math.floor(lastNum * 100) / 100 + sizes[i];
+	}
+	return value;
+};
