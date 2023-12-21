@@ -59,3 +59,12 @@ export type PageGeoDistributionResponseData = ApiResponseData<
     value: number;
   }[]
 >;
+
+// 分页
+export interface PageListRequestData {
+  startTime: string;
+  endTime: string;
+  simpleUrl: string;
+}
+
+export type PageListResponseData = ApiResponseData<any>;

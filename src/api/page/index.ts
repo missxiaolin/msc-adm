@@ -3,8 +3,8 @@ import type * as Page from "./types/page";
 
 /**
  * 图表数据
- * @param data 
- * @returns 
+ * @param data
+ * @returns
  */
 export function pageHour(data: Page.PageHourRequestData) {
   return request<Page.PageHourResponseData>({
@@ -16,8 +16,8 @@ export function pageHour(data: Page.PageHourRequestData) {
 
 /**
  * 综合图表数据
- * @param data 
- * @returns 
+ * @param data
+ * @returns
  */
 export function pageEchartByUuId(data: Page.PageEchartByUuIdRequestData) {
   return request<Page.PageEchartByUuIdResponseData>({
@@ -29,12 +29,25 @@ export function pageEchartByUuId(data: Page.PageEchartByUuIdRequestData) {
 
 /**
  * 首页地图数据
- * @param data 
- * @returns 
+ * @param data
+ * @returns
  */
 export function pageGeoDistribution(data: Page.PageGeoDistributionRequestData) {
   return request<Page.PageGeoDistributionResponseData>({
     url: "/adm/page/echart/geo/distribution",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 页面分页
+ * @param data
+ * @returns
+ */
+export function pageList(data: Page.PageListRequestData) {
+  return request<Page.PageListResponseData>({
+    url: "/adm/page/list",
     method: "post",
     data,
   });

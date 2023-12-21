@@ -124,6 +124,29 @@ export const constantRoutes: any = [
         },
       },
     ],
+  },
+  {
+    path: "/page",
+    component: Layouts,
+    redirect: "/page/list",
+    name: "Page",
+    meta: {
+      title: "访问页面",
+      elIcon: "Files",
+    },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/page/list.vue"),
+        hidden: false,
+        meta: {
+          title: "访问页面",
+          keepAlive: false,
+          elIcon: "Files",
+          affix: true,
+        },
+      },
+    ],
   }
 ];
 
