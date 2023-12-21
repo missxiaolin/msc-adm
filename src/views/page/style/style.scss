@@ -101,4 +101,18 @@
       }
     }
   }
+  .visit-right-contents {
+    padding-left: 15px;
+    flex: 1;
+    .basic-info {
+      width: 100%;
+      padding: 15px;
+      dt {
+      }
+      dd {
+        display: flex;
+        justify-content: space-around;
+      }
+    }
+  }
 }

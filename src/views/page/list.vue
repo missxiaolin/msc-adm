@@ -61,6 +61,14 @@
             />
           </div>
         </div>
+        <div class="visit-right-contents flex-1 flex flex-column">
+          <el-scrollbar>
+            <!-- 地理分布 -->
+            <el-card>
+              
+            </el-card>
+          </el-scrollbar>
+        </div>
       </el-card>
 
     </section>
