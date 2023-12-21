@@ -48,8 +48,21 @@
               </dd>
             </dl>
           </el-scrollbar>
+          <div class="pager-wrapper mt20">
+            <el-pagination
+              background
+              :layout="paginationData.layout"
+              :page-sizes="paginationData.pageSizes"
+              :total="paginationData.total"
+              :page-size="paginationData.pageSize"
+              :currentPage="paginationData.currentPage"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
+          </div>
         </div>
       </el-card>
+
     </section>
   </div>
 </template>
@@ -75,6 +88,8 @@ export default {
     const { paginationData, handleCurrentChange, handleSizeChange } =
       usePagination(() => {
         getPageList();
+      }, {
+        layout: "total, prev, pager, next, jumper",
       });
 
     // 分页
@@ -137,6 +152,7 @@ export default {
       searchData,
       resetSearch,
       init,
+      paginationData,
       handleCurrentChange,
       handleSizeChange,
       visitPercent,
