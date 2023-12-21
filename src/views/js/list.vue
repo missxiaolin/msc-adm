@@ -18,9 +18,7 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="initQuery"
-            >查询</el-button
-          >
+          <el-button type="primary" @click="initQuery">查询</el-button>
           <el-button @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
@@ -60,23 +58,27 @@
         />
       </div>
     </el-card>
+    <DetailPopup v-if="perfNode.type" :perfNode="perfNode" />
   </div>
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, nextTick } from "vue";
 import JsHoursEchart from "./components/jsHoursEchart.vue";
 import { timeQuantum } from "@/utils/index";
 import { jsList } from "@/api/js/index";
 import { usePagination } from "@/hooks/usePagination";
 import { JsListItem } from "@/api/js/types";
+import DetailPopup from "../../components/detailPopup.vue";
 export default {
   components: {
     JsHoursEchart,
+    DetailPopup,
   },
   setup() {
     // 表格
     const tableData = ref<JsListItem[]>([]);
+
     const searchData = ref({
       pageUrl: "",
       errorMsg: "",
@@ -120,6 +122,18 @@ export default {
       paginationData.currentPage = 1;
     };
 
+    // js 错误详情
+    const perfNode = ref({});
+    /**
+     * @description: 查看性能详情
+     * @param {*} row
+     * @return {*}
+     */
+    const handleDetail = (row: any) => {
+      perfNode.value = {};
+      console.log(perfNode)
+      nextTick(() => (perfNode.value = row));
+    };
 
     onMounted(() => {
       initQuery();
@@ -133,6 +147,8 @@ export default {
       tableData,
       resetSearch,
       initQuery,
+      handleDetail,
+      perfNode,
     };
   },
 };

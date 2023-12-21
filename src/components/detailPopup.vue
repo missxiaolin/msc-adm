@@ -47,13 +47,15 @@
                 <label>设备:</label><label>{{ perfNode.device || "" }}</label>
               </p>
               <p>
-                <label>设备尺寸:</label><label>{{ perfNode.deviceType || "" }}</label>
+                <label>设备尺寸:</label
+                ><label>{{ perfNode.deviceType || "" }}</label>
               </p>
               <p>
                 <label>浏览器:</label><label>{{ perfNode.device || "" }}</label>
               </p>
               <p>
-                <label>地址页面:</label><label class="single-ellipsis">{{ perfNode.pageUrl }}</label>
+                <label>地址页面:</label
+                ><label class="single-ellipsis">{{ perfNode.pageUrl }}</label>
               </p>
             </dd>
           </dl>
@@ -66,8 +68,46 @@
             <dl class="line4">
               <dt>{{ perfNode.category }}： {{ perfNode.errorMsg }}</dt>
               <dd>{{ perfNode.html || "" }}</dd>
-              <dd v-if="perfNode.paths && perfNode.paths.length">DOM Paths：{{ JSON.stringify(perfNode.paths) }}</dd>
+              <dd v-if="perfNode.paths && perfNode.paths.length">
+                DOM Paths：{{ JSON.stringify(perfNode.paths) }}
+              </dd>
             </dl>
+          </template>
+          <template v-if="perfNode.category === 'JS_ERROR'">
+            <h2 class="title">
+              {{ perfNode.subType == "vueError" ? "Vue" : "Js" }}错误堆栈 ({{
+                perfNode.happenTime
+              }})
+            </h2>
+            <dl class="line4">
+              <dt>{{ perfNode.type }}： {{ perfNode.errorMsg }}</dt>
+              <dd
+                v-for="(item, index) in perfNode.stackTraces
+                  ? JSON.parse(perfNode.stackTraces)
+                  : []"
+                :key="index"
+              >
+                at functionName: {{ item.functionName }}（<cite
+                  >{{ resetFile(item.filename) }}:<b>{{ item.lineno }}</b
+                  >:<b>{{ item.colno }}</b></cite
+                >）
+              </dd>
+            </dl>
+            <div
+              class="vue-replenish-info"
+              v-if="perfNode?.subType == 'vueError'"
+            >
+              <h3>其他补充信息：</h3>
+              <p>
+                hook: <b>{{ perfNode?.hook }}</b>
+              </p>
+              <p>
+                componentName: <b>{{ perfNode?.componentName }}</b>
+              </p>
+              <p>
+                componentNameTrace: <b>{{ perfNode?.componentNameTrace }}</b>
+              </p>
+            </div>
           </template>
         </div>
       </el-scroll>
@@ -87,9 +127,16 @@ export default {
   name: "",
   setup() {
     const drawerVisible = ref(true);
+    const resetFile = (filename: string) => {
+      if (!filename) return "";
+      const reg = /\http(.+?)\.js/g;
+      let result: any = filename.match(reg);
+      return result && result.length ? result[0] : "";
+    };
 
     return {
       drawerVisible,
+      resetFile,
     };
   },
 };
@@ -244,8 +291,6 @@ export default {
     text-align: left;
   }
   .left-content {
-    
-
     .vue-replenish-info {
       h3 {
         font-size: 15px;
