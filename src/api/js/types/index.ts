@@ -57,7 +57,15 @@ export interface JsHourEchatsRequestData {
 
 export interface JsHourEchatsItem {
     axisData: string[];
-    seriesData: number[]
+    seriesData: number[],
+    errorCount: number;
+    userList: [];
+    cregionList: [];
+    pageList: [];
+    errorTypeList: {
+      type: string,
+      count: number
+    }[]
 }
 
 export type JsHourEchatsResponseData = ApiResponseData<JsHourEchatsItem>;
