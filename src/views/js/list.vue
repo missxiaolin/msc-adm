@@ -3,10 +3,16 @@
     <el-car shadow="never" class="search-wrapper">
       <el-form ref="searchFormRef" :inline="true" :model="searchData">
         <el-form-item prop="pageUrl" label="页面链接">
-          <el-input v-model="searchData.pageUrl" placeholder="请输入" />
+          <el-input v-model="searchData.pageUrl" placeholder="请输入页面链接" />
+        </el-form-item>
+        <el-form-item prop="simpleUrl" label="页面链接">
+          <el-input
+            v-model="searchData.simpleUrl"
+            placeholder="请输入带*的页面链接"
+          />
         </el-form-item>
         <el-form-item prop="url" label="错误信息">
-          <el-input v-model="searchData.errorMsg" placeholder="请输入" />
+          <el-input v-model="searchData.errorMsg" placeholder="请输入错误信息" />
         </el-form-item>
         <el-form-item prop="phone" label="日期">
           <el-date-picker
@@ -81,6 +87,7 @@ export default {
 
     const searchData = ref({
       pageUrl: "",
+      simpleUrl: "",
       errorMsg: "",
       data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
     });
