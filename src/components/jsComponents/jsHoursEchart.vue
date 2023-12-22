@@ -80,10 +80,11 @@ export default {
     // js 图表
     const handleQueryJsError = async (dataParam: any) => {
       const param = {
-        pageUrl: dataParam.pageUrl,
-        errorMsg: dataParam.errorMsg,
+        pageUrl: dataParam.pageUrl || "",
+        errorMsg: dataParam.errorMsg || "",
         startTime: dataParam.data[0],
         endTime: dataParam.data[1],
+        simpleUrl: dataParam.simpleUrl || "",
       };
       let res = await jsHourEchats(param);
       if (!res.success) {

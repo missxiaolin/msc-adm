@@ -77,8 +77,10 @@
               <el-tab-pane label="pv/uv">
                 <pageHoursEchart :params="hourPvUvParam" />
               </el-tab-pane>
-              <el-tab-pane label="JS报错">Config</el-tab-pane>
-              <!-- <el-tab-pane label="平均性能" name="third">Role</el-tab-pane> -->
+              <el-tab-pane label="JS报错">
+                <JsHoursEchart :params="hourJsParam" />
+              </el-tab-pane>
+              <!-- <el-tab-pane label="平均性能">Role</el-tab-pane> -->
             </el-tabs>
           </el-card>
           <!-- 页面js 错误详情 -->
@@ -118,11 +120,13 @@ import { usePagination } from "@/hooks/usePagination";
 import MapEcharts from "@/components/mapEcharts/index.vue";
 import { aggregateErrorByErrorMsg } from '@/api/js';
 import pageHoursEchart from "@/components/page/pageHoursEchart.vue";
+import JsHoursEchart from "@/components/jsComponents/jsHoursEchart.vue";
 
 export default {
   components: {
     MapEcharts,
-    pageHoursEchart
+    pageHoursEchart,
+    JsHoursEchart
   },
   setup() {
     let data = reactive({
@@ -207,6 +211,7 @@ export default {
       getAggregateErrorByErrorMsg()
     };
 
+    // pv/uv 图表
     const hourPvUvParam = computed(() => {
       return {
         startTime: searchData.value.data[0],
@@ -214,6 +219,15 @@ export default {
         simpleUrl: data.activePage,
       };
     });
+
+    // js 图表
+    const hourJsParam = computed(() => {
+      return {
+        data: searchData.value.data,
+        simpleUrl: data.activePage,
+      };
+    });
+
 
     /**
      * @description: 访问占比
@@ -252,7 +266,8 @@ export default {
       visitPercent,
       numberFormat,
       handleVisitItem,
-      hourPvUvParam
+      hourPvUvParam,
+      hourJsParam
     };
   },
 };

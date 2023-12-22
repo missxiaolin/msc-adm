@@ -64,7 +64,7 @@
 
 <script lang="ts">
 import { onMounted, ref, nextTick } from "vue";
-import JsHoursEchart from "./components/jsHoursEchart.vue";
+import JsHoursEchart from "@/components/jsComponents/jsHoursEchart.vue";
 import { timeQuantum } from "@/utils/index";
 import { jsList } from "@/api/js/index";
 import { usePagination } from "@/hooks/usePagination";
