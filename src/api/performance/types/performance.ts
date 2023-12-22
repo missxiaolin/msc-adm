@@ -65,13 +65,9 @@ export type PerformanceEchartByUrlResponseData = ApiResponseData<{
     Res: number,
   },
   FP: {
-    totalStartTime: number,
-    total: number,
     startTime: number,
   },
   FCP: {
-    totalStartTime: number,
-    total: number,
     startTime: number,
   },
 }>;
