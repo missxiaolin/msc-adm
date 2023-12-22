@@ -69,3 +69,12 @@ export interface JsHourEchatsItem {
 }
 
 export type JsHourEchatsResponseData = ApiResponseData<JsHourEchatsItem>;
+
+// js 错误 errorMsg 分组
+export interface ErrorByErrorMsgRequestData {
+  startTime: string;
+  endTime: string;
+  simpleUrl: string;
+}
+
+export type ErrorByErrorMsgResponseData= ApiResponseData<any>;

@@ -25,3 +25,16 @@ export function jsList(data: Js.JsListRequestData) {
     data,
   });
 }
+
+/**
+ * js 错误 errorMsg 分组
+ * @param data 
+ * @returns 
+ */
+export function aggregateErrorByErrorMsg(data: Js.ErrorByErrorMsgRequestData) {
+  return request<Js.ErrorByErrorMsgResponseData>({
+    url: "/adm/js/aggregate/error/by/errormsg",
+    method: "post",
+    data,
+  });
+}

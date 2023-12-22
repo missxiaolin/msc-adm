@@ -67,8 +67,40 @@
       </el-card>
       <div class="visit-right-contents flex-1 flex flex-column">
         <el-scrollbar>
+          <el-card>
+            <template #header>
+              <div class="card-header">
+                <span>健康概览</span>
+              </div>
+            </template>
+            <el-tabs class="demo-tabs">
+              <el-tab-pane label="pv/uv">
+                <pageHoursEchart :params="hourPvUvParam" />
+              </el-tab-pane>
+              <el-tab-pane label="JS报错">Config</el-tab-pane>
+              <!-- <el-tab-pane label="平均性能" name="third">Role</el-tab-pane> -->
+            </el-tabs>
+          </el-card>
+          <!-- 页面js 错误详情 -->
+          <el-card class="mt20">
+            <template #header>
+              <div class="card-header">
+                <span>JS错误聚类</span>
+              </div>
+            </template>
+            <el-table :data="data.jsErrorTableData" border style="width: 100%">
+              <el-table-column prop="errorMsg" label="错误内容" />
+              <el-table-column prop="count" label="错误数" />
+              <el-table-column prop="userCount" label="影响用户数" />
+            </el-table>
+          </el-card>
           <!-- 地理分布 -->
           <el-card class="mt20">
+            <template #header>
+              <div class="card-header">
+                <span>地理分布</span>
+              </div>
+            </template>
             <!-- mapOption -->
             <MapEcharts :ipCregion="data.ipcregion"></MapEcharts>
           </el-card>
@@ -79,15 +111,18 @@
 </template>
 
 <script lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, computed } from "vue";
 import { timeQuantum, numberFormat } from "@/utils/index";
 import { pageGeoDistribution, pageList } from "@/api/page";
 import { usePagination } from "@/hooks/usePagination";
 import MapEcharts from "@/components/mapEcharts/index.vue";
+import { aggregateErrorByErrorMsg } from '@/api/js';
+import pageHoursEchart from "@/components/page/pageHoursEchart.vue";
 
 export default {
   components: {
     MapEcharts,
+    pageHoursEchart
   },
   setup() {
     let data = reactive({
@@ -95,6 +130,7 @@ export default {
       pvCount: 0,
       visitList: <any>[],
       ipcregion: <any>[],
+      jsErrorTableData: <any>[],
     });
     const searchData = ref({
       simpleUrl: "",
@@ -142,8 +178,21 @@ export default {
       if (!res.success) {
         return false;
       }
-      data.ipcregion = res.model
+      data.ipcregion = res.model;
     };
+
+    const getAggregateErrorByErrorMsg = async () => {
+      let param = {
+        startTime: searchData.value.data[0],
+        endTime: searchData.value.data[1],
+        simpleUrl: data.activePage,
+      }
+      let res = await aggregateErrorByErrorMsg(param)
+      if (!res.success) {
+        return
+      }
+      data.jsErrorTableData = res.model
+    }
 
     /**
      * @description: 左侧列表 点击http 点击
@@ -155,7 +204,16 @@ export default {
       data.activePage = simpleUrl;
 
       getPageGeoDistribution();
+      getAggregateErrorByErrorMsg()
     };
+
+    const hourPvUvParam = computed(() => {
+      return {
+        startTime: searchData.value.data[0],
+        endTime: searchData.value.data[1],
+        simpleUrl: data.activePage,
+      };
+    });
 
     /**
      * @description: 访问占比
@@ -194,6 +252,7 @@ export default {
       visitPercent,
       numberFormat,
       handleVisitItem,
+      hourPvUvParam
     };
   },
 };
