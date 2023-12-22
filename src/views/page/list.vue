@@ -3,7 +3,10 @@
     <el-card class="search-wrapper">
       <el-form ref="searchFormRef" :inline="true" :model="searchData">
         <el-form-item prop="simpleUrl" label="页面链接">
-          <el-input v-model="searchData.simpleUrl" placeholder="请输入带*的页面链接" />
+          <el-input
+            v-model="searchData.simpleUrl"
+            placeholder="请输入带*的页面链接"
+          />
         </el-form-item>
         <el-form-item prop="phone" label="日期">
           <el-date-picker
@@ -61,16 +64,16 @@
             />
           </div>
         </div>
-        <div class="visit-right-contents flex-1 flex flex-column">
-          <el-scrollbar>
-            <!-- 地理分布 -->
-            <el-card>
-              
-            </el-card>
-          </el-scrollbar>
-        </div>
       </el-card>
-
+      <div class="visit-right-contents flex-1 flex flex-column">
+        <el-scrollbar>
+          <!-- 地理分布 -->
+          <el-card class="mt20">
+            <!-- mapOption -->
+            <MapEcharts :ipCregion="data.ipcregion"></MapEcharts>
+          </el-card>
+        </el-scrollbar>
+      </div>
     </section>
   </div>
 </template>
@@ -78,15 +81,20 @@
 <script lang="ts">
 import { onMounted, reactive, ref } from "vue";
 import { timeQuantum, numberFormat } from "@/utils/index";
-import { pageList } from "@/api/page";
+import { pageGeoDistribution, pageList } from "@/api/page";
 import { usePagination } from "@/hooks/usePagination";
+import MapEcharts from "@/components/mapEcharts/index.vue";
 
 export default {
+  components: {
+    MapEcharts,
+  },
   setup() {
     let data = reactive({
       activePage: "", // 访问页面选中
       pvCount: 0,
       visitList: <any>[],
+      ipcregion: <any>[],
     });
     const searchData = ref({
       simpleUrl: "",
@@ -94,11 +102,14 @@ export default {
     });
 
     const { paginationData, handleCurrentChange, handleSizeChange } =
-      usePagination(() => {
-        getPageList();
-      }, {
-        layout: "total, prev, pager, next, jumper",
-      });
+      usePagination(
+        () => {
+          getPageList();
+        },
+        {
+          layout: "total, prev, pager, next, jumper",
+        }
+      );
 
     // 分页
     const getPageList = async () => {
@@ -119,6 +130,21 @@ export default {
       // 默认查询第一条数据详情
       handleVisitItem(data.visitList[0] || {});
     };
+
+    // 地图数据
+    const getPageGeoDistribution = async () => {
+      const params = {
+        startTime: searchData.value.data[0],
+        endTime: searchData.value.data[1],
+        simpleUrl: data.activePage,
+      };
+      let res = await pageGeoDistribution(params);
+      if (!res.success) {
+        return false;
+      }
+      data.ipcregion = res.model
+    };
+
     /**
      * @description: 左侧列表 点击http 点击
      * @param {*} node
@@ -127,6 +153,8 @@ export default {
     const handleVisitItem = (node: any) => {
       const { simpleUrl = "" } = node;
       data.activePage = simpleUrl;
+
+      getPageGeoDistribution();
     };
 
     /**
@@ -165,7 +193,7 @@ export default {
       handleSizeChange,
       visitPercent,
       numberFormat,
-      handleVisitItem
+      handleVisitItem,
     };
   },
 };

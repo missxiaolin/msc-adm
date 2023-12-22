@@ -51,6 +51,7 @@ export type PageEchartByUuIdResponseData = ApiResponseData<{
 export interface PageGeoDistributionRequestData {
   startTime: string;
   endTime: string;
+  simpleUrl?: string;
 }
 
 export type PageGeoDistributionResponseData = ApiResponseData<

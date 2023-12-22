@@ -104,6 +104,12 @@
   .visit-right-contents {
     padding-left: 15px;
     flex: 1;
+    :deep(.el-card) {
+      max-width: 100%;
+    }
+    :deep(.el-scrollbar__view) {
+      width: 100%;
+    }
     .basic-info {
       width: 100%;
       padding: 15px;
