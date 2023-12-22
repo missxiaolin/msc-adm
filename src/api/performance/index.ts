@@ -12,3 +12,17 @@ export function performanceList(data: Performance.PerformanceListRequestData) {
     data,
   });
 }
+
+
+/**
+ * 页面平均性能
+ * @param data 
+ * @returns 
+ */
+export function performanceEchartByUrl(data: Performance.PerformanceEchartByUrlRequestData) {
+  return request<Performance.PerformanceEchartByUrlResponseData>({
+    url: "/adm/performance/echart/by/url",
+    method: "post",
+    data,
+  });
+}

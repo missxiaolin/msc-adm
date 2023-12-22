@@ -80,7 +80,9 @@
               <el-tab-pane label="JS报错">
                 <JsHoursEchart :params="hourJsParam" />
               </el-tab-pane>
-              <!-- <el-tab-pane label="平均性能">Role</el-tab-pane> -->
+              <el-tab-pane label="平均性能">
+                <PerfEchart :options="data.perfEchartOPtion"></PerfEchart>
+              </el-tab-pane>
             </el-tabs>
           </el-card>
           <!-- 页面js 错误详情 -->
@@ -118,15 +120,18 @@ import { timeQuantum, numberFormat } from "@/utils/index";
 import { pageGeoDistribution, pageList } from "@/api/page";
 import { usePagination } from "@/hooks/usePagination";
 import MapEcharts from "@/components/mapEcharts/index.vue";
-import { aggregateErrorByErrorMsg } from '@/api/js';
+import { aggregateErrorByErrorMsg } from "@/api/js";
 import pageHoursEchart from "@/components/page/pageHoursEchart.vue";
 import JsHoursEchart from "@/components/jsComponents/jsHoursEchart.vue";
+import PerfEchart from "@/components/performanceComponents/perfEchart.vue";
+import { performanceEchartByUrl } from '@/api/performance';
 
 export default {
   components: {
     MapEcharts,
     pageHoursEchart,
-    JsHoursEchart
+    JsHoursEchart,
+    PerfEchart,
   },
   setup() {
     let data = reactive({
@@ -135,6 +140,7 @@ export default {
       visitList: <any>[],
       ipcregion: <any>[],
       jsErrorTableData: <any>[],
+      perfEchartOPtion: <any>[],
     });
     const searchData = ref({
       simpleUrl: "",
@@ -185,18 +191,19 @@ export default {
       data.ipcregion = res.model;
     };
 
+    // js 错误 errorMsg 分组
     const getAggregateErrorByErrorMsg = async () => {
       let param = {
         startTime: searchData.value.data[0],
         endTime: searchData.value.data[1],
         simpleUrl: data.activePage,
-      }
-      let res = await aggregateErrorByErrorMsg(param)
+      };
+      let res = await aggregateErrorByErrorMsg(param);
       if (!res.success) {
-        return
+        return;
       }
-      data.jsErrorTableData = res.model
-    }
+      data.jsErrorTableData = res.model;
+    };
 
     /**
      * @description: 左侧列表 点击http 点击
@@ -208,7 +215,8 @@ export default {
       data.activePage = simpleUrl;
 
       getPageGeoDistribution();
-      getAggregateErrorByErrorMsg()
+      getAggregateErrorByErrorMsg();
+      getPerformanceEchartByUrl();
     };
 
     // pv/uv 图表
@@ -228,6 +236,19 @@ export default {
       };
     });
 
+    // 性能图表
+    const getPerformanceEchartByUrl = async () => {
+      let param = {
+        startTime: searchData.value.data[0],
+        endTime: searchData.value.data[1],
+        simpleUrl: data.activePage,
+      }
+      let res = await performanceEchartByUrl(param)
+      if (!res.success) {
+        return
+      }
+      data.perfEchartOPtion = res.model
+    }
 
     /**
      * @description: 访问占比
@@ -267,7 +288,7 @@ export default {
       numberFormat,
       handleVisitItem,
       hourPvUvParam,
-      hourJsParam
+      hourJsParam,
     };
   },
 };

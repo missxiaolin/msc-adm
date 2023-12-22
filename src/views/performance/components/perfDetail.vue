@@ -108,7 +108,7 @@
 </template>
 
 <script lang="ts">
-import PerfEchart from "./perfEchart.vue";
+import PerfEchart from "@/components/performanceComponents/perfEchart.vue";
 import PerfResTable from "./perfResTable.vue";
 import { computed, ref } from "vue";
 export default {

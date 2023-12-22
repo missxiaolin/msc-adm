@@ -1,3 +1,4 @@
+// 获取性能列表
 export interface PerformanceListRequestData {
   pageUrl: string;
   startTime: string;
@@ -38,4 +39,39 @@ export interface PerformanceListData {
 export type PerformanceListResponseData = ApiResponseData<{
   list: PerformanceListData[];
   count: number;
+}>;
+
+
+// 页面平均性能
+export interface PerformanceEchartByUrlRequestData {
+  startTime: string;
+  endTime: string;
+  simpleUrl?: string;
+}
+
+export type PerformanceEchartByUrlResponseData = ApiResponseData<{
+  NT: {
+    FP: number,
+    TTI: number,
+    DomReady: number,
+    Load: number,
+    FirseByte: number,
+    DNS: number,
+    TCP: number,
+    SSL: number,
+    TTFB: number,
+    Trans: number,
+    DomParse: number,
+    Res: number,
+  },
+  FP: {
+    totalStartTime: number,
+    total: number,
+    startTime: number,
+  },
+  FCP: {
+    totalStartTime: number,
+    total: number,
+    startTime: number,
+  },
 }>;
