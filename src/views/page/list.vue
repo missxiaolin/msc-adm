@@ -111,7 +111,25 @@
           </el-card>
           <!-- 终端数据 -->
           <el-card class="mt20">
-
+            <template #header>
+              <div class="card-header">
+                <span>终端分布</span>
+              </div>
+            </template>
+            <el-tabs class="demo-tabs">
+              <el-tab-pane label="系统版本" v-if="data.EchartDatas.os">
+                <Echarts :options="echartData('os')"></Echarts>
+              </el-tab-pane>
+              <el-tab-pane label="浏览设备" v-if="data.EchartDatas.device">
+                <Echarts :options="echartData('device')"></Echarts>
+              </el-tab-pane>
+              <el-tab-pane label="浏览器版本" v-if="data.EchartDatas.browser">
+                <Echarts :options="echartData('browser')"></Echarts>
+              </el-tab-pane>
+              <el-tab-pane label="设备分辨率" v-if="data.EchartDatas.screen">
+                <Echarts :options="echartData('screen')"></Echarts>
+              </el-tab-pane>
+            </el-tabs>
           </el-card>
         </el-scrollbar>
       </div>
@@ -120,7 +138,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, reactive, ref, computed } from "vue";
+import { onMounted, reactive, ref, computed, toRaw } from "vue";
 import { timeQuantum, numberFormat } from "@/utils/index";
 import { pageGeoDistribution, pageList, pageEchartByUuId } from "@/api/page";
 import { usePagination } from "@/hooks/usePagination";
@@ -129,7 +147,9 @@ import { aggregateErrorByErrorMsg } from "@/api/js";
 import pageHoursEchart from "@/components/page/pageHoursEchart.vue";
 import JsHoursEchart from "@/components/jsComponents/jsHoursEchart.vue";
 import PerfEchart from "@/components/performanceComponents/perfEchart.vue";
-import { performanceEchartByUrl } from '@/api/performance';
+import { performanceEchartByUrl } from "@/api/performance";
+import Echarts from "@/components/echarts/index.vue";
+import { cloneDeep } from "lodash";
 
 export default {
   components: {
@@ -137,6 +157,7 @@ export default {
     pageHoursEchart,
     JsHoursEchart,
     PerfEchart,
+    Echarts,
   },
   setup() {
     let data = reactive({
@@ -146,6 +167,7 @@ export default {
       ipcregion: <any>[],
       jsErrorTableData: <any>[],
       perfEchartOPtion: <any>[],
+      EchartDatas: <any>[],
     });
     const searchData = ref({
       simpleUrl: "",
@@ -222,7 +244,7 @@ export default {
       getPageGeoDistribution();
       getAggregateErrorByErrorMsg();
       getPerformanceEchartByUrl();
-      getPageEchartByUuId()
+      getPageEchartByUuId();
     };
 
     // pv/uv 图表
@@ -248,13 +270,13 @@ export default {
         startTime: searchData.value.data[0],
         endTime: searchData.value.data[1],
         simpleUrl: data.activePage,
-      }
-      let res = await performanceEchartByUrl(param)
+      };
+      let res = await performanceEchartByUrl(param);
       if (!res.success) {
-        return
+        return;
       }
-      data.perfEchartOPtion = res.model
-    }
+      data.perfEchartOPtion = res.model;
+    };
 
     // 分布图表
     const getPageEchartByUuId = async () => {
@@ -262,12 +284,63 @@ export default {
         startTime: searchData.value.data[0],
         endTime: searchData.value.data[1],
         simpleUrl: data.activePage,
-      }
-      let res = await pageEchartByUuId(param)
+      };
+      let res = await pageEchartByUuId(param);
       if (!res.success) {
-        return
+        return;
       }
-    }
+      data.EchartDatas = res.model
+    };
+
+    // 渲染数据
+    const defaultEchart = {
+      // legend: {
+      //   top: 'bottom'
+      // },
+      toolbox: {
+        show: true,
+        feature: {
+          mark: { show: true },
+          dataView: { show: true, readOnly: false },
+          restore: { show: true },
+          saveAsImage: { show: true },
+        },
+      },
+      series: [
+        {
+          name: "Nightingale Chart",
+          type: "pie",
+          radius: [20, 100],
+          center: ["50%", "50%"],
+          roseType: "area",
+          itemStyle: {
+            borderRadius: 8,
+          },
+          data: [],
+        },
+      ],
+    };
+
+    /**
+     * @description: echart 渲染数据提取
+     * @param {*} computed
+     * @return {*}
+     */
+    const echartData = computed(() => {
+      return (type: string, EchartModel = data.EchartDatas) => {
+        let Echart: any = cloneDeep(defaultEchart);
+        const nodeData = EchartModel[type];
+        let arr: any = []
+        nodeData.axisData?.forEach((name: any, index: any) => {
+          arr.push({
+            name,
+            value: nodeData.seriesData[index]
+          })
+        })
+        Echart.series[0].data = arr;
+        return Echart;
+      };
+    });
 
     /**
      * @description: 访问占比
@@ -308,6 +381,7 @@ export default {
       handleVisitItem,
       hourPvUvParam,
       hourJsParam,
+      echartData,
     };
   },
 };
