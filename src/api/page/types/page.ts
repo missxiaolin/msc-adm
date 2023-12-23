@@ -17,7 +17,8 @@ export type PageHourResponseData = ApiResponseData<{
 export interface PageEchartByUuIdRequestData {
   startTime: string;
   endTime: string;
-  limit: number;
+  limit?: number;
+  simpleUrl?: string;
 }
 
 export type PageEchartByUuIdResponseData = ApiResponseData<{

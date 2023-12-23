@@ -1,26 +1,30 @@
 <template>
   <div class="flex flex-row justify-between" style="width: 100%">
-    <el-statistic title="白屏时间" :value="ntFormat('FP')"></el-statistic>
-    <el-statistic title="首字节" :value="ntFormat('FirseByte')"></el-statistic>
-    <el-statistic
-      title="DOM Ready"
-      :value="ntFormat('DomReady')"
-    ></el-statistic>
-    <el-statistic
-      title="首次可交互时间"
-      :value="ntFormat('TTI')"
-    ></el-statistic>
-    <el-statistic title="页面完全加载" :value="ntFormat('Load')"></el-statistic>
+    <el-statistic title="白屏时间" :value="ntFormat('FP')">
+      <template #suffix>ms</template>
+    </el-statistic>
+    <el-statistic title="首字节" :value="ntFormat('FirseByte')">
+      <template #suffix>ms</template>
+    </el-statistic>
+    <el-statistic title="DOM Ready" :value="ntFormat('DomReady')">
+      <template #suffix>ms</template>
+    </el-statistic>
+    <el-statistic title="首次可交互时间" :value="ntFormat('TTI')">
+      <template #suffix>ms</template>
+    </el-statistic>
+    <el-statistic title="页面完全加载" :value="ntFormat('Load')">
+      <template #suffix>ms</template>
+    </el-statistic>
   </div>
   <Echarts :options="navigationEchart"></Echarts>
 </template>
 
 <script lang="ts">
-import Echarts from "@/components/echarts/index.vue"
-import { computed } from 'vue';
+import Echarts from "@/components/echarts/index.vue";
+import { computed } from "vue";
 export default {
   components: {
-    Echarts
+    Echarts,
   },
   props: {
     options: {
@@ -45,7 +49,7 @@ export default {
         time = FPC.startTime;
       }
 
-      return (time || 0).toFixed(2) + "ms";
+      return Number((time || 0).toFixed(2));
     };
 
     /**
@@ -219,7 +223,7 @@ export default {
 
     return {
       ntFormat,
-      navigationEchart
+      navigationEchart,
     };
   },
 };

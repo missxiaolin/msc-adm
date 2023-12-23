@@ -67,6 +67,7 @@
       </el-card>
       <div class="visit-right-contents flex-1 flex flex-column">
         <el-scrollbar>
+          <!-- 健康数据 -->
           <el-card>
             <template #header>
               <div class="card-header">
@@ -108,6 +109,10 @@
             <!-- mapOption -->
             <MapEcharts :ipCregion="data.ipcregion"></MapEcharts>
           </el-card>
+          <!-- 终端数据 -->
+          <el-card class="mt20">
+
+          </el-card>
         </el-scrollbar>
       </div>
     </section>
@@ -117,7 +122,7 @@
 <script lang="ts">
 import { onMounted, reactive, ref, computed } from "vue";
 import { timeQuantum, numberFormat } from "@/utils/index";
-import { pageGeoDistribution, pageList } from "@/api/page";
+import { pageGeoDistribution, pageList, pageEchartByUuId } from "@/api/page";
 import { usePagination } from "@/hooks/usePagination";
 import MapEcharts from "@/components/mapEcharts/index.vue";
 import { aggregateErrorByErrorMsg } from "@/api/js";
@@ -217,6 +222,7 @@ export default {
       getPageGeoDistribution();
       getAggregateErrorByErrorMsg();
       getPerformanceEchartByUrl();
+      getPageEchartByUuId()
     };
 
     // pv/uv 图表
@@ -248,6 +254,19 @@ export default {
         return
       }
       data.perfEchartOPtion = res.model
+    }
+
+    // 分布图表
+    const getPageEchartByUuId = async () => {
+      let param = {
+        startTime: searchData.value.data[0],
+        endTime: searchData.value.data[1],
+        simpleUrl: data.activePage,
+      }
+      let res = await pageEchartByUuId(param)
+      if (!res.success) {
+        return
+      }
     }
 
     /**
