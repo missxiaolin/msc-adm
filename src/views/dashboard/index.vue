@@ -313,6 +313,7 @@ export default {
 <style lang="scss" scoped>
 .home-title {
   padding: 10px 0;
+  color: #000;
   dt {
     line-height: 32px;
     font-weight: 700;
