@@ -117,7 +117,7 @@ export const constantRoutes: any = [
         component: () => import("@/views/js/list.vue"),
         hidden: false,
         meta: {
-          title: "JS错误",
+          title: "JS错误列表",
           keepAlive: false,
           elIcon: "HelpFilled",
           affix: true,
@@ -140,7 +140,7 @@ export const constantRoutes: any = [
         component: () => import("@/views/page/list.vue"),
         hidden: false,
         meta: {
-          title: "访问页面",
+          title: "页面信息列表",
           keepAlive: false,
           elIcon: "Files",
           affix: true,
