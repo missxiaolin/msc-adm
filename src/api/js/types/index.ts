@@ -56,16 +56,16 @@ export interface JsHourEchatsRequestData {
 }
 
 export interface JsHourEchatsItem {
-    axisData: string[];
-    seriesData: number[],
-    errorCount: number;
-    userList: [];
-    cregionList: [];
-    pageList: [];
-    errorTypeList: {
-      type: string,
-      count: number
-    }[]
+  axisData: string[];
+  seriesData: number[];
+  errorCount: number;
+  userList: [];
+  cregionList: [];
+  pageList: [];
+  errorTypeList: {
+    type: string;
+    count: number;
+  }[];
 }
 
 export type JsHourEchatsResponseData = ApiResponseData<JsHourEchatsItem>;
@@ -77,4 +77,4 @@ export interface ErrorByErrorMsgRequestData {
   simpleUrl: string;
 }
 
-export type ErrorByErrorMsgResponseData= ApiResponseData<any>;
+export type ErrorByErrorMsgResponseData = ApiResponseData<any>;

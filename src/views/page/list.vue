@@ -99,6 +99,27 @@
               <el-table-column prop="userCount" label="影响用户数" />
             </el-table>
           </el-card>
+          <!-- api 详情 -->
+          <el-card class="mt20">
+            <template #header>
+              <div class="card-header">
+                <span>API详情</span>
+              </div>
+            </template>
+            <div class="flex-1 flex flex-column">
+              <el-table border :data="data.tableData">
+                <el-table-column prop="pathName" label="API名称" align="left" />
+                <el-table-column prop="method" label="请求方式" align="center" />
+                <el-table-column prop="count" label="请求次数" align="center" />
+                <el-table-column prop="avgDuration" label="平均耗时（ms）" align="center" />
+                <el-table-column prop="avgDuration" label="请求成功率" align="center">
+                  <template #default="{ row }">
+                    {{ (row.successCount / row.count).toFixed(2) * 100 }}%
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </el-card>
           <!-- 地理分布 -->
           <el-card class="mt20">
             <template #header>
@@ -138,12 +159,13 @@
 </template>
 
 <script lang="ts">
-import { onMounted, reactive, ref, computed, toRaw } from "vue";
+import { onMounted, reactive, ref, computed } from "vue";
 import { timeQuantum, numberFormat } from "@/utils/index";
 import { pageGeoDistribution, pageList, pageEchartByUuId } from "@/api/page";
 import { usePagination } from "@/hooks/usePagination";
 import MapEcharts from "@/components/mapEcharts/index.vue";
 import { aggregateErrorByErrorMsg } from "@/api/js";
+import { apiAgregateList } from "@/api/request/index"
 import pageHoursEchart from "@/components/page/pageHoursEchart.vue";
 import JsHoursEchart from "@/components/jsComponents/jsHoursEchart.vue";
 import PerfEchart from "@/components/performanceComponents/perfEchart.vue";
@@ -164,10 +186,11 @@ export default {
       activePage: "", // 访问页面选中
       pvCount: 0,
       visitList: <any>[],
-      ipcregion: <any>[],
-      jsErrorTableData: <any>[],
-      perfEchartOPtion: <any>[],
-      EchartDatas: <any>[],
+      ipcregion: <any>[], // 地图
+      jsErrorTableData: <any>[], // js错误
+      perfEchartOPtion: <any>[], // 性能
+      EchartDatas: <any>[], // 分布
+      tableData: <any>[], // pai 数据
     });
     const searchData = ref({
       simpleUrl: "",
@@ -245,6 +268,7 @@ export default {
       getAggregateErrorByErrorMsg();
       getPerformanceEchartByUrl();
       getPageEchartByUuId();
+      getAgregateList()
     };
 
     // pv/uv 图表
@@ -289,8 +313,22 @@ export default {
       if (!res.success) {
         return;
       }
-      data.EchartDatas = res.model
+      data.EchartDatas = res.model;
     };
+
+    // 获取api 数据
+    const getAgregateList = async () => {
+      let param = {
+        startTime: searchData.value.data[0],
+        endTime: searchData.value.data[1],
+        simpleUrl: data.activePage,
+      }
+      let res = await apiAgregateList(param)
+      if (!res.success) {
+        return;
+      }
+      data.tableData = res.model
+    }
 
     // 渲染数据
     const defaultEchart = {
@@ -330,13 +368,13 @@ export default {
       return (type: string, EchartModel = data.EchartDatas) => {
         let Echart: any = cloneDeep(defaultEchart);
         const nodeData = EchartModel[type];
-        let arr: any = []
+        let arr: any = [];
         nodeData.axisData?.forEach((name: any, index: any) => {
           arr.push({
             name,
-            value: nodeData.seriesData[index]
-          })
-        })
+            value: nodeData.seriesData[index],
+          });
+        });
         Echart.series[0].data = arr;
         return Echart;
       };

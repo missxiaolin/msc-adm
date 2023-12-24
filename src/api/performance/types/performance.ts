@@ -41,7 +41,6 @@ export type PerformanceListResponseData = ApiResponseData<{
   count: number;
 }>;
 
-
 // 页面平均性能
 export interface PerformanceEchartByUrlRequestData {
   startTime: string;
@@ -51,23 +50,23 @@ export interface PerformanceEchartByUrlRequestData {
 
 export type PerformanceEchartByUrlResponseData = ApiResponseData<{
   NT: {
-    FP: number,
-    TTI: number,
-    DomReady: number,
-    Load: number,
-    FirseByte: number,
-    DNS: number,
-    TCP: number,
-    SSL: number,
-    TTFB: number,
-    Trans: number,
-    DomParse: number,
-    Res: number,
-  },
+    FP: number;
+    TTI: number;
+    DomReady: number;
+    Load: number;
+    FirseByte: number;
+    DNS: number;
+    TCP: number;
+    SSL: number;
+    TTFB: number;
+    Trans: number;
+    DomParse: number;
+    Res: number;
+  };
   FP: {
-    startTime: number,
-  },
+    startTime: number;
+  };
   FCP: {
-    startTime: number,
-  },
+    startTime: number;
+  };
 }>;
