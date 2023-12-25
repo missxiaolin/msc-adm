@@ -1,5 +1,5 @@
 import { ref, watch } from "vue";
-import { Fn, tryOnUnmounted } from "@vueuse/core";
+import { Fn } from "@vueuse/core";
 import { isFunction } from "@/utils/validate";
 
 export function useTimeoutFn(handle: Fn, wait: number, native = false) {
@@ -25,7 +25,7 @@ export function useTimeoutFn(handle: Fn, wait: number, native = false) {
 export function useTimeoutRef(wait: number) {
 	const readyRef = ref(false);
 
-	let timer: TimerHandler;
+	let timer: any;
 	function stop(): void {
 		readyRef.value = false;
 		timer && window.clearTimeout(timer);

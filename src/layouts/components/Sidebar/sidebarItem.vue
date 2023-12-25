@@ -93,7 +93,7 @@ export default {
       isFirstLevel,
       basePath,
       alwaysShow,
-    } = props;
+    }: any = props;
     /** 是否始终显示根菜单 */
     const alwaysShowRootMenu = computed(() => alwaysShow);
 

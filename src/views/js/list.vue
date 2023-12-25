@@ -123,6 +123,7 @@ export default {
     const resetSearch = () => {
       searchData.value = {
         pageUrl: "",
+        simpleUrl: "",
         errorMsg: "",
         data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
       };

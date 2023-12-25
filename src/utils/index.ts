@@ -44,10 +44,10 @@ export const resetConfigLayout = () => {
 
 /**
  * 日期
- * @param formatting 
+ * @param formatting  { subtractDay?: 0; format?: [] }
  * @returns 
  */
-export const timeQuantum = (formatting: { subtractDay?: 0; format?: [] }) => {
+export const timeQuantum = (formatting: any) => {
   let { subtractDay = 0, format = <any>[] } = formatting;
   format = format.length ? format : ["HH:mm:ss", "HH:mm:ss"];
   let startDateTime = moment()

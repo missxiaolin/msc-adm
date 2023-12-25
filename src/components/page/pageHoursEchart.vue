@@ -55,7 +55,7 @@ export default {
       }
       let { axisData = [], seriesData = [], pvTotal = 0, uvTotal = 0 } = model;
       seriesData = seriesData.map((item: any, index: string | number) => {
-        const name = {
+        const name: any = {
           0: "pv",
           1: "uv",
         };
@@ -79,7 +79,7 @@ export default {
             color: "#95979e",
             align: "center",
             // interval: 0,
-            formatter: (value: string | any[], index: any) => {
+            formatter: (value: string | any[]) => {
               const date = moment(value).format("MM-DD HH:mm").split(" ");
               return `${date[0]}\n${date[1]}`;
             },

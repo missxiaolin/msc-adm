@@ -99,7 +99,7 @@ export default {
         pageList = [],
         errorTypeList = [],
         errorCount = 0,
-      } = model;
+      }: any = model;
       const jsErrorOption = {
         xAxis: {
           type: "category",
@@ -108,7 +108,7 @@ export default {
             color: "#95979e",
             align: "center",
             // interval: 0,
-            formatter: (value: string | any[], index: any) => {
+            formatter: (value: string | any[]) => {
               const date = moment(value).format("MM-DD HH:mm").split(" ");
               return `${date[0]}\n${date[1]}`;
             },

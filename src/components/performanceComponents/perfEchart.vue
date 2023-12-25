@@ -107,16 +107,16 @@ export default {
         seriesData.push(data);
       });
       const {
-        Load = 0,
+        // Load = 0,
         DomParse = 0,
         Res = 0,
-        FirseByte = 0,
+        // FirseByte = 0,
         Trans = 0,
         TTFB = 0,
         TCP = 0,
         SSL = 0,
         DNS = 0,
-      } = NT;
+      }: any = NT;
       // TODO 待优化
       const defaultSeriesData: any[] = [
         `${Res + DomParse + TTFB + TCP + SSL + DNS}`,

@@ -54,7 +54,7 @@ const defaultEchart = {
     axisLabel: {
       color: "#95979e",
       interval: 0,
-      formatter: (value: string | any[], index: any) => {
+      formatter: (value: string | any[]) => {
         return `${value.slice(0, 20)}${value.length > 20 ? "..." : ""}`;
       },
     },

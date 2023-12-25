@@ -24,6 +24,7 @@ module.exports = {
     },
   },
   rules: {
+    'vue/no-dupe-keys': 'off',
     'no-self-assign': 'off',
     'vue/require-valid-default-prop': 'off',
     "vue/no-setup-props-destructure": "off",

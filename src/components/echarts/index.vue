@@ -168,7 +168,7 @@ export default {
           ) {
             //
             // 多数据图表
-            nVal.series.forEach((item: any, index) => {
+            nVal.series.forEach((item: any, index: any) => {
               item.itemStyle = {
                 //加上  只会出现一种颜色
                 normal: { color: colorList[index] },
@@ -178,9 +178,10 @@ export default {
           }
         }
         if (isMap.value) {
+          let cChina: any = china
           nVal.geo = nVal.geo || {};
           nVal.geo.map = "china";
-          echarts.registerMap("china", china);
+          echarts.registerMap("china", cChina);
         }
         // console.log("nVal----", nVal);
         nextTick(() => {
@@ -194,7 +195,7 @@ export default {
 
     watch(
       () => props.options,
-      (n) => {
+      (n: any) => {
         // const { options, size } = n.value;
         // console.log("options---", n);
         nextTick(() => {
