@@ -131,7 +131,7 @@ export default {
     };
 
     // js 错误详情
-    const perfNode = ref({});
+    const perfNode: any = ref({});
     /**
      * @description: 查看性能详情
      * @param {*} row
