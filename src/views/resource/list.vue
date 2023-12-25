@@ -100,8 +100,8 @@ export default {
   },
   setup() {
     const loading = ref<boolean>(false);
-    const echartsOptions = ref({})
-    const resourceTypes = ref([
+    const echartsOptions: any = ref({})
+    const resourceTypes: any = ref([
       {
         value: "IMG",
         label: "IMG",
@@ -121,7 +121,7 @@ export default {
       resourceType: "",
       data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
     });
-    const perfNode = ref({});
+    const perfNode: any = ref({});
     const tableData = ref<ResourceResponseData[]>([]);
 
     const { paginationData, handleCurrentChange, handleSizeChange } =

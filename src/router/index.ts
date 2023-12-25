@@ -150,6 +150,29 @@ export const constantRoutes: any = [
         },
       },
     ],
+  },
+  {
+    path: "/project",
+    component: Layouts,
+    redirect: "/project/list",
+    name: "Project",
+    meta: {
+      title: "项目",
+      elIcon: "Notebook",
+    },
+    children: [
+      {
+        path: "list",
+        component: () => defineAsyncComponent(() => import("@/views/project/list.vue")),
+        hidden: false,
+        meta: {
+          title: "项目列表",
+          keepAlive: false,
+          elIcon: "Notebook",
+          affix: true,
+        },
+      },
+    ],
   }
 ];
 
