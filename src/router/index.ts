@@ -5,6 +5,8 @@ import {
   createWebHistory,
 } from "vue-router";
 
+import { defineAsyncComponent } from 'vue'
+
 const Layouts = () => import("@/layouts/index.vue");
 
 /** 常驻路由 */
@@ -20,7 +22,8 @@ export const constantRoutes: any = [
     children: [
       {
         path: "dashboard",
-        component: () => import("@/views/dashboard/index.vue"),
+        
+        component: () => defineAsyncComponent(() => import("@/views/dashboard/index.vue")),
         hidden: false,
         meta: {
           title: "应用概览",
@@ -33,13 +36,13 @@ export const constantRoutes: any = [
   },
   {
     path: "/login",
-    component: () => import("@/views/login/index.vue"),
+    component: () => defineAsyncComponent(() => import("@/views/login/index.vue")),
     hidden: true,
     meta: {},
   },
   {
     path: "/403",
-    component: () => import("@/views/error-page/403.vue"),
+    component: () => defineAsyncComponent(() => import("@/views/error-page/403.vue")),
     hidden: true,
     meta: {
       title: "403",
@@ -48,7 +51,7 @@ export const constantRoutes: any = [
   },
   {
     path: "/404",
-    component: () => import("@/views/error-page/404.vue"),
+    component: () => defineAsyncComponent(() => import("@/views/error-page/404.vue")),
     hidden: true,
     meta: {
       title: "404",
@@ -68,7 +71,7 @@ export const constantRoutes: any = [
     children: [
       {
         path: "list",
-        component: () => import("@/views/performance/list.vue"),
+        component: () => defineAsyncComponent(() => import("@/views/performance/list.vue")),
         hidden: false,
         meta: {
           title: "页面性能列表",
@@ -91,7 +94,7 @@ export const constantRoutes: any = [
     children: [
       {
         path: "list",
-        component: () => import("@/views/resource/list.vue"),
+        component: () => defineAsyncComponent(() => import("@/views/resource/list.vue")),
         hidden: false,
         meta: {
           title: "资源错误列表",
@@ -114,7 +117,7 @@ export const constantRoutes: any = [
     children: [
       {
         path: "list",
-        component: () => import("@/views/js/list.vue"),
+        component: () => defineAsyncComponent(() => import("@/views/js/list.vue")),
         hidden: false,
         meta: {
           title: "JS错误列表",
@@ -137,7 +140,7 @@ export const constantRoutes: any = [
     children: [
       {
         path: "list",
-        component: () => import("@/views/page/list.vue"),
+        component: () => defineAsyncComponent(() => import("@/views/page/list.vue")),
         hidden: false,
         meta: {
           title: "页面信息列表",

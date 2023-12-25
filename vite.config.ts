@@ -5,7 +5,7 @@ import vueJsx from "@vitejs/plugin-vue-jsx"
 import svgLoader from "vite-svg-loader"
 import UnoCSS from "unocss/vite"
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons"
-import eslint from 'vite-plugin-eslint' // 新增
+// import eslint from 'vite-plugin-eslint' // 新增
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -42,6 +42,7 @@ export default defineConfig({
   build: {
     /** 消除打包大小超过 500kb 警告 */
     chunkSizeWarningLimit: 2000,
+    target: "es2015",
     /** Vite 2.6.x 以上需要配置 minify: "terser", terserOptions 才能生效 */
     minify: "terser",
     /** 在打包代码时移除 console.log、debugger 和 注释 */
