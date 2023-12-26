@@ -40,6 +40,7 @@
         />
       </div>
     </el-card>
+    <!-- 应用添加修改 -->
     <el-dialog
       v-model="data.isShowPorjectPop"
       title="应用"
@@ -121,20 +122,22 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref, computed } from "vue";
+import { projectSave } from "@/api/project/index";
 import { usePagination } from "@/hooks/usePagination";
 import type { FormInstance, FormRules } from "element-plus";
+import { ElMessage } from "element-plus";
 
 interface RuleForm {
   id?: number;
-  name: string;
-  desc: string;
-  monitorAppId: string;
-  projectType: number;
-  delay: number;
-  encryption: number;
+  name: string; // 应用名称
+  desc: string; // 应用说明
+  monitorAppId: string; // 项目ID
+  projectType: number; // 项目类型
+  delay: number; // 应用间隔
+  encryption: number; // 是否加密
   watch?: string[];
-  maxQueues: number;
+  maxQueues: number; // 上报条数
 }
 
 export default {
@@ -189,7 +192,6 @@ export default {
           value: "recordScreen",
         },
       ],
-
       projectTypeOptions: [
         {
           value: 1,
@@ -198,7 +200,7 @@ export default {
       ],
     });
     const ruleFormRef = ref<FormInstance>();
-    const ruleForm = reactive<RuleForm>({
+    const ruleForm: any = reactive<RuleForm>({
       id: 0,
       name: "",
       desc: "",
@@ -234,8 +236,22 @@ export default {
     });
     const submitForm = async (formEl: FormInstance | undefined) => {
       if (!formEl) return;
-      await formEl.validate((valid, fields) => {
+      await formEl.validate(async (valid, fields) => {
         if (valid) {
+          let param: any = ruleForm;
+          let res = await projectSave(param);
+          if (res.success) {
+            ElMessage({
+              message: "保存成功",
+              type: "success",
+            });
+            handleClose();
+          } else {
+            ElMessage({
+              message: res.errorMessage,
+              type: "error",
+            });
+          }
           console.log("submit!", ruleForm);
         } else {
           console.log("error submit!", fields);
@@ -248,11 +264,46 @@ export default {
       formEl.resetFields();
     };
 
-    const handleSearch = () => {};
+    // 探针代码
+    const probeCode = computed(() => {
+      const {
+        monitorAppId = "",
+        encryption,
+        maxQueues,
+        delay,
+        watch = [],
+      } = ruleForm;
+      let watchItem: any = {};
+      watch.forEach((item: any) => {
+        watchItem[item] = true;
+        if (!watch.includes(item)) {
+          watchItem[item] = false;
+        }
+      });
+      watchItem = JSON.stringify(watchItem);
+      let code =
+        '<script>;(function(w,d,s){n=()=>{const e=o(),r=`https://www.xxxx.com`;new MonitorSdk({monitorAppId:`{monitorAppId}`,uuId:()=>MUtils.monitorCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/monitor/upload`,trackUrl:`${r}/tracker/upload`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}}) /* 多环境适配放开这里 } */ };(()=>{const e=d.createElement("script");e.readyState?e.onreadystatechange=function(){"loaded"!==e.readyState&&"complete"!==e.readyState||(e.onreadystatechange=null,n())}:e.onload=function(){n()},e.src=s,d.head.append(e)})()})(window,document,"https://static.enmonster.com/epm/cdn/monitorSdk.js");<\/script>';
 
+      code = code.replace(/\{monitorAppId\}/g, `${monitorAppId}`);
+      code = code.replace(/\{monitorWatch\}/g, `${watchItem}`);
+      code = code.replace(/\{monitorEncryption\}/g, `${encryption}`);
+      code = code.replace(/\{monitorMaxQueues\}/g, `${maxQueues}`);
+      code = code.replace(/\{monitorReportType\}/g, `${1}`);
+      code = code.replace(/\{monitorDelay\}/g, `${1000 * delay}`);
+      return code;
+    });
     // 关闭弹窗
     const handleClose = () => {
       data.isShowPorjectPop = false;
+      ruleForm.id = 0
+      ruleForm.name = ""
+      ruleForm.desc = ""
+      ruleForm.monitorAppId = ""
+      ruleForm.projectType = 1
+      ruleForm.delay = 30
+      ruleForm.encryption = 0
+      ruleForm.watch = ["pageChange"]
+      ruleForm.maxQueues = 1
     };
 
     // 分页
@@ -260,6 +311,8 @@ export default {
       usePagination(() => {
         handleSearch();
       });
+
+    const handleSearch = () => {};
 
     return {
       data,
@@ -272,6 +325,7 @@ export default {
       rules,
       submitForm,
       resetForm,
+      probeCode,
     };
   },
 };
@@ -306,7 +360,6 @@ export default {
       cursor: pointer;
     }
     width: 100%;
-    max-height: calc(100vh - 420px);
     background: rgb(246, 247, 251);
     color: rgb(29, 33, 41);
     padding: 23px;
