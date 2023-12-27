@@ -18,7 +18,7 @@ export const removeToken = () => {
  * @param key 
  * @param value 
  */
-export const setCookit = (key: string, value: any) => {
+export const setCookie = (key: string, value: any) => {
   Cookies.set(key, value)
 }
 
@@ -27,6 +27,6 @@ export const setCookit = (key: string, value: any) => {
  * @param key 
  * @returns 
  */
-export const getCookit = (key: string) => {
+export const getCookie = (key: string) => {
   return Cookies.get(key)
 }

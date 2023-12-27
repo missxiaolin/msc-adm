@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
-import { setCookit, getCookit } from "@/utils/cache/cookies";
+import { setCookie, getCookie } from "@/utils/cache/cookies";
 import { projectAllList } from "@/api/project";
 export const useGeneralStore = defineStore({
   id: "app-general",
   state: (): any => ({
-    projectList: <any>getCookit("PROJECT_ALL") ? JSON.parse(getCookit("PROJECT_ALL") || "[]") : [], // 项目列表
-    currentProjectId: <any>getCookit("PROJECT_ID") || "", // 当前菜单
+    projectList: <any>getCookie("PROJECT_ALL") ? JSON.parse(getCookie("PROJECT_ALL") || "[]") : [], // 项目列表
+    currentProjectId: <any>getCookie("PROJECT_ID") || "", // 当前菜单
     refreshTimer: <any>null,
     manualRefresh: <boolean>false
   }),
@@ -24,7 +24,7 @@ export const useGeneralStore = defineStore({
   actions: {
     setCurrentProject(monitorAppId: string) {
       this.currentProjectId = monitorAppId;
-      setCookit("PROJECT_ID", monitorAppId);
+      setCookie("PROJECT_ID", monitorAppId);
     },
     /**
      * 保存项目数据
@@ -32,11 +32,11 @@ export const useGeneralStore = defineStore({
      */
     setProjectList(projectList: any) {
       this.projectList = projectList;
-      setCookit("PROJECT_ALL", JSON.stringify(projectList));
+      setCookie("PROJECT_ALL", JSON.stringify(projectList));
       let currentProject = projectList[0]?.monitorAppId;
-      if (currentProject && !getCookit("PROJECT_ID")) {
+      if (currentProject && !getCookie("PROJECT_ID")) {
         this.currentProjectId = currentProject.monitorAppId;
-        setCookit("PROJECT_ID", currentProject.monitorAppId);
+        setCookie("PROJECT_ID", currentProject.monitorAppId);
       }
     },
     // 获取系统有效的应用
