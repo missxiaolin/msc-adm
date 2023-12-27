@@ -24,3 +24,14 @@ export function projectList(data: Project.ProjectListRequestData) {
     data,
   });
 }
+
+/**
+ * 所有项目列表
+ * @returns
+ */
+export function projectAllList() {
+  return request<Project.ProjectListResponseData>({
+    url: "/adm/project/all/status/list",
+    method: "post",
+  });
+}

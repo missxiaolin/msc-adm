@@ -21,3 +21,6 @@ export interface ProjectListRequestData {
 }
 
 export type ProjectListResponseData = ApiResponseData<any>;
+
+// 获取所有项目
+export type ProjectAllResponseData = ApiResponseData<any>;

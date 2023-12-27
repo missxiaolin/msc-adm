@@ -113,7 +113,9 @@ import { usePagination } from "@/hooks/usePagination";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
 import useClipboard from "vue-clipboard3";
+import { useGeneralStore } from "@/store/modules/general";
 const { toClipboard } = useClipboard();
+const generalStore = useGeneralStore();
 
 interface RuleForm {
     id?: number;
@@ -236,6 +238,8 @@ export default {
                         });
                         handleClose();
                         handleSearch();
+                        // 顶部列表更新
+                        generalStore.getValidProject();
                     } else {
                         ElMessage({
                             message: res.errorMessage,

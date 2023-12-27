@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { setCookit, getCookit } from "@/utils/cache/cookies";
+import { projectAllList } from "@/api/project";
 export const useGeneralStore = defineStore({
   id: "app-general",
   state: (): any => ({
@@ -34,6 +35,12 @@ export const useGeneralStore = defineStore({
       }
     },
     // 获取系统有效的应用
-    async getValidProject() {},
+    async getValidProject() {
+      let res = await projectAllList()
+      if (!res.success) {
+        return
+      }
+      this.setProjectList(res.model)
+    },
   },
 });
