@@ -1,131 +1,103 @@
 <template>
-  <div class="app-container">
-    <div class="flex">
-      <el-button type="primary" @click="data.isShowPorjectPop = true"
-        >新增应用</el-button
-      >
-    </div>
-    <el-card class="mt20">
-      <div class="table-wrapper">
-        <el-table border :data="data.tableData">
-          <el-table-column prop="name" label="应用名称" align="center" />
-          <el-table-column prop="desc" label="应用说明" align="desc" />
-          <el-table-column
-            prop="monitorAppId"
-            label="项目Id"
-            align="monitorAppId"
-          />
-          <el-table-column
-            prop="logPeriod"
-            label="上报间隔"
-            align="logPeriod"
-          />
-          <el-table-column
-            prop="startTime"
-            label="上报创建时间"
-            align="logPeriod"
-          />
-        </el-table>
-      </div>
-      <div class="pager-wrapper mt20">
-        <el-pagination
-          background
-          :layout="paginationData.layout"
-          :page-sizes="paginationData.pageSizes"
-          :total="paginationData.total"
-          :page-size="paginationData.pageSize"
-          :currentPage="paginationData.currentPage"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
-      </div>
-    </el-card>
-    <!-- 应用添加修改 -->
-    <el-dialog
-      v-model="data.isShowPorjectPop"
-      title="应用"
-      width="60%"
-      :before-close="handleClose"
-    >
-      <div class="flex">
-        <el-form
-          ref="ruleFormRef"
-          :model="ruleForm"
-          :rules="rules"
-          label-width="120px"
-          :size="'default'"
-          status-icon
-          class="pop-form"
-        >
-          <el-form-item label="应用ID" prop="monitorAppId">
-            <el-input v-model="ruleForm.monitorAppId" />
-          </el-form-item>
-          <el-form-item label="应用类型" prop="projectType">
-            <el-select v-model="ruleForm.projectType">
-              <el-option
-                v-for="item in data.projectTypeOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="应用名称" prop="name">
-            <el-input v-model="ruleForm.name" />
-          </el-form-item>
-          <el-form-item label="应用说明" prop="desc">
-            <el-input v-model="ruleForm.desc" />
-          </el-form-item>
-          <el-form-item label="上报条数" prop="maxQueues">
-            <el-input-number v-model="ruleForm.maxQueues" :min="1" :max="20" />
-          </el-form-item>
-          <el-form-item label="应用间隔" prop="delay">
-            <el-input v-model="ruleForm.delay">
-              <template #append>ms</template>
-            </el-input>
-          </el-form-item>
-          <el-form-item label="是否加密" prop="encryption">
-            <el-radio-group v-model="ruleForm.encryption" :disabled="true">
-              <el-radio :label="1">加密</el-radio>
-              <el-radio :label="0">不加密</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="监听配置" prop="watch">
-            <el-checkbox-group v-model="ruleForm.watch">
-              <el-checkbox
-                :label="item.value"
-                v-for="(item, index) in data.watchList"
-                :key="index"
-                :disabled="item.disabled || false"
-              >
-                {{ item.label }}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm(ruleFormRef)">
-              {{ ruleForm.id && ruleForm.id != 0 ? "修改" : "添加" }}
-            </el-button>
-            <el-button @click="resetForm(ruleFormRef)">重置</el-button>
-          </el-form-item>
-        </el-form>
-        <div class="copy-code-area">
-          <h4>复制探针</h4>
-          <div class="code">
-            <el-icon class="copy-btn" size="22" @click="probeCodeCopy"
-              ><CopyDocument
-            /></el-icon>
-            {{ probeCode }}
-          </div>
+    <div class="app-container">
+        <div class="flex">
+            <el-button type="primary" @click="data.isShowPorjectPop = true">新增应用</el-button>
         </div>
-      </div>
-    </el-dialog>
-  </div>
+        <el-card class="mt20">
+            <div class="table-wrapper">
+                <el-table border :data="data.tableData">
+                    <el-table-column prop="name" label="应用名称" align="center" />
+                    <el-table-column prop="desc" label="应用说明" align="center" />
+                    <el-table-column prop="monitorAppId" label="项目Id" align="monitorAppId" />
+                    <el-table-column prop="delay" label="上报间隔" align="center" />
+                    <el-table-column label="是否加密" align="center">
+                        <template #default="{ row }">
+                            {{ row.encryption == 0 ? '不加密' : '加密' }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="updateTime" label="修改时间" align="center" />
+                    <el-table-column label="操作" align="center">
+                        <template #default="{ row }">
+                            <el-button type="text" @click="showHandleDetail(row)">
+                                修改
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="pager-wrapper mt20">
+                <el-pagination background :layout="paginationData.layout" :page-sizes="paginationData.pageSizes"
+                    :total="paginationData.total" :page-size="paginationData.pageSize"
+                    :currentPage="paginationData.currentPage" @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange" />
+            </div>
+        </el-card>
+        <!-- 应用添加修改 -->
+        <el-dialog v-model="data.isShowPorjectPop" title="应用" width="60%" :before-close="handleClose">
+            <div class="flex">
+                <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="120px" :size="'default'"
+                    status-icon class="pop-form">
+                    <el-form-item label="应用ID" prop="monitorAppId" >
+                        <el-input v-model="ruleForm.monitorAppId" :disabled="ruleForm.id ? true : false" />
+                    </el-form-item>
+                    <el-form-item label="应用类型" prop="projectType">
+                        <el-select v-model="ruleForm.projectType">
+                            <el-option v-for="item in data.projectTypeOptions" :key="item.value" :label="item.label"
+                                :value="item.value" />
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="应用名称" prop="name">
+                        <el-input v-model="ruleForm.name" />
+                    </el-form-item>
+                    <el-form-item label="应用说明" prop="desc">
+                        <el-input v-model="ruleForm.desc" />
+                    </el-form-item>
+                    <el-form-item label="上报条数" prop="maxQueues">
+                        <el-input-number v-model="ruleForm.maxQueues" :min="1" :max="20" />
+                    </el-form-item>
+                    <el-form-item label="应用间隔" prop="delay">
+                        <el-input v-model="ruleForm.delay">
+                            <template #append>ms</template>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="是否加密" prop="encryption">
+                        <el-radio-group v-model="ruleForm.encryption" :disabled="true">
+                            <el-radio :label="1">加密</el-radio>
+                            <el-radio :label="0">不加密</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="监听配置" prop="watch">
+                        <el-checkbox-group v-model="ruleForm.watch">
+                            <el-checkbox :label="item.value" v-for="(item, index) in data.watchList" :key="index"
+                                :disabled="item.disabled || false">
+                                {{ item.label }}
+                            </el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="submitForm(ruleFormRef)">
+                            {{ ruleForm.id && ruleForm.id != 0 ? "修改" : "添加" }}
+                        </el-button>
+                        <el-button @click="resetForm(ruleFormRef)">重置</el-button>
+                    </el-form-item>
+                </el-form>
+                <div class="copy-code-area">
+                    <h4>复制探针</h4>
+                    <div class="code">
+                        <el-icon class="copy-btn" size="22" @click="probeCodeCopy">
+                            <CopyDocument />
+                        </el-icon>
+                        {{ probeCode }}
+                    </div>
+                </div>
+            </div>
+        </el-dialog>
+    </div>
 </template>
 
 <script lang="ts">
-import { reactive, ref, computed } from "vue";
-import { projectSave } from "@/api/project/index";
+import { reactive, ref, computed, onMounted } from "vue";
+import { projectSave, projectList } from "@/api/project/index";
 import { usePagination } from "@/hooks/usePagination";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
@@ -133,255 +105,291 @@ import useClipboard from "vue-clipboard3";
 const { toClipboard } = useClipboard();
 
 interface RuleForm {
-  id?: number;
-  name: string; // 应用名称
-  desc: string; // 应用说明
-  monitorAppId: string; // 项目ID
-  projectType: number; // 项目类型
-  delay: number; // 应用间隔
-  encryption: number; // 是否加密
-  watch?: string[];
-  maxQueues: number; // 上报条数
+    id?: number;
+    name: string; // 应用名称
+    desc: string; // 应用说明
+    monitorAppId: string; // 项目ID
+    projectType: number; // 项目类型
+    delay: number; // 应用间隔
+    encryption: number; // 是否加密
+    watch?: string[];
+    maxQueues: number; // 上报条数
 }
 
 export default {
-  setup() {
-    let data = reactive({
-      isShowPorjectPop: false, // 弹窗
-      tableData: <any>[],
-      watchList: [
-        {
-          label: "PV",
-          value: "pageChange",
-          disabled: true,
-        },
-        {
-          label: "JS错误",
-          value: "jsError",
-        },
-        {
-          label: "Vue错误",
-          value: "vueError",
-        },
-        {
-          label: "异步错误",
-          value: "promise",
-        },
-        {
-          label: "资源错误",
-          value: "resource",
-        },
-        {
-          label: "Fetch请求",
-          value: "fetch",
-        },
-        {
-          label: "Xhr请求",
-          value: "xhr",
-        },
-        {
-          label: "性能监控",
-          value: "performance",
-        },
-        {
-          label: "点击行为监控",
-          value: "click",
-        },
-        {
-          label: "白屏监控",
-          value: "whiteScreen",
-        },
-        {
-          label: "错误录屏上报",
-          value: "recordScreen",
-        },
-      ],
-      projectTypeOptions: [
-        {
-          value: 1,
-          label: "web",
-        },
-      ],
-    });
-    const ruleFormRef = ref<FormInstance>();
-    const ruleForm: any = reactive<RuleForm>({
-      id: 0,
-      name: "",
-      desc: "",
-      monitorAppId: "",
-      projectType: 1,
-      delay: 30,
-      encryption: 0,
-      watch: <any>["pageChange"],
-      maxQueues: 1,
-    });
-    const rules = reactive<FormRules<RuleForm>>({
-      monitorAppId: [
-        {
-          required: true,
-          message: "请输入应用ID",
-          trigger: "blur",
-        },
-      ],
-      name: [
-        {
-          required: true,
-          message: "请输入应用名称",
-          trigger: "blur",
-        },
-      ],
-      desc: [
-        {
-          required: true,
-          message: "请输入应用说明",
-          trigger: "blur",
-        },
-      ],
-    });
-    const submitForm = async (formEl: FormInstance | undefined) => {
-      if (!formEl) return;
-      await formEl.validate(async (valid, fields) => {
-        if (valid) {
-          let param: any = ruleForm;
-          let res = await projectSave(param);
-          if (res.success) {
-            ElMessage({
-              message: "保存成功",
-              type: "success",
+    setup() {
+        let data = reactive({
+            isShowPorjectPop: false, // 弹窗
+            tableData: <any>[],
+            watchList: [
+                {
+                    label: "PV",
+                    value: "pageChange",
+                    disabled: true,
+                },
+                {
+                    label: "JS错误",
+                    value: "jsError",
+                },
+                {
+                    label: "Vue错误",
+                    value: "vueError",
+                },
+                {
+                    label: "异步错误",
+                    value: "promise",
+                },
+                {
+                    label: "资源错误",
+                    value: "resource",
+                },
+                {
+                    label: "Fetch请求",
+                    value: "fetch",
+                },
+                {
+                    label: "Xhr请求",
+                    value: "xhr",
+                },
+                {
+                    label: "性能监控",
+                    value: "performance",
+                },
+                {
+                    label: "点击行为监控",
+                    value: "click",
+                },
+                {
+                    label: "白屏监控",
+                    value: "whiteScreen",
+                },
+                {
+                    label: "错误录屏上报",
+                    value: "recordScreen",
+                },
+            ],
+            projectTypeOptions: [
+                {
+                    value: 1,
+                    label: "web",
+                },
+            ],
+        });
+        const ruleFormRef = ref<FormInstance>();
+        const ruleForm: any = reactive<RuleForm>({
+            id: 0,
+            name: "",
+            desc: "",
+            monitorAppId: "",
+            projectType: 1,
+            delay: 30,
+            encryption: 0,
+            watch: <any>["pageChange"],
+            maxQueues: 1,
+        });
+        const rules = reactive<FormRules<RuleForm>>({
+            monitorAppId: [
+                {
+                    required: true,
+                    message: "请输入应用ID",
+                    trigger: "blur",
+                },
+            ],
+            name: [
+                {
+                    required: true,
+                    message: "请输入应用名称",
+                    trigger: "blur",
+                },
+            ],
+            desc: [
+                {
+                    required: true,
+                    message: "请输入应用说明",
+                    trigger: "blur",
+                },
+            ],
+        });
+        const submitForm = async (formEl: FormInstance | undefined) => {
+            if (!formEl) return;
+            await formEl.validate(async (valid, fields) => {
+                if (valid) {
+                    let param: any = ruleForm;
+                    let res = await projectSave(param);
+                    if (res.success) {
+                        ElMessage({
+                            message: "保存成功",
+                            type: "success",
+                        });
+                        handleClose();
+                    } else {
+                        ElMessage({
+                            message: res.errorMessage,
+                            type: "error",
+                        });
+                    }
+                    console.log("submit!", ruleForm);
+                } else {
+                    console.log("error submit!", fields);
+                }
             });
-            handleClose();
-          } else {
-            ElMessage({
-              message: res.errorMessage,
-              type: "error",
+        };
+
+        const resetForm = (formEl: FormInstance | undefined) => {
+            if (!formEl) return;
+            formEl.resetFields();
+        };
+
+        // 探针代码
+        const probeCode = computed(() => {
+            const {
+                monitorAppId = "",
+                encryption,
+                maxQueues,
+                delay,
+                watch = [],
+            } = ruleForm;
+            let watchItem: any = {};
+            watch.forEach((item: any) => {
+                watchItem[item] = true;
+                if (!watch.includes(item)) {
+                    watchItem[item] = false;
+                }
             });
-          }
-          console.log("submit!", ruleForm);
-        } else {
-          console.log("error submit!", fields);
+            watchItem = JSON.stringify(watchItem);
+            let code =
+                '<script>;(function(w,d,s){n=()=>{const e=o(),r=`https://www.xxxx.com`;new MonitorSdk({monitorAppId:`{monitorAppId}`,uuId:()=>MUtils.monitorCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/monitor/upload`,trackUrl:`${r}/tracker/upload`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}}) /* 多环境适配放开这里 } */ };(()=>{const e=d.createElement("script");e.readyState?e.onreadystatechange=function(){"loaded"!==e.readyState&&"complete"!==e.readyState||(e.onreadystatechange=null,n())}:e.onload=function(){n()},e.src=s,d.head.append(e)})()})(window,document,"https://static.enmonster.com/epm/cdn/monitorSdk.js");<\/script>';
+
+            code = code.replace(/\{monitorAppId\}/g, `${monitorAppId}`);
+            code = code.replace(/\{monitorWatch\}/g, `${watchItem}`);
+            code = code.replace(/\{monitorEncryption\}/g, `${encryption}`);
+            code = code.replace(/\{monitorMaxQueues\}/g, `${maxQueues}`);
+            code = code.replace(/\{monitorReportType\}/g, `${1}`);
+            code = code.replace(/\{monitorDelay\}/g, `${1000 * delay}`);
+            return code;
+        });
+
+        const probeCodeCopy = async () => {
+            try {
+                await toClipboard(probeCode.value);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+        // 关闭弹窗
+        const handleClose = () => {
+            data.isShowPorjectPop = false;
+            ruleForm.id = 0;
+            ruleForm.name = "";
+            ruleForm.desc = "";
+            ruleForm.monitorAppId = "";
+            ruleForm.projectType = 1;
+            ruleForm.delay = 30;
+            ruleForm.encryption = 0;
+            ruleForm.watch = ["pageChange"];
+            ruleForm.maxQueues = 1;
+        };
+
+        // 分页
+        const { paginationData, handleCurrentChange, handleSizeChange } =
+            usePagination(() => {
+                handleSearch();
+            });
+
+        // 查询分页
+        const handleSearch = async () => {
+            let params = {
+                page: paginationData.currentPage,
+                pageSize: paginationData.pageSize,
+            }
+            let res = await projectList(params)
+            if (!res.success) {
+                return
+            }
+            paginationData.total = res.model.count;
+            data.tableData = res.model.list;
+        };
+
+        const showHandleDetail = (item: any) => {
+            ruleForm.id = item.id;
+            ruleForm.name = item.name;
+            ruleForm.desc = item.desc;
+            ruleForm.monitorAppId = item.monitorAppId;
+            ruleForm.projectType = Number(item.projectType);
+            ruleForm.delay = item.delay;
+            ruleForm.encryption = item.encryption;
+            ruleForm.watch = JSON.parse(item.watch);
+            ruleForm.maxQueues = item.maxQueues;
+            data.isShowPorjectPop = true;
         }
-      });
-    };
+        onMounted(() => {
+            handleSearch()
+        })
 
-    const resetForm = (formEl: FormInstance | undefined) => {
-      if (!formEl) return;
-      formEl.resetFields();
-    };
-
-    // 探针代码
-    const probeCode = computed(() => {
-      const {
-        monitorAppId = "",
-        encryption,
-        maxQueues,
-        delay,
-        watch = [],
-      } = ruleForm;
-      let watchItem: any = {};
-      watch.forEach((item: any) => {
-        watchItem[item] = true;
-        if (!watch.includes(item)) {
-          watchItem[item] = false;
-        }
-      });
-      watchItem = JSON.stringify(watchItem);
-      let code =
-        '<script>;(function(w,d,s){n=()=>{const e=o(),r=`https://www.xxxx.com`;new MonitorSdk({monitorAppId:`{monitorAppId}`,uuId:()=>MUtils.monitorCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/monitor/upload`,trackUrl:`${r}/tracker/upload`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}}) /* 多环境适配放开这里 } */ };(()=>{const e=d.createElement("script");e.readyState?e.onreadystatechange=function(){"loaded"!==e.readyState&&"complete"!==e.readyState||(e.onreadystatechange=null,n())}:e.onload=function(){n()},e.src=s,d.head.append(e)})()})(window,document,"https://static.enmonster.com/epm/cdn/monitorSdk.js");<\/script>';
-
-      code = code.replace(/\{monitorAppId\}/g, `${monitorAppId}`);
-      code = code.replace(/\{monitorWatch\}/g, `${watchItem}`);
-      code = code.replace(/\{monitorEncryption\}/g, `${encryption}`);
-      code = code.replace(/\{monitorMaxQueues\}/g, `${maxQueues}`);
-      code = code.replace(/\{monitorReportType\}/g, `${1}`);
-      code = code.replace(/\{monitorDelay\}/g, `${1000 * delay}`);
-      return code;
-    });
-
-    const probeCodeCopy = async () => {
-      try {
-        await toClipboard(probeCode.value);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    // 关闭弹窗
-    const handleClose = () => {
-      data.isShowPorjectPop = false;
-      ruleForm.id = 0;
-      ruleForm.name = "";
-      ruleForm.desc = "";
-      ruleForm.monitorAppId = "";
-      ruleForm.projectType = 1;
-      ruleForm.delay = 30;
-      ruleForm.encryption = 0;
-      ruleForm.watch = ["pageChange"];
-      ruleForm.maxQueues = 1;
-    };
-
-    // 分页
-    const { paginationData, handleCurrentChange, handleSizeChange } =
-      usePagination(() => {
-        handleSearch();
-      });
-
-    const handleSearch = () => {};
-
-    return {
-      data,
-      paginationData,
-      handleCurrentChange,
-      handleSizeChange,
-      handleClose,
-      ruleFormRef,
-      ruleForm,
-      rules,
-      submitForm,
-      resetForm,
-      probeCode,
-      probeCodeCopy
-    };
-  },
+        return {
+            data,
+            paginationData,
+            handleCurrentChange,
+            handleSizeChange,
+            handleClose,
+            ruleFormRef,
+            ruleForm,
+            rules,
+            submitForm,
+            resetForm,
+            probeCode,
+            probeCodeCopy,
+            showHandleDetail
+        };
+    },
 };
 </script>
 
 <style lang="scss" scoped>
 .search-wrapper {
-  :deep(.el-form-item) {
-    margin-bottom: 0;
-  }
-}
-.pop-form {
-  :deep(.el-checkbox-group) {
-    display: flex;
-    flex-wrap: wrap;
-  }
-}
-.copy-code-area {
-  width: 90%;
-  margin-left: 20px;
-  position: relative;
-  h4 {
-    line-height: 34px;
-    font-weight: bold;
-  }
-  .code {
-    position: relative;
-    .copy-btn {
-      position: absolute;
-      right: 5px;
-      top: 5px;
-      cursor: pointer;
+    :deep(.el-form-item) {
+        margin-bottom: 0;
     }
-    width: 100%;
-    background: rgb(246, 247, 251);
-    color: rgb(29, 33, 41);
-    padding: 23px;
-    border-radius: 4px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    word-break: break-all;
-    font-family: monospace, monospace;
-    font-size: 1em;
-  }
+}
+
+.pop-form {
+    :deep(.el-checkbox-group) {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
+
+.copy-code-area {
+    width: 90%;
+    margin-left: 20px;
+    position: relative;
+
+    h4 {
+        line-height: 34px;
+        font-weight: bold;
+    }
+
+    .code {
+        position: relative;
+
+        .copy-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            cursor: pointer;
+        }
+
+        width: 100%;
+        background: rgb(246, 247, 251);
+        color: rgb(29, 33, 41);
+        padding: 23px;
+        border-radius: 4px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        word-break: break-all;
+        font-family: monospace,
+        monospace;
+        font-size: 1em;
+    }
 }
 </style>

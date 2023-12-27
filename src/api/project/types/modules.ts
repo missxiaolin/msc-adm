@@ -12,3 +12,11 @@ export interface ProjectSaveRequestData {
 }
 
 export type ProjectSaveResponseData = ApiResponseData<any>;
+
+// 项目列表
+export interface ProjectListRequestData {
+    page: number;
+    pageSize: number;
+}
+
+export type ProjectListResponseData = ApiResponseData<any>;

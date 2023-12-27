@@ -12,3 +12,15 @@ export function projectSave(data: Project.ProjectSaveRequestData) {
     data,
   });
 }
+
+/**
+ * 项目列表
+ * @returns
+ */
+export function projectList(data: Project.ProjectListRequestData) {
+  return request<Project.ProjectListResponseData>({
+    url: "/adm/project/list",
+    method: "post",
+    data,
+  });
+}
