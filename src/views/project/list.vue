@@ -222,6 +222,7 @@ export default {
                             type: "success",
                         });
                         handleClose();
+                        handleSearch();
                     } else {
                         ElMessage({
                             message: res.errorMessage,
