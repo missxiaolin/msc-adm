@@ -11,10 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "echarts": "^5.4.2",
     "@element-plus/icons-vue": "2.1.0",
     "axios": "1.4.0",
     "dayjs": "1.11.9",
+    "echarts": "^5.4.2",
     "element-plus": "2.3.8",
     "js-cookie": "3.0.5",
     "lodash-es": "4.17.21",
@@ -26,6 +26,7 @@
     "pinia": "2.1.4",
     "screenfull": "6.0.2",
     "vue": "^3.3.4",
+    "vue-clipboard3": "^2.0.0",
     "vue-router": "4.2.4",
     "vxe-table": "4.4.1",
     "vxe-table-plugin-element": "3.0.7",

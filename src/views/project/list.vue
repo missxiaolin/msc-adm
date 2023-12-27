@@ -112,7 +112,9 @@
         <div class="copy-code-area">
           <h4>复制探针</h4>
           <div class="code">
-            <el-icon class="copy-btn" size="22"><CopyDocument /></el-icon>
+            <el-icon class="copy-btn" size="22" @click="probeCodeCopy"
+              ><CopyDocument
+            /></el-icon>
             {{ probeCode }}
           </div>
         </div>
@@ -127,6 +129,8 @@ import { projectSave } from "@/api/project/index";
 import { usePagination } from "@/hooks/usePagination";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
+import useClipboard from "vue-clipboard3";
+const { toClipboard } = useClipboard();
 
 interface RuleForm {
   id?: number;
@@ -292,18 +296,26 @@ export default {
       code = code.replace(/\{monitorDelay\}/g, `${1000 * delay}`);
       return code;
     });
+
+    const probeCodeCopy = async () => {
+      try {
+        await toClipboard(probeCode.value);
+      } catch (e) {
+        console.error(e);
+      }
+    };
     // 关闭弹窗
     const handleClose = () => {
       data.isShowPorjectPop = false;
-      ruleForm.id = 0
-      ruleForm.name = ""
-      ruleForm.desc = ""
-      ruleForm.monitorAppId = ""
-      ruleForm.projectType = 1
-      ruleForm.delay = 30
-      ruleForm.encryption = 0
-      ruleForm.watch = ["pageChange"]
-      ruleForm.maxQueues = 1
+      ruleForm.id = 0;
+      ruleForm.name = "";
+      ruleForm.desc = "";
+      ruleForm.monitorAppId = "";
+      ruleForm.projectType = 1;
+      ruleForm.delay = 30;
+      ruleForm.encryption = 0;
+      ruleForm.watch = ["pageChange"];
+      ruleForm.maxQueues = 1;
     };
 
     // 分页
@@ -326,6 +338,7 @@ export default {
       submitForm,
       resetForm,
       probeCode,
+      probeCodeCopy
     };
   },
 };
