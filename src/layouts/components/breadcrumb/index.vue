@@ -15,8 +15,9 @@
         </a>
       </el-breadcrumb-item>
     </el-breadcrumb>
-    <el-select v-model="getCurrentProject" size="large" class="mt5">
+    <el-select placeholder="请选择项目" @change="handleProjectChange" v-model="currentProjectId" size="large" class="mt5">
       <el-option
+        
         v-for="item in projectList"
         :key="item.id"
         :label="item.name"
@@ -27,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, getCurrentInstance } from "vue";
 import { type RouteLocationMatched, useRoute, useRouter } from "vue-router";
 import { compile } from "path-to-regexp";
 import { useGeneralStore } from "@/store/modules/general";
@@ -35,6 +36,11 @@ import { useGeneralStore } from "@/store/modules/general";
 const route = useRoute();
 const router = useRouter();
 const generalStore = useGeneralStore();
+const { proxy }: any = getCurrentInstance();
+
+const handleManualRefresh = () => {
+	generalStore.setManualRefresh();
+};
 
 /** 定义响应式数据 breadcrumbs，用于存储面包屑导航信息 */
 const breadcrumbs = ref<RouteLocationMatched[]>([]);
@@ -74,13 +80,16 @@ watch(
 /** 初始化面包屑导航信息 */
 getBreadcrumb();
 
-console.log()
-
 const projectList = computed(() => {
   return generalStore.getProjectList
 });
-const getCurrentProject = generalStore.getCurrentProjectId
-console.log(getCurrentProject)
+const currentProjectId = ref(generalStore.getCurrentProjectId)
+const handleProjectChange = (v: any) => {
+  generalStore.setCurrentProject(v)
+  proxy.$nextTick(() => {
+		handleManualRefresh();
+	});
+}
 </script>
 
 <style lang="scss" scoped>

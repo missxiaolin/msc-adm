@@ -6,6 +6,8 @@ export const useGeneralStore = defineStore({
   state: (): any => ({
     projectList: <any>getCookit("PROJECT_ALL") ? JSON.parse(getCookit("PROJECT_ALL") || "[]") : [], // 项目列表
     currentProjectId: <any>getCookit("PROJECT_ID") || "", // 当前菜单
+    refreshTimer: <any>null,
+    manualRefresh: <boolean>false
   }),
   getters: {
     // 获取菜单列表
@@ -14,6 +16,9 @@ export const useGeneralStore = defineStore({
     },
     getCurrentProjectId(): any {
       return this.currentProjectId
+    },
+    getManualRefresh(): boolean {
+      return this.manualRefresh
     }
   },
   actions: {
@@ -42,5 +47,15 @@ export const useGeneralStore = defineStore({
       }
       this.setProjectList(res.model)
     },
+    // 手动刷新
+		setManualRefresh() {
+			if (this.refreshTimer) return;
+			this.manualRefresh = true;
+			this.refreshTimer = setTimeout(() => {
+				this.manualRefresh = false;
+				this.refreshTimer = null;
+				clearTimeout(this.refreshTimer);
+			}, 100);
+		},
   },
 });
