@@ -1,28 +1,40 @@
 <template>
-  <el-breadcrumb class="app-breadcrumb">
-    <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="item.path">
-      <span
-        v-if="
-          item.redirect === 'noRedirect' || index === breadcrumbs.length - 1
-        "
-        class="no-redirect"
-      >
-        {{ item.meta.title }}
-      </span>
-      <a v-else @click.prevent="handleLink(item)">
-        {{ item.meta.title }}
-      </a>
-    </el-breadcrumb-item>
-  </el-breadcrumb>
+  <div class="flex flex-row justify-between">
+    <el-breadcrumb class="app-breadcrumb">
+      <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="item.path">
+        <span
+          v-if="
+            item.redirect === 'noRedirect' || index === breadcrumbs.length - 1
+          "
+          class="no-redirect"
+        >
+          {{ item.meta.title }}
+        </span>
+        <a v-else @click.prevent="handleLink(item)">
+          {{ item.meta.title }}
+        </a>
+      </el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-select v-model="getCurrentProject" size="large" class="mt5">
+      <el-option
+        v-for="item in projectList"
+        :key="item.id"
+        :label="item.name"
+        :value="item.monitorAppId"
+      />
+    </el-select>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { type RouteLocationMatched, useRoute, useRouter } from "vue-router";
 import { compile } from "path-to-regexp";
+import { useGeneralStore } from "@/store/modules/general";
 
 const route = useRoute();
 const router = useRouter();
+const generalStore = useGeneralStore();
 
 /** 定义响应式数据 breadcrumbs，用于存储面包屑导航信息 */
 const breadcrumbs = ref<RouteLocationMatched[]>([]);
@@ -61,6 +73,14 @@ watch(
 
 /** 初始化面包屑导航信息 */
 getBreadcrumb();
+
+console.log()
+
+const projectList = computed(() => {
+  return generalStore.getProjectList
+});
+const getCurrentProject = generalStore.getCurrentProjectId
+console.log(getCurrentProject)
 </script>
 
 <style lang="scss" scoped>

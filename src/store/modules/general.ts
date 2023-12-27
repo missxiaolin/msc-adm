@@ -1,10 +1,9 @@
 import { defineStore } from "pinia";
 import { setCookit, getCookit } from "@/utils/cache/cookies";
-
 export const useGeneralStore = defineStore({
   id: "app-general",
   state: (): any => ({
-    projectList: <any>getCookit("PROJECT_ALL") || [], // 项目列表
+    projectList: <any>getCookit("PROJECT_ALL") ? JSON.parse(getCookit("PROJECT_ALL") || "[]") : [], // 项目列表
     currentProjectId: <any>getCookit("PROJECT_ID") || "", // 当前菜单
   }),
   getters: {
@@ -12,6 +11,9 @@ export const useGeneralStore = defineStore({
     getProjectList(): any {
       return this.projectList;
     },
+    getCurrentProjectId(): any {
+      return this.currentProjectId
+    }
   },
   actions: {
     setCurrentProject(monitorAppId: string) {
@@ -23,7 +25,6 @@ export const useGeneralStore = defineStore({
      * @param projectList
      */
     setProjectList(projectList: any) {
-        console.log('测试', projectList)
       this.projectList = projectList;
       setCookit("PROJECT_ALL", JSON.stringify(projectList));
       let currentProject = projectList[0]?.monitorAppId;
