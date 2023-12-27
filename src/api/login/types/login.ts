@@ -5,4 +5,20 @@ export interface LoginRequestData {
   password: string;
 }
 
-export type LoginResponseData = ApiResponseData<{ token: string }>;
+export type LoginResponseData = ApiResponseData<{
+  token: string;
+  projectAll: {
+    id: number,
+    name: string,
+    desc: string,
+    monitorAppId: string,
+    watch: string,
+    maxQueues: number,
+    projectType: string,
+    encryption: string,
+    delay: number,
+    status: number,
+    startTime: number,
+    updateTime: number
+  }[]
+}>;

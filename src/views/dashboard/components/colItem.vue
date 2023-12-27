@@ -103,7 +103,6 @@ export default {
   },
   setup(props) {
     const { chart } = props;
-    console.log(chart.topEchartModel);
     const chartData = computed(() => {
       return (topType: string | number, EchartModel = chart.topEchartModel) => {
         const topEchart = cloneDeep(defaultEchart);

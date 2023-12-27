@@ -6,6 +6,8 @@ import { defineStore } from "pinia";
 import { type LoginRequestData } from "@/api/login/types/login";
 import { loginApi } from "@/api/login";
 import { setToken, getToken, removeToken } from "@/utils/cache/cookies";
+import { useGeneralStore } from "@/store/modules/general";
+const generalStore = useGeneralStore();
 
 export const useUserStore = defineStore("user", () => {
   const token = ref<string>(getToken() || "");
@@ -17,6 +19,7 @@ export const useUserStore = defineStore("user", () => {
     const { model } = await loginApi({ username, password });
     setToken(model.token);
     token.value = model.token;
+    generalStore.setProjectList(model.projectAll);
   };
 
   /** 登出 */
