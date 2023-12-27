@@ -15,6 +15,11 @@
                             {{ row.encryption == 0 ? '不加密' : '加密' }}
                         </template>
                     </el-table-column>
+                    <el-table-column label="是否开启" align="center">
+                        <template #default="{ row }">
+                            {{ row.status == 0 ? '禁用' : '开启' }}
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="updateTime" label="修改时间" align="center" />
                     <el-table-column label="操作" align="center">
                         <template #default="{ row }">
@@ -66,6 +71,12 @@
                             <el-radio :label="0">不加密</el-radio>
                         </el-radio-group>
                     </el-form-item>
+                    <el-form-item label="是否使用" prop="encryption">
+                        <el-radio-group v-model="ruleForm.status">
+                            <el-radio :label="1">使用</el-radio>
+                            <el-radio :label="0">禁用</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
                     <el-form-item label="监听配置" prop="watch">
                         <el-checkbox-group v-model="ruleForm.watch">
                             <el-checkbox :label="item.value" v-for="(item, index) in data.watchList" :key="index"
@@ -114,6 +125,7 @@ interface RuleForm {
     encryption: number; // 是否加密
     watch?: string[];
     maxQueues: number; // 上报条数
+    status: number;
 }
 
 export default {
@@ -186,6 +198,7 @@ export default {
             encryption: 0,
             watch: <any>["pageChange"],
             maxQueues: 1,
+            status: 1
         });
         const rules = reactive<FormRules<RuleForm>>({
             monitorAppId: [

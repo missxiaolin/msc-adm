@@ -9,6 +9,7 @@ export interface ProjectSaveRequestData {
   encryption: number; // 是否加密
   watch?: string[];
   maxQueues: number; // 上报条数
+  status: number; // 状态
 }
 
 export type ProjectSaveResponseData = ApiResponseData<any>;
