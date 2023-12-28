@@ -276,7 +276,7 @@ export default {
             });
             watchItem = JSON.stringify(watchItem);
             let code =
-                '<script>;(function(w,d,s){n=()=>{const e=o(),r=`https://www.xxxx.com`;new MonitorSdk({monitorAppId:`{monitorAppId}`,uuId:()=>MUtils.monitorCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/monitor/upload`,trackUrl:`${r}/tracker/upload`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}}) /* 多环境适配放开这里 } */ };(()=>{const e=d.createElement("script");e.readyState?e.onreadystatechange=function(){"loaded"!==e.readyState&&"complete"!==e.readyState||(e.onreadystatechange=null,n())}:e.onload=function(){n()},e.src=s,d.head.append(e)})()})(window,document,"https://static.enmonster.com/epm/cdn/monitorSdk.js");<\/script>';
+                '<script>;(function(w,d,s){n=()=>{const e=o(),r=`https://www.xxxx.com`;new MonitorSdk({monitorAppId:`{monitorAppId}`,uuId:()=>MUtils.monitorCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/upload`,trackUrl:`${r}/api/tracker/upload`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}}) /* 多环境适配放开这里 } */ };(()=>{const e=d.createElement("script");e.readyState?e.onreadystatechange=function(){"loaded"!==e.readyState&&"complete"!==e.readyState||(e.onreadystatechange=null,n())}:e.onload=function(){n()},e.src=s,d.head.append(e)})()})(window,document,"https://github.com/missxiaolin/msc-serve/blob/main/sdk/monitorSdk.js");<\/script>';
 
             code = code.replace(/\{monitorAppId\}/g, `${monitorAppId}`);
             code = code.replace(/\{monitorWatch\}/g, `${watchItem}`);
