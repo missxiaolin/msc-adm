@@ -10,7 +10,7 @@
     <el-card class="box-card">
       <div class="top-title">
         流量数据
-        <span style="color: var(--e-color-success-light-3)">(H-1数据)</span>
+        <span>(H-1数据)</span>
         <el-tooltip effect="dark" content="定时数据，每小时59分钟59秒统计" placement="right">
           <el-icon size="20">
             <WarningFilled />
@@ -259,7 +259,7 @@ export default {
 <style lang="scss" scoped>
 .home-title {
   padding: 10px 0;
-  color: #000;
+  color: var(--el-card-padding);
 
   dt {
     line-height: 32px;

@@ -67,7 +67,7 @@
       transition: all 300ms;
       &.active,
       &:hover {
-        background-color: #eaf9f9;
+        background-color: var(--el-color-primary);
       }
       dt {
         flex: 1;
@@ -97,7 +97,7 @@
       }
       dd {
         padding-left: 15px;
-        color: #29c1c2;
+        color: var(--el-card-padding);
       }
     }
   }
