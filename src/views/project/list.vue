@@ -65,6 +65,9 @@
                             <template #append>ms</template>
                         </el-input>
                     </el-form-item>
+                    <el-form-item label="Cookie字段" prop="cookieUserKey">
+                        <el-input v-model="ruleForm.cookieUserKey"></el-input>
+                    </el-form-item>
                     <el-form-item label="是否加密" prop="encryption">
                         <el-radio-group v-model="ruleForm.encryption" :disabled="true">
                             <el-radio :label="1">加密</el-radio>
@@ -128,6 +131,7 @@ interface RuleForm {
     watch?: string[];
     maxQueues: number; // 上报条数
     status: number;
+    cookieUserKey: string; // 获取cookie 用户
 }
 
 export default {
@@ -201,7 +205,8 @@ export default {
             encryption: 0,
             watch: <any>["pageChange"],
             maxQueues: 1,
-            status: 1
+            status: 1,
+            cookieUserKey: ""
         });
         const rules = reactive<FormRules<RuleForm>>({
             monitorAppId: [
@@ -267,6 +272,7 @@ export default {
                 maxQueues,
                 delay,
                 watch = [],
+                cookieUserKey = ""
             } = ruleForm;
             let watchItem: any = {};
             watch.forEach((item: any) => {
@@ -277,9 +283,10 @@ export default {
             });
             watchItem = JSON.stringify(watchItem);
             let code =
-                '<script>;(function(w,d,s){n=()=>{const r=`http://msc-serve.missxiaolin.com`;new MonitorSdk({monitorAppId:`{monitorAppId}`,watch:{monitorWatch},report:{url:`${r}/api/upload`,trackUrl:`${r}/api/tracker/upload`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}}) /* 多环境适配放开这里 } */ };(()=>{const e=d.createElement("script");e.readyState?e.onreadystatechange=function(){"loaded"!==e.readyState&&"complete"!==e.readyState||(e.onreadystatechange=null,n())}:e.onload=function(){n()},e.src=s,d.head.append(e)})()})(window,document,"http://www.missxiaolin.com/monitorSdk.js");<\/script>';
+                '<script>;(function(w,d,s){n=()=>{const r=`http://msc-serve.missxiaolin.com`;new MonitorSdk({monitorAppId:`{monitorAppId}`,uuId:()=>MUtils.monitorCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/upload`,trackUrl:`${r}/api/tracker/upload`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}}) /* 多环境适配放开这里 } */ };(()=>{const e=d.createElement("script");e.readyState?e.onreadystatechange=function(){"loaded"!==e.readyState&&"complete"!==e.readyState||(e.onreadystatechange=null,n())}:e.onload=function(){n()},e.src=s,d.head.append(e)})()})(window,document,"http://www.missxiaolin.com/monitorSdk.js");<\/script>';
 
             code = code.replace(/\{monitorAppId\}/g, `${monitorAppId}`);
+            code = code.replace(/\{cookieUserField\}/g, `${cookieUserKey}`);
             code = code.replace(/\{monitorWatch\}/g, `${watchItem}`);
             code = code.replace(/\{monitorEncryption\}/g, `${encryption}`);
             code = code.replace(/\{monitorMaxQueues\}/g, `${maxQueues}`);
@@ -307,6 +314,7 @@ export default {
             ruleForm.encryption = 0;
             ruleForm.watch = ["pageChange"];
             ruleForm.maxQueues = 1;
+            ruleForm.cookieUserKey = "";
         };
 
         // 分页
@@ -339,6 +347,7 @@ export default {
             ruleForm.encryption = item.encryption;
             ruleForm.watch = JSON.parse(item.watch);
             ruleForm.maxQueues = item.maxQueues;
+            ruleForm.cookieUserKey = item.cookieUserKey;
             data.isShowPorjectPop = true;
         }
         onMounted(() => {

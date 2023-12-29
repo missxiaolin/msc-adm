@@ -7,6 +7,7 @@ export interface LoginRequestData {
 
 export type LoginResponseData = ApiResponseData<{
   token: string;
+  userId: number;
   projectAll: {
     id: number,
     name: string,

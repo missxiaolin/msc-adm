@@ -5,7 +5,7 @@ import { useSettingsStore } from "./settings";
 import { defineStore } from "pinia";
 import { type LoginRequestData } from "@/api/login/types/login";
 import { loginApi } from "@/api/login";
-import { setToken, getToken, removeToken } from "@/utils/cache/cookies";
+import { setToken, getToken, removeToken, setCookie } from "@/utils/cache/cookies";
 import { useGeneralStore } from "@/store/modules/general";
 const generalStore = useGeneralStore();
 
@@ -19,6 +19,7 @@ export const useUserStore = defineStore("user", () => {
     const { model } = await loginApi({ username, password });
     setToken(model.token);
     token.value = model.token;
+    setCookie('userId', model.userId)
     generalStore.setProjectList(model.projectAll);
   };
 
