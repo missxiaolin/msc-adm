@@ -259,7 +259,7 @@ export default {
 <style lang="scss" scoped>
 .home-title {
   padding: 10px 0;
-  color: var(--el-card-padding);
+  color: var(--el-text-color-primary);
 
   dt {
     line-height: 32px;

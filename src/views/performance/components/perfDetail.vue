@@ -157,6 +157,7 @@ export default {
     width: 100%;
     .basic-info {
       dd {
+        color: var(--el-text-color-primary);
         padding: 0 15px 10px 0;
         .el-icon {
           margin-right: 10px;
@@ -178,6 +179,7 @@ export default {
       text-align: left;
       h2.title,
       h3.title {
+        color: var(--el-text-color-primary);
         font-size: 15px;
         font-weight: 500;
         align-items: center;
@@ -197,6 +199,7 @@ export default {
         dd {
           display: flex;
           padding: 8px;
+          color: var(--el-text-color-primary);
           p {
             margin-left: 4px;
             padding: 5px 10px;
