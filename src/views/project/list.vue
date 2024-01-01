@@ -162,8 +162,8 @@ export default {
                     value: "resource",
                 },
                 {
-                    label: "Fetch请求",
-                    value: "fetch",
+                    label: "网络请求",
+                    value: "request",
                 },
                 {
                     label: "Xhr请求",
