@@ -16,11 +16,13 @@ export const useUserStore = defineStore("user", () => {
 
   /** 登录 */
   const login = async ({ username, password }: LoginRequestData) => {
-    const { model } = await loginApi({ username, password });
-    setToken(model.token);
-    token.value = model.token;
-    setCookie('userId', model.userId)
-    generalStore.setProjectList(model.projectAll);
+    const { model, success } = await loginApi({ username, password });
+    if (success) {
+      setToken(model.token);
+      token.value = model.token || "";
+      setCookie('userId', model.userId || "")
+      generalStore.setProjectList(model.projectAll || []);
+    }
   };
 
   /** 登出 */
