@@ -81,8 +81,8 @@
         </div>
         <div class="e-col">
           <el-card>
-            <colItem :chart="chart" :optionData="data" :chartKey="'browser'" :title="'浏览器版本访问用户量TOP'"
-              :tip="'数值代表使用的浏览器版本的数量'" />
+            <colItem :chart="chart" :optionData="data" :chartKey="'browser'" :title="'（浏览器、小程序）版本访问用户量TOP'"
+              :tip="'数值代表使用的（浏览器、小程序）版本的数量'" />
           </el-card>
 
         </div>
