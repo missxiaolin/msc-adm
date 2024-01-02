@@ -46,7 +46,7 @@
                         <el-input v-model="ruleForm.monitorAppId" :disabled="ruleForm.id ? true : false" />
                     </el-form-item>
                     <el-form-item label="应用类型" prop="projectType">
-                        <el-select v-model="ruleForm.projectType">
+                        <el-select v-model="ruleForm.projectType" @change="projectTypeChange">
                             <el-option v-for="item in data.projectTypeOptions" :key="item.value" :label="item.label"
                                 :value="item.value" />
                         </el-select>
@@ -148,38 +148,42 @@ export default {
                 {
                     label: "JS错误",
                     value: "jsError",
+                    disabled: false,
                 },
                 {
                     label: "Vue错误",
                     value: "vueError",
+                    disabled: false,
                 },
                 {
                     label: "异步错误",
                     value: "promise",
+                    disabled: false,
                 },
                 {
                     label: "资源错误",
                     value: "resource",
+                    disabled: false,
                 },
                 {
                     label: "网络请求",
                     value: "request",
-                },
-                {
-                    label: "Xhr请求",
-                    value: "xhr",
+                    disabled: false,
                 },
                 {
                     label: "性能监控",
                     value: "performance",
+                    disabled: false,
                 },
                 {
                     label: "点击行为监控",
                     value: "click",
+                    disabled: false,
                 },
                 {
                     label: "白屏监控",
                     value: "whiteScreen",
+                    disabled: false,
                 },
                 {
                     label: "错误录屏上报",
@@ -191,7 +195,10 @@ export default {
                 {
                     value: 1,
                     label: "web",
-                },
+                }, {
+                    value: 2,
+                    label: '微信小程序'
+                }
             ],
         });
         const ruleFormRef = ref<FormInstance>();
@@ -354,6 +361,19 @@ export default {
             handleSearch()
         })
 
+        const projectTypeChange = (v: any) => {
+            // 微信小程序
+            ruleForm.watch = ["pageChange"]
+            if (v == 2) {
+                data.watchList[2].disabled = true
+                data.watchList[3].disabled = true
+            } else {
+                ruleForm.watch = ["pageChange"]
+                data.watchList[2].disabled = false
+                data.watchList[3].disabled = false
+            }
+        }
+
         return {
             data,
             paginationData,
@@ -367,7 +387,8 @@ export default {
             resetForm,
             probeCode,
             probeCodeCopy,
-            showHandleDetail
+            showHandleDetail,
+            projectTypeChange
         };
     },
 };
