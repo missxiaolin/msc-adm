@@ -134,7 +134,7 @@
           </el-form-item>
         </el-form>
         <div class="copy-code-area">
-          <h4>复制探针</h4>
+          <h4>复制探针 <a href="https://github.com/missxiaolin/msc-serve/blob/main/sdk/monitorSdk.js" target="_blank">sdk 链接下载</a> </h4>
           <div class="code">
             <el-icon class="copy-btn" size="22" @click="probeCodeCopy">
               <CopyDocument />
@@ -333,7 +333,7 @@ export default {
 
       if (ruleForm.projectType == 2) {
         code =
-          '<script>;(function(w,d,s){n=()=>{const r=`http://msc-serve.missxiaolin.com`;new MonitorSdk({monitorAppId:`{monitorAppId}`,uuId:()=>wx.MUtils.monitorCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/upload`,trackUrl:`${r}/api/tracker/upload`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}}) /* 多环境适配放开这里 } */ };(()=>{const e=d.createElement("script");e.readyState?e.onreadystatechange=function(){"loaded"!==e.readyState&&"complete"!==e.readyState||(e.onreadystatechange=null,n())}:e.onload=function(){n()},e.src=s,d.head.append(e)})()})(window,document,"http://www.missxiaolin.com/monitorSdk.js");<\/script>';
+          'const r=`http://msc-serve.missxiaolin.com`;new MonitorSdk({monitorAppId:`{monitorAppId}`,uuId:()=>wx.MUtils.monitorCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/upload`,trackUrl:`${r}/api/tracker/upload`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}})';
       }
       code = code.replace(/\{monitorAppId\}/g, `${monitorAppId}`);
       code = code.replace(/\{cookieUserField\}/g, `${cookieUserKey}`);
@@ -394,10 +394,16 @@ export default {
       ruleForm.monitorAppId = item.monitorAppId;
       ruleForm.projectType = Number(item.projectType);
       ruleForm.delay = item.delay;
-      ruleForm.encryption = item.encryption;
+      ruleForm.encryption = Number(item.encryption);
       ruleForm.watch = JSON.parse(item.watch);
       ruleForm.maxQueues = item.maxQueues;
       ruleForm.cookieUserKey = item.cookieUserKey;
+      if (ruleForm.projectType == 2) {
+        data.watchList[2].disabled = true;
+        data.watchList[3].disabled = true;
+        data.watchList[4].disabled = true;
+        data.watchList[8].disabled = true;
+      }
       data.isShowPorjectPop = true;
     };
     onMounted(() => {
@@ -410,10 +416,14 @@ export default {
       if (v == 2) {
         data.watchList[2].disabled = true;
         data.watchList[3].disabled = true;
+        data.watchList[4].disabled = true;
+        data.watchList[8].disabled = true;
       } else {
         ruleForm.watch = ["pageChange"];
         data.watchList[2].disabled = false;
         data.watchList[3].disabled = false;
+        data.watchList[4].disabled = false;
+        data.watchList[8].disabled = false;
       }
     };
 
