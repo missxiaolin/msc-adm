@@ -84,7 +84,7 @@ export default {
             const node: any =
               collectProvinces.value.find((s: any) => s.name == params.name) ||
               {};
-            return `地区：${params.name}</br>数值：${node.cvalue || ""}`;
+            return `地区：${params.name}</br>数值：${node.cvalue || "0"}`;
           },
         },
         // 地图区域的样式设置
