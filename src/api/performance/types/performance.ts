@@ -77,6 +77,11 @@ export type PerformanceEchartByUrlResponseData = ApiResponseData<{
     Trans?: number;
     DomParse?: number;
     Res?: number;
+    appLaunch?: number;
+    route?: number;
+    firstRender?: number;
+    script?: number;
+    loadPackage?: number;
   };
   FP: {
     startTime: number;

@@ -84,6 +84,9 @@
               <el-tab-pane label="平均性能" v-if="data.project.projectType == 1">
                 <PerfEchart :options="data.perfEchartOPtion"></PerfEchart>
               </el-tab-pane>
+              <el-tab-pane label="平均性能" v-if="data.project.projectType == 2">
+                <WxPerfEchart :options="data.perfEchartOPtion"></WxPerfEchart>
+              </el-tab-pane>
             </el-tabs>
           </el-card>
           <!-- 页面js 错误详情 -->
@@ -169,6 +172,7 @@ import { apiAgregateList } from "@/api/request/index"
 import pageHoursEchart from "@/components/page/pageHoursEchart.vue";
 import JsHoursEchart from "@/components/jsComponents/jsHoursEchart.vue";
 import PerfEchart from "@/components/performanceComponents/perfEchart.vue";
+import WxPerfEchart from "@/components/performanceComponents/wxPerfEchart.vue";
 import { performanceEchartByUrl } from "@/api/performance";
 import Echarts from "@/components/echarts/index.vue";
 import { cloneDeep } from "lodash";
@@ -179,6 +183,7 @@ export default {
     pageHoursEchart,
     JsHoursEchart,
     PerfEchart,
+    WxPerfEchart,
     Echarts,
   },
   setup() {
