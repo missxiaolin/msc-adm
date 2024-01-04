@@ -81,7 +81,7 @@
               <el-tab-pane label="JS报错">
                 <JsHoursEchart :params="hourJsParam" />
               </el-tab-pane>
-              <el-tab-pane label="平均性能">
+              <el-tab-pane label="平均性能" v-if="data.project.projectType == 1">
                 <PerfEchart :options="data.perfEchartOPtion"></PerfEchart>
               </el-tab-pane>
             </el-tabs>
@@ -189,6 +189,7 @@ export default {
       ipcregion: <any>[], // 地图
       jsErrorTableData: <any>[], // js错误
       perfEchartOPtion: <any>[], // 性能
+      project: <any>{},
       EchartDatas: <any>[], // 分布
       tableData: <any>[], // pai 数据
     });
@@ -300,6 +301,7 @@ export default {
         return;
       }
       data.perfEchartOPtion = res.model;
+      data.project = res.model.project;
     };
 
     // 分布图表

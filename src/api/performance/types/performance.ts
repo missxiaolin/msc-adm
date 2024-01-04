@@ -65,23 +65,38 @@ export interface PerformanceEchartByUrlRequestData {
 
 export type PerformanceEchartByUrlResponseData = ApiResponseData<{
   NT: {
-    FP: number;
-    TTI: number;
-    DomReady: number;
-    Load: number;
-    FirseByte: number;
-    DNS: number;
-    TCP: number;
-    SSL: number;
-    TTFB: number;
-    Trans: number;
-    DomParse: number;
-    Res: number;
+    FP?: number;
+    TTI?: number;
+    DomReady?: number;
+    Load?: number;
+    FirseByte?: number;
+    DNS?: number;
+    TCP?: number;
+    SSL?: number;
+    TTFB?: number;
+    Trans?: number;
+    DomParse?: number;
+    Res?: number;
   };
   FP: {
     startTime: number;
   };
   FCP: {
     startTime: number;
+  };
+  project: {
+    id: number;
+    name: string;
+    desc: string;
+    monitorAppId: string;
+    watch: string;
+    cookieUserKey: string;
+    maxQueues: number;
+    projectType: string;
+    encryption: string;
+    delay: number;
+    status: number;
+    startTime: string;
+    updateTime: string;
   };
 }>;
