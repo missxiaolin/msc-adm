@@ -85,20 +85,22 @@
             </dl>
             <h2 class="title">页面加载瀑布图</h2>
             <div>
-              <PerfEchart :options="perfEchartOPtion"></PerfEchart>
+              <PerfEchart v-if="project.projectType == 1" :options="perfEchartOPtion"></PerfEchart>
+              <WxPerfEchart v-if="project.projectType == 2" :options="perfEchartOPtion"></WxPerfEchart>
             </div>
             <h2 class="title">会话性能指标</h2>
             <div>
-							<template v-if="perfNode?.fp">
+							<template v-if="perfNode?.fp && project.projectType == 1">
 								<h3 class="title">FP 白屏资源</h3>
 								<PerfResTable :data="perfNode?.fp?.RF"></PerfResTable>
 							</template>
-							<template v-if="perfNode?.fcp">
+							<template v-if="perfNode?.fcp && project.projectType == 1">
 								<h3 class="title">FCP 灰屏资源</h3>
 								<PerfResTable :data="perfNode?.fcp?.RF"></PerfResTable>
 							</template>
 							<h3 class="title">RF 资源</h3>
-							<PerfResTable :data="perfNode?.rf"></PerfResTable>
+							<PerfResTable v-if="project.projectType == 1" :data="perfNode?.rf"></PerfResTable>
+              <WxPerfResTable  v-if="project.projectType == 2" :data="perfNode?.rf"></WxPerfResTable>
 						</div>
           </div>
         </el-scroll>
@@ -109,11 +111,15 @@
 
 <script lang="ts">
 import PerfEchart from "@/components/performanceComponents/perfEchart.vue";
+import WxPerfEchart from "@/components/performanceComponents/wxPerfEchart.vue";
 import PerfResTable from "./perfResTable.vue";
+import WxPerfResTable from './wxPerfResTable.vue'
 import { computed, ref } from "vue";
 export default {
   components: {
     PerfEchart,
+    WxPerfEchart,
+    WxPerfResTable,
     PerfResTable
   },
   props: {
@@ -121,6 +127,10 @@ export default {
       type: Object,
       required: true,
     },
+    project: {
+      type: Object,
+      required: true,
+    }
   },
   name: "perfDetail",
   setup(props) {
@@ -131,10 +141,12 @@ export default {
       const NT = perfNode?.nt || {};
       const FP = perfNode?.fp || {};
       const FCP = perfNode?.fcp || {};
+      const LCP = perfNode?.lcp || {};
       return {
         NT,
         FP,
         FCP,
+        LCP
       };
     });
 

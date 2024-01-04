@@ -39,6 +39,21 @@ export interface PerformanceListData {
 export type PerformanceListResponseData = ApiResponseData<{
   list: PerformanceListData[];
   count: number;
+  project: {
+    id: number;
+    name: string;
+    desc: string;
+    monitorAppId: string;
+    watch: string;
+    cookieUserKey: string;
+    maxQueues: number;
+    projectType: string;
+    encryption: string;
+    delay: number;
+    status: number;
+    startTime: string;
+    updateTime: string;
+  };
 }>;
 
 // 页面平均性能

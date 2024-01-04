@@ -126,7 +126,7 @@
       </div>
     </el-card>
   </div>
-  <PerfDetail v-if="perfNode.simpleUrl" :perfNode="perfNode" />
+  <PerfDetail v-if="perfNode.simpleUrl" :project="project" :perfNode="perfNode" />
 </template>
 
 <script lang="ts">
@@ -155,8 +155,9 @@ export default {
       pageUrl: "",
       data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
     });
-    const perfNode = ref({});
+    const perfNode = ref<any>({});
     const tableData = ref<PerformanceListData[]>([]);
+    const project = ref<any>({})
 
     const { paginationData, handleCurrentChange, handleSizeChange } =
       usePagination(() => {
@@ -179,6 +180,7 @@ export default {
       if (res.success) {
         paginationData.total = res.model.count;
         tableData.value = res.model.list;
+        project.value = res.model.project
       }
     };
     const resetSearch = () => {
@@ -232,6 +234,7 @@ export default {
       ntFormat,
       handleDetail,
       perfNode,
+      project
     };
   },
 };

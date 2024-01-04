@@ -20,39 +20,46 @@
   </el-table>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { computed } from "vue";
 
-const prop = defineProps({
-  data: {
-    type: Array,
-    defualt: () => [],
+export default {
+  props: {
+    data: {
+      type: Array,
+      defualt: () => [],
+    },
   },
-});
+  setup(props) {
+    const NFTable = computed(() => {
+      const fileds = [
+        "startTime",
+        "responseEnd",
+        "duration",
+        "dns",
+        "tcp",
+        "ssl",
+        "ttfb",
+        "contentDownload",
+      ];
+      if (!props.data || !props.data.length) return [];
+      const list = props.data.map((item: any) => {
+        //
+        for (let key in item) {
+          if (fileds.includes(key)) {
+            item[key] = (item[key] || 0).toFixed(2) + "ms";
+          }
+        }
+        return item;
+      });
+      return list;
+    });
 
-const NFTable = computed(() => {
-  const fileds = [
-    "startTime",
-    "responseEnd",
-    "duration",
-    "dns",
-    "tcp",
-    "ssl",
-    "ttfb",
-    "contentDownload",
-  ];
-  if (!prop.data || !prop.data.length) return [];
-  const list = prop.data.map((item: any) => {
-    //
-    for (let key in item) {
-      if (fileds.includes(key)) {
-        item[key] = (item[key] || 0).toFixed(2) + "ms";
-      }
-    }
-    return item;
-  });
-  return list;
-});
+    return {
+      NFTable,
+    };
+  },
+};
 </script>
 
 <style scoped></style>
