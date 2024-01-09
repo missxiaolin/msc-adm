@@ -329,11 +329,11 @@ export default {
       });
       watchItem = JSON.stringify(watchItem);
       let code =
-        '<script>;(function(w,d,s){n=()=>{const r=`http://msc-serve.missxiaolin.com`;new MonitorSdk({monitorAppId:`{monitorAppId}`,uuId:()=>window.MUtils.monitorCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/update`,trackUrl:`${r}/api/tracker/update`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}}) /* 多环境适配放开这里 } */ };(()=>{const e=d.createElement("script");e.readyState?e.onreadystatechange=function(){"loaded"!==e.readyState&&"complete"!==e.readyState||(e.onreadystatechange=null,n())}:e.onload=function(){n()},e.src=s,d.head.append(e)})()})(window,document,"http://www.missxiaolin.com/monitorSdk.js");<\/script>';
+        '<script>;(function(w,d,s){n=()=>{const r=`http://msc-serve.missxiaolin.com`;MITO.init({monitorAppId:`{monitorAppId}`,uuId:()=>MITO.getCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/update`,trackUrl:`${r}/api/tracker/update`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}})};(()=>{const e=d.createElement("script");e.readyState?e.onreadystatechange=function(){"loaded"!==e.readyState&&"complete"!==e.readyState||(e.onreadystatechange=null,n())}:e.onload=function(){n()},e.src=s,d.head.append(e)})()})(window,document,"http://www.missxiaolin.com/sdk/web.min.js");<\/script>';
 
       if (ruleForm.projectType == 2) {
         code =
-          'const r=`http://msc-serve.missxiaolin.com`;new MonitorSdk({monitorAppId:`{monitorAppId}`,uuId:()=>wx.MUtils.monitorCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/update`,trackUrl:`${r}/api/tracker/update`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}})';
+          'const r=`http://msc-serve.missxiaolin.com`;MITO.init({monitorAppId:`{monitorAppId}`,uuId:()=>MITO.getCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/update`,trackUrl:`${r}/api/tracker/update`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}})';
       }
       code = code.replace(/\{monitorAppId\}/g, `${monitorAppId}`);
       code = code.replace(/\{cookieUserField\}/g, `${cookieUserKey}`);

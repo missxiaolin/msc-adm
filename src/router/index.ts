@@ -57,29 +57,29 @@ export const constantRoutes: any = [
     },
     alias: "/:pathMatch(.*)*",
   },
-  {
-    path: "/performance",
-    component: Layouts,
-    redirect: "/performance/list",
-    name: "Performance",
-    meta: {
-      title: "页面性能",
-      elIcon: "Odometer",
-    },
-    children: [
-      {
-        path: "list",
-        component: () => import("@/views/performance/list.vue"),
-        hidden: false,
-        meta: {
-          title: "页面性能列表",
-          keepAlive: false,
-          elIcon: "Odometer",
-          affix: true,
-        },
-      },
-    ],
-  },
+  // {
+  //   path: "/performance",
+  //   component: Layouts,
+  //   redirect: "/performance/list",
+  //   name: "Performance",
+  //   meta: {
+  //     title: "页面性能",
+  //     elIcon: "Odometer",
+  //   },
+  //   children: [
+  //     {
+  //       path: "list",
+  //       component: () => import("@/views/performance/list.vue"),
+  //       hidden: false,
+  //       meta: {
+  //         title: "页面性能列表",
+  //         keepAlive: false,
+  //         elIcon: "Odometer",
+  //         affix: true,
+  //       },
+  //     },
+  //   ],
+  // },
   {
     path: "/resource",
     component: Layouts,

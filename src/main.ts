@@ -6,46 +6,6 @@ import { loadPlugins } from "@/plugins";
 import { loadDirectives } from "@/directives";
 import { loadSvg } from "@/icons";
 import store from "@/store";
-
-// import MonitorSdk from '../../msc-sdk/packages/index'
-
-// var baseURL = "http://msc-serve.missxiaolin.com";
-// if (window.location.href.indexOf("http://localhost") > -1) {
-//   baseURL = "http://127.0.0.1:9001";
-// }
-// new MonitorSdk({
-//   monitorAppId: "adm",
-//   uuId: () => window.MUtils.monitorCookie("userId"),
-//   watch: {
-//     pageChange: true,
-//     jsError: true,
-//     vueError: true,
-//     promise: true,
-//     performance: true,
-//     whiteScreen: true,
-//     click: true,
-//     resource: true,
-//     request: true,
-//   },
-//   report: {
-//     url: baseURL + "/api/update", //错误上报地址
-//     reportType: 1, // 1:fetch 2:img 3
-//     maxQueues: 100, // img 尽量限制在 10条
-//     beforeSend: (data) => data,
-//     encryption: 0,
-//     delay: 30000,
-//   },
-//   behavior: {
-//     click: true,
-//     pageChange: true,
-//   },
-//   customInfo: {
-//     getDynamic: () => {
-//       //获取动态传参  1.4.5版本及以后支持该方式
-//     },
-//   },
-// });
-
 // import "@/router/permission"
 
 // css
