@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row justify-between" style="width: 100%">
-    <el-statistic title="白屏时间" :value="ntFormat('FP')">
+    <!-- <el-statistic title="白屏时间" :value="ntFormat('FP')">
       <template #suffix>ms</template>
     </el-statistic>
     <el-statistic title="首字节" :value="ntFormat('FirseByte')">
@@ -14,7 +14,7 @@
     </el-statistic>
     <el-statistic title="页面完全加载" :value="ntFormat('Load')">
       <template #suffix>ms</template>
-    </el-statistic>
+    </el-statistic> -->
   </div>
   <Echarts :options="navigationEchart"></Echarts>
 </template>
@@ -58,29 +58,32 @@ export default {
      * @return {*}
      */
     const navigationEchart = computed(() => {
-      const NT: any = props.options?.NT || {};
+
+      const NT: any = props.options?.nt || {};
       if (!NT || !Object.keys(NT).length) return {};
       const axisData = [
-        "DomReady",
-        "Res",
-        "DomParse",
-        "Trans",
-        "TTFB",
-        "SSL",
-        "TCP",
-        "DNS",
+        "pageLoad",
+        "domReady",
+        "resourceLoad",
+        "domParse",
+        "contentDownload",
+        "ttfb",
+        "ssl",
+        "initialConnection",
+        "dnsLookup"
       ];
 
       const seriesData: any[] = [];
       const yAxisLeftData: any[] = [
-        "DOM准备",
-        "资源加载",
-        "DOM解析",
-        "内容传输",
-        "请求响应",
-        "SSL建连",
-        "TCP链接",
-        "DNS查询",
+        "页面完全加载",
+        "DOM完成加载",
+        "资源加载耗时",
+        "DOM解析耗时",
+        "内容传输耗时",
+        "请求响应耗时",
+        "SSL安全连接耗时",
+        "TCP连接耗时",
+        "DNS查询耗时"
       ];
       const yAxisRightData: any[] = [];
       axisData.forEach((item, index) => {
@@ -107,27 +110,26 @@ export default {
         seriesData.push(data);
       });
       const {
-        // Load = 0,
-        DomParse = 0,
-        Res = 0,
-        // FirseByte = 0,
-        Trans = 0,
-        TTFB = 0,
-        TCP = 0,
-        SSL = 0,
-        DNS = 0,
+        pageLoad = 0,
+        domReady = 0,
+        resourceLoad = 0,
+        domParse = 0,
+        contentDownload = 0,
+        ttfb = 0,
+        ssl = 0,
+        initialConnection = 0,
+        dnsLookup = 0
       }: any = NT;
-      // TODO 待优化
       const defaultSeriesData: any[] = [
-        `${Res + DomParse + TTFB + TCP + SSL + DNS}`,
-        `${DomParse + TTFB + TCP + SSL + DNS}`,
-        // `${FirseByte + TTFB + TCP + SSL + DNS}`,
-        `${Trans + TTFB + TCP + SSL + DNS}`,
-        `${TTFB + TCP + SSL + DNS}`,
-        `${TCP + SSL + DNS}`,
-        `${TCP + DNS}`,
-        `${DNS}`,
-        `${DNS}`,
+        `${pageLoad + domReady + resourceLoad + domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
+        `${domReady + resourceLoad + domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
+        `${resourceLoad + domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
+        `${domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
+        `${contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
+        `${ttfb + ssl + initialConnection + dnsLookup}`,
+        `${ssl + initialConnection + dnsLookup}`,
+        `${initialConnection + dnsLookup}`,
+        `${dnsLookup}`,
       ];
 
       const option = {

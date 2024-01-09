@@ -81,9 +81,9 @@
               <el-tab-pane label="JS报错">
                 <JsHoursEchart :params="hourJsParam" />
               </el-tab-pane>
-              <!-- <el-tab-pane label="平均性能" v-if="data.project.projectType == 1">
+              <el-tab-pane label="平均性能" v-if="data.project.projectType == 1">
                 <PerfEchart :options="data.perfEchartOPtion"></PerfEchart>
-              </el-tab-pane> -->
+              </el-tab-pane>
               <!-- <el-tab-pane label="平均性能" v-if="data.project.projectType == 2">
                 <WxPerfEchart :options="data.perfEchartOPtion"></WxPerfEchart>
               </el-tab-pane> -->
@@ -173,7 +173,7 @@ import pageHoursEchart from "@/components/page/pageHoursEchart.vue";
 import JsHoursEchart from "@/components/jsComponents/jsHoursEchart.vue";
 import PerfEchart from "@/components/performanceComponents/perfEchart.vue";
 import WxPerfEchart from "@/components/performanceComponents/wxPerfEchart.vue";
-// import { performanceEchartByUrl } from "@/api/performance";
+import { performanceEchartByUrl } from "@/api/performance";
 import Echarts from "@/components/echarts/index.vue";
 import { cloneDeep } from "lodash";
 
@@ -296,18 +296,17 @@ export default {
 
     // 性能图表
     const getPerformanceEchartByUrl = async () => {
-      // TODO:
-      // let param = {
-      //   startTime: searchData.value.data[0],
-      //   endTime: searchData.value.data[1],
-      //   simpleUrl: data.activePage,
-      // };
-      // let res = await performanceEchartByUrl(param);
-      // if (!res.success) {
-      //   return;
-      // }
-      // data.perfEchartOPtion = res.model;
-      // data.project = res.model.project;
+      let param = {
+        startTime: searchData.value.data[0],
+        endTime: searchData.value.data[1],
+        simpleUrl: data.activePage,
+      };
+      let res = await performanceEchartByUrl(param);
+      if (!res.success) {
+        return;
+      }
+      data.perfEchartOPtion = res.model;
+      data.project = res.model.project;
     };
 
     // 分布图表
