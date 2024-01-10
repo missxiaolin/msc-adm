@@ -71,8 +71,8 @@
 								<PerfResTable :data="perfNode?.fcp?.RF"></PerfResTable>
 							</template> -->
 							<h3 class="title">RF 资源</h3>
-							<PerfResTable v-if="project.projectType == 1" :data="perfNode['resource-flow']"></PerfResTable>
-              <WxPerfResTable  v-if="project.projectType == 2" :data="perfNode?.rf"></WxPerfResTable>
+							<PerfResTable v-if="project.projectType == 1" :data="(perfNode['resource-flow'] && perfNode['resource-flow'].textValue) ?  perfNode['resource-flow'].textValue : []"></PerfResTable>
+              <!-- <WxPerfResTable  v-if="project.projectType == 2" :data="perfNode?.rf"></WxPerfResTable> -->
 						</div>
           </div>
         </el-scroll>
