@@ -11,26 +11,14 @@
     <section class="detail-wapper flex-1">
       <div class="detail-top-content">
         <dl class="flex basic-info">
-          <dd>
+          <dd v-if="perfNode?.uuId">
             <el-icon :size="15"> <Edit /> </el-icon>{{ perfNode?.uuId }}
           </dd>
           <dd>
             <el-icon :size="15"> <Clock /> </el-icon>{{ perfNode?.happenTime }}
           </dd>
-          <dd>
-            <el-icon><Location /></el-icon>{{ perfNode?.country }}
-          </dd>
-          <dd>
-            <el-icon><Document /></el-icon>{{ perfNode?.browserInfo }}
-          </dd>
-          <dd>
-            <el-icon><Postcard /></el-icon>{{ perfNode?.os }}
-          </dd>
-          <dd>
-            <el-icon><FolderRemove /></el-icon>{{ perfNode?.device }}
-          </dd>
         </dl>
-        <div class="other-basic">{{ perfNode?.pageUrl }}</div>
+        <div class="other-basic">{{ perfNode?.simpleUrl }}</div>
       </div>
       <div class="detail-bottom-content flex flex-1">
         <el-scroll
@@ -43,63 +31,47 @@
             <h2 class="title">会话性能指标</h2>
             <dl class="flex navigation-target">
               <dd>
-                CLS<el-tooltip content=" --" placement="top">
-                  <p></p>
-                </el-tooltip>
+                CLS：{{ perfNode['cumulative-layout-shift'] && perfNode['cumulative-layout-shift'].value || 0 }} ms
               </dd>
               <dd>
-                FCP<el-tooltip content=" --" placement="top">
-                  <p></p>
-                </el-tooltip>
+                FCP：{{ perfNode['first-contentful-paint'] && perfNode['first-contentful-paint'].value || 0 }} ms
               </dd>
               <dd>
-                FID<el-tooltip content=" --" placement="top">
-                  <p></p>
-                </el-tooltip>
+                FID：{{ perfNode['first-input-delay'] && perfNode['first-input-delay'].value || 0 }} ms
+              </dd>
+              <!-- <dd>
+                FMP： ms
+              </dd> -->
+              <dd>
+                FP：{{ perfNode['first-paint'] && perfNode['first-paint'].value || 0 }} ms
               </dd>
               <dd>
-                FMP<el-tooltip content=" --" placement="top">
-                  <p></p>
-                </el-tooltip>
+                LCP：{{ perfNode['largest-contentful-paint'] && perfNode['largest-contentful-paint'].value || 0 }} ms
               </dd>
-              <dd>
-                FP<el-tooltip content=" --" placement="top">
-                  <p></p>
-                </el-tooltip>
-              </dd>
-              <dd>
-                LCP<el-tooltip content=" --" placement="top">
-                  <p></p>
-                </el-tooltip>
-              </dd>
-              <dd>
-                MPFID<el-tooltip content=" --" placement="top">
-                  <p></p>
-                </el-tooltip>
-              </dd>
-              <dd>
-                TTI<el-tooltip content=" --" placement="top">
-                  <p></p>
-                </el-tooltip>
-              </dd>
+              <!-- <dd>
+                MPFID：ms
+              </dd> -->
+              <!-- <dd>
+                TTI：ms
+              </dd> -->
             </dl>
             <h2 class="title">页面加载瀑布图</h2>
             <div>
               <PerfEchart v-if="project.projectType == 1" :options="perfEchartOPtion"></PerfEchart>
-              <WxPerfEchart v-if="project.projectType == 2" :options="perfEchartOPtion"></WxPerfEchart>
+              <!-- <WxPerfEchart v-if="project.projectType == 2" :options="perfEchartOPtion"></WxPerfEchart> -->
             </div>
             <h2 class="title">会话性能指标</h2>
             <div>
-							<template v-if="perfNode?.fp && project.projectType == 1">
+							<!-- <template v-if="perfNode?.fp && project.projectType == 1">
 								<h3 class="title">FP 白屏资源</h3>
 								<PerfResTable :data="perfNode?.fp?.RF"></PerfResTable>
 							</template>
 							<template v-if="perfNode?.fcp && project.projectType == 1">
 								<h3 class="title">FCP 灰屏资源</h3>
 								<PerfResTable :data="perfNode?.fcp?.RF"></PerfResTable>
-							</template>
+							</template> -->
 							<h3 class="title">RF 资源</h3>
-							<PerfResTable v-if="project.projectType == 1" :data="perfNode?.rf"></PerfResTable>
+							<PerfResTable v-if="project.projectType == 1" :data="perfNode['resource-flow']"></PerfResTable>
               <WxPerfResTable  v-if="project.projectType == 2" :data="perfNode?.rf"></WxPerfResTable>
 						</div>
           </div>
@@ -111,14 +83,14 @@
 
 <script lang="ts">
 import PerfEchart from "@/components/performanceComponents/perfEchart.vue";
-import WxPerfEchart from "@/components/performanceComponents/wxPerfEchart.vue";
+// import WxPerfEchart from "@/components/performanceComponents/wxPerfEchart.vue";
 import PerfResTable from "./perfResTable.vue";
 import WxPerfResTable from './wxPerfResTable.vue'
 import { computed, ref } from "vue";
 export default {
   components: {
     PerfEchart,
-    WxPerfEchart,
+    // WxPerfEchart,
     WxPerfResTable,
     PerfResTable
   },
@@ -138,15 +110,10 @@ export default {
     const drawerVisible = ref(true);
 
     const perfEchartOPtion = computed(() => {
-      const NT = perfNode?.nt || {};
-      const FP = perfNode?.fp || {};
-      const FCP = perfNode?.fcp || {};
-      const LCP = perfNode?.lcp || {};
+      const navigation = perfNode['navigation-timing'] || {};
       return {
-        NT,
-        FP,
-        FCP,
-        LCP
+        nt: navigation.textValue,
+        fp:  perfNode['first-paint'] || {}
       };
     });
 

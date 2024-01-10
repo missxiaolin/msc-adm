@@ -2,8 +2,8 @@
   <div class="app-container">
     <el-card v-loading="loading" shadow="never" class="search-wrapper">
       <el-form ref="searchFormRef" :inline="true" :model="searchData">
-        <el-form-item prop="pageUrl" label="页面链接">
-          <el-input v-model="searchData.pageUrl" placeholder="请输入" />
+        <el-form-item prop="simpleUrl" label="页面链接">
+          <el-input v-model="searchData.simpleUrl" placeholder="请输入" />
         </el-form-item>
         <el-form-item prop="phone" label="日期">
           <el-date-picker
@@ -25,77 +25,66 @@
     <el-card v-loading="loading" shadow="never">
       <div class="table-wrapper">
         <el-table border :data="tableData" v-if="project.projectType == 1">
-          <el-table-column prop="pageUrl" label="url" align="center" />
+          <el-table-column prop="simpleUrl" label="url" align="center" />
           <el-table-column label="会话性能指标" align="center">
             <el-table-column label="Navigation 指标" align="center">
               <el-table-column label="DNS 查询"
                 ><template #default="{ row }">
-                  {{ ntFormat(row, "DNS") }}
+                  {{ row['navigation-timing'] && row['navigation-timing'].textValue.dnsLookup ? row['navigation-timing'].textValue.dnsLookup : 0 }}
                 </template></el-table-column
               >
               <el-table-column label="TCP 链接"
                 ><template #default="{ row }">
-                  {{ ntFormat(row, "TCP") }}
+                  {{ row['navigation-timing'] && row['navigation-timing'].textValue.initialConnection ? row['navigation-timing'].textValue.initialConnection : 0 }}
                 </template></el-table-column
               >
               <el-table-column label="SSL 建连"
                 ><template #default="{ row }">
-                  {{ ntFormat(row, "SSL") }}
+                  {{ row['navigation-timing'] && row['navigation-timing'].textValue.ssl ? row['navigation-timing'].textValue.ssl : 0 }}
                 </template></el-table-column
               >
               <el-table-column label="TTFB 请求响应"
                 ><template #default="{ row }">
-                  {{ ntFormat(row, "TTFB") }}
+                  {{ row['navigation-timing'] && row['navigation-timing'].textValue.ttfb ? row['navigation-timing'].textValue.ttfb : 0 }}
                 </template></el-table-column
               >
 
               <el-table-column label="TRANS 内容传输"
                 ><template #default="{ row }">
-                  {{ ntFormat(row, "Trans") }}
+                  {{ row['navigation-timing'] && row['navigation-timing'].textValue.contentDownload ? row['navigation-timing'].textValue.contentDownload : 0 }}
                 </template></el-table-column
               >
 
               <el-table-column label="DOM 解析"
                 ><template #default="{ row }">
-                  {{ ntFormat(row, "DomParse") }}
+                  {{ row['navigation-timing'] && row['navigation-timing'].textValue.domParse ? row['navigation-timing'].textValue.domParse : 0 }}
                 </template></el-table-column
               >
               <el-table-column label="RES 资源加载">
                 <template #default="{ row }">
-                  {{ ntFormat(row, "Res") }}
+                  {{ row['navigation-timing'] && row['navigation-timing'].textValue.resourceLoad ? row['navigation-timing'].textValue.resourceLoad : 0 }}
                 </template></el-table-column
               >
             </el-table-column>
             <el-table-column label="性能关键指标" align="center">
               <el-table-column label="白屏时间">
                 <template #default="{ row }">
-                  {{ ntFormat(row, "FP") }}
+                  {{ row['first-paint'] && row['first-paint'].value ? row['first-paint'].value : '-' }}
                 </template></el-table-column
               >
               <el-table-column label="FCP 灰屏时间"
                 ><template #default="{ row }">
-                  {{ ntFormat(row, "FPC") }}
+                  {{ row['first-contentful-paint'] && row['first-contentful-paint'].value ? row['first-contentful-paint'].value : '-' }}
                 </template></el-table-column
               >
-              <el-table-column label="FirseByte 首字节">
+              <el-table-column label="DOM完成加载">
                 <template #default="{ row }">
-                  {{ ntFormat(row, "FirseByte") }}
+                  {{ row['navigation-timing'] && row['navigation-timing'].textValue.domReady ? row['navigation-timing'].textValue.domReady : 0 }}
                 </template></el-table-column
               >
-              <!-- <el-table-column label=" TTI 可交互时间"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "TTI") }}
-                </template></el-table-column
-              > -->
-              <el-table-column label="DOMReady"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "DomReady") }}
-                </template></el-table-column
-              >
-
-              <el-table-column label="LOAD 加载完成"
-                ><template #default="{ row }">
-                  {{ ntFormat(row, "Load") }}
+              <el-table-column label="页面完全加载">
+                <template #default="{ row }">
+                  {{ row['navigation-timing'] && row['navigation-timing'].textValue.pageLoad ? row['navigation-timing'].textValue.pageLoad : 0 }}
                 </template></el-table-column
               >
             </el-table-column>
@@ -169,7 +158,7 @@ export default {
   setup() {
     const loading = ref<boolean>(false);
     const searchData = ref({
-      pageUrl: "",
+      simpleUrl: "",
       data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
     });
     const perfNode = ref<any>({});
@@ -187,7 +176,7 @@ export default {
 
     const handleSearch = async () => {
       let param = {
-        pageUrl: searchData.value.pageUrl,
+        simpleUrl: searchData.value.simpleUrl,
         startTime: searchData.value.data[0],
         endTime: searchData.value.data[1],
         page: paginationData.currentPage,
@@ -202,25 +191,11 @@ export default {
     };
     const resetSearch = () => {
       searchData.value = {
-        pageUrl: "",
+        simpleUrl: "",
         data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
       };
       paginationData.currentPage = 1
       handleSearch();
-    };
-
-    const ntFormat = (row: any, label: string) => {
-      // 默认去NT里时间
-      let time = (row.nt && row.nt[label]) || 0;
-      const fp = row.fp; // 白屏时间
-      const fpc = row.fpc; //灰屏时间
-      if (label == "fp" && fp) {
-        time = fp.startTime;
-      }
-      if (label == "fpc" && fpc) {
-        time = fpc.startTime;
-      }
-      return !row.nt && !time ? "-" : time.toFixed(2) + "ms";
     };
 
     /**
@@ -248,7 +223,6 @@ export default {
       paginationData,
       handleCurrentChange,
       handleSizeChange,
-      ntFormat,
       handleDetail,
       perfNode,
       project

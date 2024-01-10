@@ -1,6 +1,6 @@
 // 获取性能列表
 export interface PerformanceListRequestData {
-  pageUrl: string;
+  simpleUrl: string;
   startTime: string;
   endTime: string;
   pageSize: number;

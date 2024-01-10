@@ -1,20 +1,14 @@
 <template>
   <div class="flex flex-row justify-between" style="width: 100%">
-    <!-- <el-statistic title="白屏时间" :value="ntFormat('FP')">
+    <el-statistic title="白屏时间" :value="options.fp.value || 0">
       <template #suffix>ms</template>
     </el-statistic>
-    <el-statistic title="首字节" :value="ntFormat('FirseByte')">
+    <el-statistic title="DOM完成加载" :value="(options.nt && options.nt.domReady) ? options.nt.domReady : 0">
       <template #suffix>ms</template>
     </el-statistic>
-    <el-statistic title="DOM Ready" :value="ntFormat('DomReady')">
+    <el-statistic title="页面完全加载" :value="(options.nt && options.nt.pageLoad) ? options.nt.pageLoad : 0">
       <template #suffix>ms</template>
     </el-statistic>
-    <el-statistic title="首次可交互时间" :value="ntFormat('TTI')">
-      <template #suffix>ms</template>
-    </el-statistic>
-    <el-statistic title="页面完全加载" :value="ntFormat('Load')">
-      <template #suffix>ms</template>
-    </el-statistic> -->
   </div>
   <Echarts :options="navigationEchart"></Echarts>
 </template>
@@ -34,24 +28,6 @@ export default {
   },
   name: "perfEchart",
   setup(props) {
-    const ntFormat = (label: string) => {
-      // 默认去NT里时间
-      let row: any = props?.options;
-      if (!row || !Object.keys(row).length) return 0;
-      let time = row.NT[label] || 0;
-      if (!time && time === 0) return 0;
-      const FP = row.FP || {}; // 白屏时间
-      const FPC = row.FCP || {}; //灰屏时间
-      if (label == "FP" && Object.keys(FP).length) {
-        time = FP.startTime;
-      }
-      if (label == "FPC" && Object.keys(FPC).length) {
-        time = FPC.startTime;
-      }
-
-      return Number((time || 0).toFixed(2));
-    };
-
     /**
      * @description: 性能指标图
      * @param {*} computed
@@ -224,7 +200,6 @@ export default {
     });
 
     return {
-      ntFormat,
       navigationEchart,
     };
   },
