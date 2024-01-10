@@ -31,22 +31,22 @@
             <h2 class="title">会话性能指标</h2>
             <dl class="flex navigation-target">
               <dd>
-                CLS：{{ perfNode['cumulative-layout-shift'] && perfNode['cumulative-layout-shift'].value || 0 }} ms
+                CLS：{{ perfNode['cumulative-layout-shift'] && perfNode['cumulative-layout-shift'].numValue || 0 }} ms
               </dd>
               <dd>
-                FCP：{{ perfNode['first-contentful-paint'] && perfNode['first-contentful-paint'].value || 0 }} ms
+                FCP：{{ perfNode['first-contentful-paint'] && perfNode['first-contentful-paint'].numValue || 0 }} ms
               </dd>
               <dd>
-                FID：{{ perfNode['first-input-delay'] && perfNode['first-input-delay'].value || 0 }} ms
+                FID：{{ perfNode['first-input-delay'] && perfNode['first-input-delay'].textValue.delay || 0 }} ms
               </dd>
               <!-- <dd>
                 FMP： ms
               </dd> -->
               <dd>
-                FP：{{ perfNode['first-paint'] && perfNode['first-paint'].value || 0 }} ms
+                FP：{{ perfNode['first-paint'] && perfNode['first-paint'].numValue || 0 }} ms
               </dd>
               <dd>
-                LCP：{{ perfNode['largest-contentful-paint'] && perfNode['largest-contentful-paint'].value || 0 }} ms
+                LCP：{{ perfNode['largest-contentful-paint'] && perfNode['largest-contentful-paint'].numValue || 0 }} ms
               </dd>
               <!-- <dd>
                 MPFID：ms
