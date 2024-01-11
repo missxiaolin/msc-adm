@@ -147,6 +147,7 @@ import { reactive, onMounted, ref, nextTick } from "vue";
 import { timeQuantum, timeformatter } from "@/utils/index";
 import { userBehavior } from "@/api/userBehavior/index";
 import { usePagination } from "@/hooks/usePagination";
+import { ElMessage } from 'element-plus'
 
 export default {
   setup() {
@@ -186,6 +187,8 @@ export default {
 
     const getUserBehavior = async () => {
       if (!data.searchData.uuId || !data.searchData.categorys) {
+        ElMessage(!data.searchData.uuId ? '请输入用户ID' : '请选择事件类型');
+        
         return;
       }
       let params = {
