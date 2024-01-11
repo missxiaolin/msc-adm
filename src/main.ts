@@ -6,6 +6,7 @@ import { loadPlugins } from "@/plugins";
 import { loadDirectives } from "@/directives";
 import { loadSvg } from "@/icons";
 import store from "@/store";
+
 // import "@/router/permission"
 
 // import {init,  } from "../../../../monitor-sdk/packages/web/src/index";

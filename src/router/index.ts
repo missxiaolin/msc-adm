@@ -171,6 +171,29 @@ export const constantRoutes: any = [
         },
       },
     ],
+  }, 
+  {
+    path: "/user",
+    component: Layouts,
+    redirect: "/user/behavior",
+    name: "userBehavior",
+    meta: {
+      title: "用户行为轨迹",
+      elIcon: "userBehavior",
+    },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/userBehavior/index.vue"),
+        hidden: false,
+        meta: {
+          title: "用户行为轨迹",
+          keepAlive: false,
+          elIcon: "User",
+          affix: true,
+        },
+      },
+    ],
   }
 ];
 
