@@ -86,3 +86,32 @@ export const numberFormat = (value: any = "") => {
 	}
 	return value;
 };
+
+/**
+ * @description
+ * @param time
+ * @returns
+ */
+export const timeformatter = (time: any) => {
+	let miliSec: any = String(time % 1000);
+	time = (time - miliSec) / 1000;
+	let seconds: any = String(time % 60);
+	time = (time - seconds) / 60;
+	let minutes: any = String(time % 60);
+	time = (time - minutes) / 60;
+	let hours = String(time);
+
+	while (miliSec.length != 3 && miliSec.length < 3 && miliSec.length >= 0) {
+		miliSec = "0" + miliSec;
+	}
+	while (seconds.length != 2 && seconds.length < 3 && seconds.length >= 0) {
+		seconds = "0" + seconds;
+	}
+	while (minutes.length != 2 && minutes.length < 3 && minutes.length >= 0) {
+		minutes = "0" + minutes;
+	}
+	while (hours.length != 2 && hours.length < 3 && hours.length >= 0) {
+		hours = "0" + hours;
+	}
+	return `${hours}  : ${minutes} : ${seconds}.${miliSec}`;
+};

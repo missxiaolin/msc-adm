@@ -35,22 +35,125 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <section class="custom-main-contents visit-left-contents">
-      <el-card> </el-card>
+    <section
+      class="custom-main-contents visit-left-contents visit-right-contents"
+    >
+      <el-card class="flex flex-1 flex-column visit-left-list">
+        <div class="flex-1 flex flex-column">
+          <el-scrollbar max-height="550px" style="flex: 1">
+            <el-timeline>
+              <el-timeline-item
+                v-for="(item, index) in data.userList"
+                :icon="
+                  item.category == 'USER_CLICK'
+                    ? 'Pointer'
+                    : item.category == 'HTTP_LOG'
+                    ? 'Position'
+                    : item.category == 'PAGE_CHANGE'
+                    ? 'Files'
+                    : item.category == 'JS_ERROR'
+                    ? 'CircleClose'
+                    : ''
+                "
+                center
+                :timestamp="item.happenTime"
+                placement="top"
+                :key="index"
+              >
+                <el-card>
+                  <template v-if="item.category == 'USER_CLICK'">
+                    <p>{{ item.subType }}</p>
+                    <p>pageUrl: {{ item.pageUrl }}</p>
+                    <p>tagName: {{ item.tagName }}</p>
+                    <p>innerHTML: {{ item.innerHTML }}</p>
+                  </template>
+                  <template v-if="item.category == 'HTTP_LOG'">
+                    <p>
+                      {{ item.subType }}请求方式: {{ item.method }} 请求方式:{{
+                        item.type
+                      }}
+                      接口状态: {{ item.status }} 耗时:{{
+                        timeformatter(item.duration)
+                      }}
+                    </p>
+                    <p>pageUrl: {{ item.pageUrl }}</p>
+                    <p>pathName: {{ item.pathName }}</p>
+                    <p>requestText: {{ item.requestText }}</p>
+                    <p>responseText: {{ item.responseText }}</p>
+                  </template>
+                  <template v-if="item.category == 'PAGE_CHANGE'">
+                    <p>
+                      {{ item.subType }} 停留:{{ timeformatter(item.duration) }}
+                    </p>
+                    <p>referrer: {{ item.referrer }}</p>
+                    <p>from: {{ item.from }}</p>
+                    <p>to: {{ item.to }}</p>
+                  </template>
+                  <template v-if="item.category == 'JS_ERROR'">
+                    <p>{{ item.subType }}</p>
+                    <p>{{ item.errorMsg }}</p>
+                  </template>
+                </el-card>
+              </el-timeline-item>
+            </el-timeline>
+          </el-scrollbar>
+          <div class="pager-wrapper mt20">
+            <el-pagination
+              background
+              :layout="paginationData.layout"
+              :page-sizes="paginationData.pageSizes"
+              :total="paginationData.total"
+              :page-size="paginationData.pageSize"
+              :currentPage="paginationData.currentPage"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
+          </div>
+        </div>
+      </el-card>
+      <div class="visit-right-contents">
+        <div class="basic-header">
+          <el-row>
+            <el-col :span="12">cip： {{ data.pageDetail.ip }}</el-col>
+            <el-col :span="12">cregion： {{ data.pageDetail.country }}</el-col>
+            <el-col :span="12"
+              >deviceType： {{ data.pageDetail.deviceType }}</el-col
+            >
+            <el-col :span="12">os： {{ data.pageDetail.os }}</el-col>
+            <el-col :span="12"
+              >browserInfo： {{ data.pageDetail.browserInfo }}</el-col
+            >
+            <el-col :span="12">device： {{ data.pageDetail.device }}</el-col>
+            <el-col :span="12"
+              >deviceModel： {{ data.pageDetail.deviceModel }}</el-col
+            >
+            <el-col :span="12"
+              >language： {{ data.pageDetail.language }}</el-col
+            >
+            <el-col :span="12">netWork： {{ data.pageDetail.netWork }}</el-col>
+            <el-col :span="12"></el-col>
+            <el-col :span="12"
+              >userAgent： {{ data.pageDetail.userAgent }}</el-col
+            >
+          </el-row>
+        </div>
+      </div>
     </section>
   </div>
 </template>
 
 <script lang="ts">
-import { reactive } from "vue";
-import { timeQuantum } from "@/utils/index";
+import { reactive, onMounted } from "vue";
+import { timeQuantum, timeformatter } from "@/utils/index";
+import { userBehavior } from "@/api/userBehavior/index";
+import { usePagination } from "@/hooks/usePagination";
 
 export default {
   setup() {
     let data = reactive({
       searchData: {
         uuId: "",
-        categorys: ['PAGE_CHANGE', 'USER_CLICK', 'HTTP_LOG', 'JS_ERROR'],
+        categorys: ["PAGE_CHANGE", "USER_CLICK", "HTTP_LOG", "JS_ERROR"],
         data: timeQuantum({ format: ["00:00:00", "23:59:59"] }),
       },
       categoryOptions: [
@@ -71,30 +174,60 @@ export default {
           label: "JS错误",
         },
       ],
+      pageDetail: <any>{},
+      userList: <any>[],
     });
 
-    const init = () => {};
+    const { paginationData, handleCurrentChange, handleSizeChange } =
+      usePagination(() => {
+        getUserBehavior();
+      });
+
+    const getUserBehavior = async () => {
+      if (!data.searchData.uuId || !data.searchData.categorys) {
+        return;
+      }
+      let params = {
+        uuId: data.searchData.uuId,
+        categorys: data.searchData.categorys,
+        startTime: data.searchData.data[0],
+        endTime: data.searchData.data[1],
+        page: paginationData.currentPage,
+        pageSize: paginationData.pageSize,
+      };
+      let res = await userBehavior(params);
+      if (!res.success) {
+        data.pageDetail = {};
+        return;
+      }
+      data.pageDetail = res.model.pageDetail || {};
+      data.userList = res.model.userList || [];
+      paginationData.total = res.model.count;
+    };
+
+    const init = async () => {
+      paginationData.currentPage = 1;
+      paginationData.pageSize = 10;
+      getUserBehavior();
+    };
     const resetSearch = () => {};
+
+    onMounted(() => {
+      init();
+    });
     return {
       data,
       init,
       resetSearch,
+      paginationData,
+      handleCurrentChange,
+      handleSizeChange,
+      timeformatter,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.app-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  .custom-main-contents {
-    flex: 1;
-    :deep(.el-card) {
-      height: 100%;
-    }
-  }
-}
+@use "./style/style.scss";
 </style>

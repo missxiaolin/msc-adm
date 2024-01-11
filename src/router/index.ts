@@ -183,7 +183,7 @@ export const constantRoutes: any = [
     },
     children: [
       {
-        path: "list",
+        path: "behavior",
         component: () => import("@/views/userBehavior/index.vue"),
         hidden: false,
         meta: {

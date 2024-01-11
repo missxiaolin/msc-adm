@@ -36,7 +36,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="pager-wrapper mt20">
+      <div class="pager-wrapper mt20 justify-end">
         <el-pagination
           background
           :layout="paginationData.layout"
