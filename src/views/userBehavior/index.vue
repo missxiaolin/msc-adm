@@ -36,11 +36,11 @@
       </el-form>
     </el-card>
     <section
-      class="custom-main-contents visit-left-contents visit-right-contents"
+      class="custom-main-contents visit-left-contents visit-right-contents" ref="mainRef"
     >
       <el-card class="flex flex-1 flex-column visit-left-list">
         <div class="flex-1 flex flex-column">
-          <el-scrollbar max-height="550px" style="flex: 1">
+          <el-scrollbar :max-height="`${data.height}px`" style="flex: 1">
             <el-timeline>
               <el-timeline-item
                 v-for="(item, index) in data.userList"
@@ -60,7 +60,7 @@
                 placement="top"
                 :key="index"
               >
-                <el-card>
+                <el-card style="width: 95%;">
                   <template v-if="item.category == 'USER_CLICK'">
                     <p>{{ item.subType }}</p>
                     <p>pageUrl: {{ item.pageUrl }}</p>
@@ -143,7 +143,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, ref, nextTick } from "vue";
 import { timeQuantum, timeformatter } from "@/utils/index";
 import { userBehavior } from "@/api/userBehavior/index";
 import { usePagination } from "@/hooks/usePagination";
@@ -151,6 +151,7 @@ import { usePagination } from "@/hooks/usePagination";
 export default {
   setup() {
     let data = reactive({
+      height: 500,
       searchData: {
         uuId: "",
         categorys: ["PAGE_CHANGE", "USER_CLICK", "HTTP_LOG", "JS_ERROR"],
@@ -212,7 +213,13 @@ export default {
     };
     const resetSearch = () => {};
 
+    const mainRef = ref<any | null>(null);
+
+
     onMounted(() => {
+      nextTick(() => {
+        data.height = mainRef.value.offsetHeight - 100
+      })
       init();
     });
     return {
@@ -223,6 +230,7 @@ export default {
       handleCurrentChange,
       handleSizeChange,
       timeformatter,
+      mainRef
     };
   },
 };
