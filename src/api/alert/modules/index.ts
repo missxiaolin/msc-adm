@@ -13,3 +13,10 @@ export interface AlertSaveRequestData {
 }
 
 export type AlertSaveResponseData = ApiResponseData<any>;
+
+export interface AlertListRequestData {
+  page: number;
+  pageSize: number;
+}
+
+export type AlertListResponseData = ApiResponseData<any>;

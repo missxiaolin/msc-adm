@@ -1,6 +1,21 @@
 import { request } from "@/utils/service";
 import type * as Alert from "./modules/index";
 
+
+/**
+ * 项目列表
+ * @param data 
+ * @returns 
+ */
+export function alertList(data: Alert.AlertListRequestData) {
+    return request<Alert.AlertListResponseData>({
+      url: "/adm/alert/list",
+      method: "post",
+      data,
+    });
+  }
+  
+
 /**
  * 告警保存
  * @returns

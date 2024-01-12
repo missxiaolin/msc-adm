@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="flex">
       <el-button type="primary" @click="data.isShowPorjectPop = true"
-        >新增应用</el-button
+        >新增告警</el-button
       >
     </div>
     <!-- 表格 -->
@@ -153,12 +153,12 @@
           <el-form-item label="配置说明" prop="note">
             <el-input v-model="ruleForm.note" />
           </el-form-item>
-          <el-form-item label="告警响应时间" required>
+          <el-form-item label="发送时间段" required>
             <el-form-item prop="startHour">
               <el-time-picker
                 value-format="HH:mm:ss"
                 v-model="ruleForm.startHour"
-                placeholder="响应开始时间"
+                placeholder="发送开始时间"
                 style="width: 100%"
               />
             </el-form-item>
@@ -167,7 +167,7 @@
               <el-time-picker
                 value-format="HH:mm:ss"
                 v-model="ruleForm.endHour"
-                placeholder="响应结束时间"
+                placeholder="发送结束时间"
                 style="width: 100%"
               />
             </el-form-item>
@@ -192,7 +192,7 @@
 <script lang="ts">
 import { reactive, ref, onMounted } from "vue";
 import { projectAllList } from "@/api/project/index";
-import { alertSave } from "@/api/alert/index";
+import { alertSave, alertList } from "@/api/alert/index";
 import { usePagination } from "@/hooks/usePagination";
 import { ElMessage } from "element-plus";
 import type { FormInstance, FormRules } from "element-plus";
@@ -377,12 +377,39 @@ export default {
         handleSearch();
       });
 
-    const handleSearch = () => {};
+    const handleSearch = async () => {
+      const params = {
+        page: paginationData.currentPage,
+        pageSize: paginationData.pageSize,
+      };
+      const res = await alertList(params)
+      if (!res.success) {
+        return;
+      }
+      data.tableData = res.model.list
+      paginationData.total = res.model.count;
+    };
 
-    const showHandleDetail = (item) => {};
+    // 修改
+    const showHandleDetail = (item: any) => {
+      ruleForm.id = item.id;
+      ruleForm.project_id = item.project_id;
+      ruleForm.error_type = item.error_type;
+      ruleForm.error_name = item.error_name;
+      ruleForm.time_range_s = item.time_range_s;
+      ruleForm.max_error_count = item.max_error_count;
+      ruleForm.alarm_interval_s = item.alarm_interval_s;
+      ruleForm.is_enable = item.is_enable;
+      ruleForm.note = item.note;
+      ruleForm.startHour = item.startHour;
+      ruleForm.endHour = item.endHour;
+      ruleForm.alertType = item.alertType;
+      data.isShowPorjectPop = true
+    };
 
     onMounted(() => {
       getProject();
+      handleSearch()
     });
 
     return {
