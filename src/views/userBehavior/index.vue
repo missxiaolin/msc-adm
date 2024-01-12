@@ -36,108 +36,121 @@
       </el-form>
     </el-card>
     <section
-      class="custom-main-contents visit-left-contents visit-right-contents" ref="mainRef"
+      class="custom-main-contents visit-left-contents visit-right-contents"
+      ref="mainRef"
     >
-      <el-card class="flex flex-1 flex-column visit-left-list">
-        <div class="flex-1 flex flex-column">
-          <el-scrollbar :max-height="`${data.height}px`" style="flex: 1">
-            <el-timeline>
-              <el-timeline-item
-                v-for="(item, index) in data.userList"
-                :icon="
-                  item.category == 'USER_CLICK'
-                    ? 'Pointer'
-                    : item.category == 'HTTP_LOG'
-                    ? 'Position'
-                    : item.category == 'PAGE_CHANGE'
-                    ? 'Files'
-                    : item.category == 'JS_ERROR'
-                    ? 'CircleClose'
-                    : ''
-                "
-                center
-                :timestamp="item.happenTime"
-                placement="top"
-                :key="index"
+      <template v-if="data.userList && data.userList.length > 0">
+        <el-card class="flex flex-1 flex-column visit-left-list">
+          <div class="flex-1 flex flex-column">
+            <el-scrollbar :max-height="`${data.height}px`" style="flex: 1">
+              <el-timeline>
+                <el-timeline-item
+                  v-for="(item, index) in data.userList"
+                  :icon="
+                    item.category == 'USER_CLICK'
+                      ? 'Pointer'
+                      : item.category == 'HTTP_LOG'
+                      ? 'Position'
+                      : item.category == 'PAGE_CHANGE'
+                      ? 'Files'
+                      : item.category == 'JS_ERROR'
+                      ? 'CircleClose'
+                      : ''
+                  "
+                  center
+                  :timestamp="item.happenTime"
+                  placement="top"
+                  :key="index"
+                >
+                  <el-card style="width: 95%">
+                    <template v-if="item.category == 'USER_CLICK'">
+                      <p>{{ item.subType }}</p>
+                      <p>pageUrl: {{ item.pageUrl }}</p>
+                      <p>tagName: {{ item.tagName }}</p>
+                      <p>innerHTML: {{ item.innerHTML }}</p>
+                    </template>
+                    <template v-if="item.category == 'HTTP_LOG'">
+                      <p>
+                        {{ item.subType }}请求方式:
+                        {{ item.method }} 请求方式:{{ item.type }} 接口状态:
+                        {{ item.status }} 耗时:{{
+                          timeformatter(item.duration)
+                        }}
+                      </p>
+                      <p>pageUrl: {{ item.pageUrl }}</p>
+                      <p>pathName: {{ item.pathName }}</p>
+                      <p>requestText: {{ item.requestText }}</p>
+                      <p>responseText: {{ item.responseText }}</p>
+                    </template>
+                    <template v-if="item.category == 'PAGE_CHANGE'">
+                      <p>
+                        {{ item.subType }} 停留:{{
+                          timeformatter(item.duration)
+                        }}
+                      </p>
+                      <p>referrer: {{ item.referrer }}</p>
+                      <p>from: {{ item.from }}</p>
+                      <p>to: {{ item.to }}</p>
+                    </template>
+                    <template v-if="item.category == 'JS_ERROR'">
+                      <p>{{ item.subType }}</p>
+                      <p>{{ item.errorMsg }}</p>
+                    </template>
+                  </el-card>
+                </el-timeline-item>
+              </el-timeline>
+            </el-scrollbar>
+            <div class="pager-wrapper mt20">
+              <el-pagination
+                background
+                :layout="paginationData.layout"
+                :page-sizes="paginationData.pageSizes"
+                :total="paginationData.total"
+                :page-size="paginationData.pageSize"
+                :currentPage="paginationData.currentPage"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
+            </div>
+          </div>
+        </el-card>
+        <div class="visit-right-contents">
+          <div class="basic-header">
+            <el-row>
+              <el-col :span="12">cip： {{ data.pageDetail.ip }}</el-col>
+              <el-col :span="12"
+                >cregion： {{ data.pageDetail.country }}</el-col
               >
-                <el-card style="width: 95%;">
-                  <template v-if="item.category == 'USER_CLICK'">
-                    <p>{{ item.subType }}</p>
-                    <p>pageUrl: {{ item.pageUrl }}</p>
-                    <p>tagName: {{ item.tagName }}</p>
-                    <p>innerHTML: {{ item.innerHTML }}</p>
-                  </template>
-                  <template v-if="item.category == 'HTTP_LOG'">
-                    <p>
-                      {{ item.subType }}请求方式: {{ item.method }} 请求方式:{{
-                        item.type
-                      }}
-                      接口状态: {{ item.status }} 耗时:{{
-                        timeformatter(item.duration)
-                      }}
-                    </p>
-                    <p>pageUrl: {{ item.pageUrl }}</p>
-                    <p>pathName: {{ item.pathName }}</p>
-                    <p>requestText: {{ item.requestText }}</p>
-                    <p>responseText: {{ item.responseText }}</p>
-                  </template>
-                  <template v-if="item.category == 'PAGE_CHANGE'">
-                    <p>
-                      {{ item.subType }} 停留:{{ timeformatter(item.duration) }}
-                    </p>
-                    <p>referrer: {{ item.referrer }}</p>
-                    <p>from: {{ item.from }}</p>
-                    <p>to: {{ item.to }}</p>
-                  </template>
-                  <template v-if="item.category == 'JS_ERROR'">
-                    <p>{{ item.subType }}</p>
-                    <p>{{ item.errorMsg }}</p>
-                  </template>
-                </el-card>
-              </el-timeline-item>
-            </el-timeline>
-          </el-scrollbar>
-          <div class="pager-wrapper mt20">
-            <el-pagination
-              background
-              :layout="paginationData.layout"
-              :page-sizes="paginationData.pageSizes"
-              :total="paginationData.total"
-              :page-size="paginationData.pageSize"
-              :currentPage="paginationData.currentPage"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-            />
+              <el-col :span="12"
+                >deviceType： {{ data.pageDetail.deviceType }}</el-col
+              >
+              <el-col :span="12">os： {{ data.pageDetail.os }}</el-col>
+              <el-col :span="12"
+                >browserInfo： {{ data.pageDetail.browserInfo }}</el-col
+              >
+              <el-col :span="12">device： {{ data.pageDetail.device }}</el-col>
+              <el-col :span="12"
+                >deviceModel： {{ data.pageDetail.deviceModel }}</el-col
+              >
+              <el-col :span="12"
+                >language： {{ data.pageDetail.language }}</el-col
+              >
+              <el-col :span="12"
+                >netWork： {{ data.pageDetail.netWork }}</el-col
+              >
+              <el-col :span="12"></el-col>
+              <el-col :span="12"
+                >userAgent： {{ data.pageDetail.userAgent }}</el-col
+              >
+            </el-row>
           </div>
         </div>
-      </el-card>
-      <div class="visit-right-contents">
-        <div class="basic-header">
-          <el-row>
-            <el-col :span="12">cip： {{ data.pageDetail.ip }}</el-col>
-            <el-col :span="12">cregion： {{ data.pageDetail.country }}</el-col>
-            <el-col :span="12"
-              >deviceType： {{ data.pageDetail.deviceType }}</el-col
-            >
-            <el-col :span="12">os： {{ data.pageDetail.os }}</el-col>
-            <el-col :span="12"
-              >browserInfo： {{ data.pageDetail.browserInfo }}</el-col
-            >
-            <el-col :span="12">device： {{ data.pageDetail.device }}</el-col>
-            <el-col :span="12"
-              >deviceModel： {{ data.pageDetail.deviceModel }}</el-col
-            >
-            <el-col :span="12"
-              >language： {{ data.pageDetail.language }}</el-col
-            >
-            <el-col :span="12">netWork： {{ data.pageDetail.netWork }}</el-col>
-            <el-col :span="12"></el-col>
-            <el-col :span="12"
-              >userAgent： {{ data.pageDetail.userAgent }}</el-col
-            >
-          </el-row>
+      </template>
+      <template v-else>
+        <div class="flex flex-1 flex-row justify-center">
+          <el-empty  description="未找到该用户记录" />
         </div>
-      </div>
+      </template>
     </section>
   </div>
 </template>
@@ -147,7 +160,7 @@ import { reactive, onMounted, ref, nextTick } from "vue";
 import { timeQuantum, timeformatter } from "@/utils/index";
 import { userBehavior } from "@/api/userBehavior/index";
 import { usePagination } from "@/hooks/usePagination";
-import { ElMessage } from 'element-plus'
+import { ElMessage } from "element-plus";
 
 export default {
   setup() {
@@ -187,8 +200,8 @@ export default {
 
     const getUserBehavior = async () => {
       if (!data.searchData.uuId || !data.searchData.categorys) {
-        ElMessage(!data.searchData.uuId ? '请输入用户ID' : '请选择事件类型');
-        
+        ElMessage(!data.searchData.uuId ? "请输入用户ID" : "请选择事件类型");
+
         return;
       }
       let params = {
@@ -218,11 +231,10 @@ export default {
 
     const mainRef = ref<any | null>(null);
 
-
     onMounted(() => {
       nextTick(() => {
-        data.height = mainRef.value.offsetHeight - 100
-      })
+        data.height = mainRef.value.offsetHeight - 100;
+      });
       init();
     });
     return {
@@ -233,7 +245,7 @@ export default {
       handleCurrentChange,
       handleSizeChange,
       timeformatter,
-      mainRef
+      mainRef,
     };
   },
 };
