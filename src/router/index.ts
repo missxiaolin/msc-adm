@@ -194,6 +194,29 @@ export const constantRoutes: any = [
         },
       },
     ],
+  },
+  {
+    path: "/alert",
+    component: Layouts,
+    redirect: "/alert/list",
+    name: "alertList",
+    meta: {
+      title: "告警列表",
+      elIcon: "AlarmClock",
+    },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/alert/list.vue"),
+        hidden: false,
+        meta: {
+          title: "告警列表",
+          keepAlive: false,
+          elIcon: "AlarmClock",
+          affix: true,
+        },
+      },
+    ],
   }
 ];
 

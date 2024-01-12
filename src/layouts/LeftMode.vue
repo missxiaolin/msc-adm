@@ -9,7 +9,8 @@
       <!-- 头部导航栏和标签栏 -->
       <div :class="{ 'fixed-header': fixedHeader }" class="layout-header">
         <navigation-bar />
-        <tags-view v-show="showTagsView" />
+        <!-- tab栏 -->
+        <!-- <tags-view v-show="showTagsView" /> -->
       </div>
       <!-- 页面主体内容 -->
       <appMain class="app-main" />
