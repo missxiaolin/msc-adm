@@ -134,7 +134,7 @@
           </el-form-item>
         </el-form>
         <div class="copy-code-area">
-          <h4>复制探针 <a href="https://github.com/missxiaolin/msc-serve/blob/main/sdk/monitorSdk.js" target="_blank">sdk 链接下载</a> </h4>
+          <h4>复制探针 <a href="http://www.missxiaolin.com/sdk/web.min.js" target="_blank">sdk 链接下载</a> </h4>
           <div class="code">
             <el-icon class="copy-btn" size="22" @click="probeCodeCopy">
               <CopyDocument />
