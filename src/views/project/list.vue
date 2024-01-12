@@ -108,7 +108,7 @@
               <el-radio :label="0">不加密</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="是否使用" prop="encryption">
+          <el-form-item label="是否使用" prop="status">
             <el-radio-group v-model="ruleForm.status">
               <el-radio :label="1">使用</el-radio>
               <el-radio :label="0">禁用</el-radio>
