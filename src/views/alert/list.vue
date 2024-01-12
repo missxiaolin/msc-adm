@@ -155,25 +155,27 @@
           </el-form-item>
           <el-form-item label="告警响应时间" required>
             <el-form-item prop="startHour">
-              <el-time-select
+              <el-time-picker
+                value-format="HH:mm:ss"
                 v-model="ruleForm.startHour"
-                start="00:00"
-                step="00:30"
-                end="23:59"
                 placeholder="响应开始时间"
+                style="width: 100%"
               />
             </el-form-item>
-
             <span style="padding: 0 10px 0 10px">-</span>
             <el-form-item prop="endHour">
-              <el-time-select
+              <el-time-picker
+                value-format="HH:mm:ss"
                 v-model="ruleForm.endHour"
-                start="00:00"
-                step="00:30"
-                end="23:59"
                 placeholder="响应结束时间"
+                style="width: 100%"
               />
             </el-form-item>
+          </el-form-item>
+          <el-form-item label="告警方式" prop="alertType">
+            <el-checkbox-group v-model="ruleForm.alertType">
+              <el-checkbox :label="1">钉钉</el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm(ruleFormRef)">
@@ -190,7 +192,9 @@
 <script lang="ts">
 import { reactive, ref, onMounted } from "vue";
 import { projectAllList } from "@/api/project/index";
+import { alertSave } from "@/api/alert/index";
 import { usePagination } from "@/hooks/usePagination";
+import { ElMessage } from "element-plus";
 import type { FormInstance, FormRules } from "element-plus";
 
 interface RuleForm {
@@ -205,6 +209,7 @@ interface RuleForm {
   note: string; // 配置说明
   startHour: string; // 告警时间点
   endHour: string; // 告警时间点
+  alertType: number[] // 告警方式
 }
 
 export default {
@@ -250,6 +255,7 @@ export default {
       note: "",
       startHour: "",
       endHour: "",
+      alertType: []
     });
     const rules = reactive<FormRules<RuleForm>>({
       project_id: [
@@ -296,7 +302,6 @@ export default {
       ],
       startHour: [
         {
-          type: "date",
           required: true,
           message: "请选择起始时间",
           trigger: "change",
@@ -304,7 +309,6 @@ export default {
       ],
       endHour: [
         {
-          type: "date",
           required: true,
           message: "请选择结束时间",
           trigger: "change",
@@ -325,12 +329,29 @@ export default {
       ruleForm.note = "";
       ruleForm.startHour = "";
       ruleForm.endHour = "";
+      ruleForm.alertType = []
     };
 
     const submitForm = async (formEl: FormInstance | undefined) => {
       if (!formEl) return;
       await formEl.validate(async (valid, fields) => {
         if (valid) {
+          let param: any = ruleForm;
+          let res = await alertSave(param);
+          if (res.success) {
+            ElMessage({
+              message: "保存成功",
+              type: "success",
+            });
+            handleClose();
+            handleSearch();
+            // 顶部列表更新
+          } else {
+            ElMessage({
+              message: res.errorMessage,
+              type: "error",
+            });
+          }
         } else {
           console.log("error submit!", fields);
         }
