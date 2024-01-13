@@ -227,8 +227,12 @@ export default {
           value: "HTTP_LOG",
         },
         {
-          name: "页面告警",
-          value: "PAGE_CHANGE",
+          name: "页面PV告警",
+          value: "PAGE_PV",
+        },
+        {
+          name: "页面UV告警",
+          value: "PAGE_UV",
         },
         {
           name: "资源告警",
