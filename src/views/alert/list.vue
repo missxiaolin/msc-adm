@@ -76,13 +76,13 @@
           status-icon
           class="pop-form"
         >
-          <el-form-item label="项目" prop="project_id">
-            <el-select v-model="ruleForm.project_id">
+          <el-form-item label="项目" prop="monitorAppId">
+            <el-select v-model="ruleForm.monitorAppId">
               <el-option
                 v-for="item in data.projects"
                 :key="item.id"
                 :label="item.name"
-                :value="item.id"
+                :value="item.monitorAppId"
               />
             </el-select>
           </el-form-item>
@@ -109,7 +109,7 @@
             <el-form-item prop="serviceType">
               <el-select
                 v-model="ruleForm.serviceType"
-                style="margin-right: 5px; width: 140px;"
+                style="margin-right: 5px; width: 140px"
               >
                 <el-option
                   v-for="(item, index) in data.serviceType"
@@ -195,7 +195,7 @@ import type { FormInstance, FormRules } from "element-plus";
 
 interface RuleForm {
   id: number;
-  project_id: number | string; // 项目ID
+  monitorAppId: number | string; // 项目ID
   error_type: string; // 错误类型
   error_name: string; // 错误名称
   serviceType: string; // = > <
@@ -260,7 +260,7 @@ export default {
     const ruleFormRef = ref<FormInstance>();
     const ruleForm: any = reactive<RuleForm>({
       id: 0,
-      project_id: "",
+      monitorAppId: "",
       error_type: "",
       error_name: "",
       serviceType: "",
@@ -274,7 +274,7 @@ export default {
       alertType: [],
     });
     const rules = reactive<FormRules<RuleForm>>({
-      project_id: [
+      monitorAppId: [
         {
           required: true,
           message: "请选择项目ID",
@@ -342,12 +342,12 @@ export default {
     const handleClose = () => {
       data.isShowPorjectPop = false;
       ruleForm.id = 0;
-      ruleForm.project_id = "";
+      ruleForm.monitorAppId = "";
       ruleForm.error_type = "";
       ruleForm.error_name = "";
-      ruleForm.time_range_s = 0;
-      ruleForm.max_error_count = 0;
-      ruleForm.alarm_interval_s = 0;
+      ruleForm.time_range_s = "";
+      ruleForm.max_error_count = "";
+      ruleForm.alarm_interval_s = "";
       ruleForm.is_enable = 1;
       ruleForm.note = "";
       ruleForm.startHour = "";
@@ -417,7 +417,7 @@ export default {
     // 修改
     const showHandleDetail = (item: any) => {
       ruleForm.id = item.id;
-      ruleForm.project_id = item.project_id;
+      ruleForm.monitorAppId = item.monitorAppId;
       ruleForm.error_type = item.error_type;
       ruleForm.error_name = item.error_name;
       ruleForm.time_range_s = item.time_range_s;
