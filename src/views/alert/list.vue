@@ -99,35 +99,31 @@
           <el-form-item label="错误名称" prop="error_name">
             <el-input v-model="ruleForm.error_name" />
           </el-form-item>
-          <el-form-item label="报警时间范围" prop="time_range_s">
-            <el-input-number
-              v-model="ruleForm.time_range_s"
-              :min="1"
-              :max="86400"
-            />
-            <el-tooltip
-              class="box-item"
-              effect="dark"
-              content="时间单位m"
-              placement="bottom-start"
-            >
-              <el-icon style="margin-left: 20px"><QuestionFilled /></el-icon>
-            </el-tooltip>
-          </el-form-item>
-          <el-form-item label="报警错误阈值" prop="max_error_count">
-            <el-input-number
-              v-model="ruleForm.max_error_count"
-              :min="1"
-              :max="100"
-            />
-            <el-tooltip
-              class="box-item"
-              effect="dark"
-              content="表示在多少m内出现相同的错误多少次触发"
-              placement="bottom-start"
-            >
-              <el-icon style="margin-left: 20px"><QuestionFilled /></el-icon>
-            </el-tooltip>
+          <el-form-item label="规则" required>
+            <span>最近N秒内：</span>
+            <el-form-item prop="time_range_s">
+              <el-input style="width: 120px" v-model="ruleForm.time_range_s">
+              </el-input>
+            </el-form-item>
+            <span style="margin: 0 5px 0 5px">持续</span>
+            <el-form-item prop="serviceType">
+              <el-select
+                v-model="ruleForm.serviceType"
+                style="margin-right: 5px; width: 140px;"
+              >
+                <el-option
+                  v-for="(item, index) in data.serviceType"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item prop="max_error_count">
+              <el-input style="width: 120px" v-model="ruleForm.max_error_count">
+              </el-input>
+            </el-form-item>
+            <span style="margin: 0 5px 0 5px">次</span>
           </el-form-item>
           <el-form-item label="报警时间间隔" prop="alarm_interval_s">
             <el-input-number
@@ -202,6 +198,7 @@ interface RuleForm {
   project_id: number | string; // 项目ID
   error_type: string; // 错误类型
   error_name: string; // 错误名称
+  serviceType: string; // = > <
   time_range_s: number | string; // 报警时间范围
   max_error_count: number | string; // 报警错误阈值
   alarm_interval_s: number | string; // 报警时间间隔
@@ -209,7 +206,7 @@ interface RuleForm {
   note: string; // 配置说明
   startHour: string; // 告警时间点
   endHour: string; // 告警时间点
-  alertType: number[] // 告警方式
+  alertType: number[]; // 告警方式
 }
 
 export default {
@@ -244,6 +241,20 @@ export default {
         },
       ],
       tableData: <any>[],
+      serviceType: [
+        {
+          name: "等于",
+          value: "=",
+        },
+        {
+          name: "小于",
+          value: "<",
+        },
+        {
+          name: "大于",
+          value: ">",
+        },
+      ],
     });
 
     const ruleFormRef = ref<FormInstance>();
@@ -252,6 +263,7 @@ export default {
       project_id: "",
       error_type: "",
       error_name: "",
+      serviceType: "",
       time_range_s: "",
       max_error_count: "",
       alarm_interval_s: "",
@@ -259,7 +271,7 @@ export default {
       note: "",
       startHour: "",
       endHour: "",
-      alertType: []
+      alertType: [],
     });
     const rules = reactive<FormRules<RuleForm>>({
       project_id: [
@@ -283,10 +295,17 @@ export default {
           trigger: "blur",
         },
       ],
+      serviceType: [
+        {
+          required: true,
+          message: "请选择参数",
+          trigger: "blur",
+        },
+      ],
       time_range_s: [
         {
           required: true,
-          message: "请输入报警时间范围",
+          message: "请输入报警时间",
           trigger: "blur",
         },
       ],
@@ -333,7 +352,8 @@ export default {
       ruleForm.note = "";
       ruleForm.startHour = "";
       ruleForm.endHour = "";
-      ruleForm.alertType = []
+      ruleForm.serviceType = "";
+      ruleForm.alertType = [];
     };
 
     const submitForm = async (formEl: FormInstance | undefined) => {
@@ -386,11 +406,11 @@ export default {
         page: paginationData.currentPage,
         pageSize: paginationData.pageSize,
       };
-      const res = await alertList(params)
+      const res = await alertList(params);
       if (!res.success) {
         return;
       }
-      data.tableData = res.model.list
+      data.tableData = res.model.list;
       paginationData.total = res.model.count;
     };
 
@@ -408,12 +428,13 @@ export default {
       ruleForm.startHour = item.startHour;
       ruleForm.endHour = item.endHour;
       ruleForm.alertType = item.alertType;
-      data.isShowPorjectPop = true
+      ruleForm.serviceType = item.serviceType;
+      data.isShowPorjectPop = true;
     };
 
     onMounted(() => {
       getProject();
-      handleSearch()
+      handleSearch();
     });
 
     return {

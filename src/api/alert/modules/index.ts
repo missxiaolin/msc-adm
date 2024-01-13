@@ -1,5 +1,6 @@
 export interface AlertSaveRequestData {
   id?: number;
+  serviceType: string;
   project_id: number | string; // 项目ID
   error_type: string; // 错误类型
   error_name: string; // 错误名称
