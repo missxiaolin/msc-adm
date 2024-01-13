@@ -76,16 +76,6 @@
           status-icon
           class="pop-form"
         >
-          <el-form-item label="项目" prop="monitorAppId">
-            <el-select v-model="ruleForm.monitorAppId">
-              <el-option
-                v-for="item in data.projects"
-                :key="item.id"
-                :label="item.name"
-                :value="item.monitorAppId"
-              />
-            </el-select>
-          </el-form-item>
           <el-form-item label="错误类型" prop="error_type">
             <el-select v-model="ruleForm.error_type">
               <el-option
@@ -195,7 +185,6 @@ import type { FormInstance, FormRules } from "element-plus";
 
 interface RuleForm {
   id: number;
-  monitorAppId: number | string; // 项目ID
   error_type: string; // 错误类型
   error_name: string; // 错误名称
   serviceType: string; // = > <
@@ -260,7 +249,6 @@ export default {
     const ruleFormRef = ref<FormInstance>();
     const ruleForm: any = reactive<RuleForm>({
       id: 0,
-      monitorAppId: "",
       error_type: "",
       error_name: "",
       serviceType: "",
@@ -274,13 +262,6 @@ export default {
       alertType: [],
     });
     const rules = reactive<FormRules<RuleForm>>({
-      monitorAppId: [
-        {
-          required: true,
-          message: "请选择项目ID",
-          trigger: "blur",
-        },
-      ],
       error_type: [
         {
           required: true,
@@ -342,7 +323,6 @@ export default {
     const handleClose = () => {
       data.isShowPorjectPop = false;
       ruleForm.id = 0;
-      ruleForm.monitorAppId = "";
       ruleForm.error_type = "";
       ruleForm.error_name = "";
       ruleForm.time_range_s = "";
@@ -417,7 +397,6 @@ export default {
     // 修改
     const showHandleDetail = (item: any) => {
       ruleForm.id = item.id;
-      ruleForm.monitorAppId = item.monitorAppId;
       ruleForm.error_type = item.error_type;
       ruleForm.error_name = item.error_name;
       ruleForm.time_range_s = item.time_range_s;
