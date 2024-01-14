@@ -10,26 +10,26 @@
       <div class="table-wrapper">
         <el-table border :data="data.tableData">
           <el-table-column prop="name" label="项目名称" align="center" />
-          <el-table-column prop="error_type" label="错误类型" align="center" />
-          <el-table-column prop="error_name" label="错误名称" align="center" />
+          <el-table-column prop="errorType" label="错误类型" align="center" />
+          <el-table-column prop="errorName" label="错误名称" align="center" />
           <el-table-column
-            prop="time_range_s"
+            prop="timeRangeS"
             label="报警时间范围"
             align="center"
           />
           <el-table-column
-            prop="max_error_count"
+            prop="maxErrorCount"
             label="报警错误阈值"
             align="center"
           />
           <el-table-column
-            prop="alarm_interval_s"
+            prop="alarmIntervalS"
             label="报警时间间隔"
             align="center"
           />
           <el-table-column label="是否开启" align="center">
             <template #default="{ row }">
-              {{ row.is_enable == 0 ? "禁用" : "开启" }}
+              {{ row.isEnable == 0 ? "禁用" : "开启" }}
             </template>
           </el-table-column>
           <el-table-column label="告警时间段" align="center">
@@ -76,8 +76,8 @@
           status-icon
           class="pop-form"
         >
-          <el-form-item label="错误类型" prop="error_type">
-            <el-select v-model="ruleForm.error_type">
+          <el-form-item label="错误类型" prop="errorType">
+            <el-select v-model="ruleForm.errorType">
               <el-option
                 v-for="(item, index) in data.errorTypeOption"
                 :key="index"
@@ -86,13 +86,13 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="错误名称" prop="error_name">
-            <el-input v-model="ruleForm.error_name" />
+          <el-form-item label="错误名称" prop="errorName">
+            <el-input v-model="ruleForm.errorName" />
           </el-form-item>
           <el-form-item label="规则" required>
             <span>最近N秒内：</span>
-            <el-form-item prop="time_range_s">
-              <el-input style="width: 120px" v-model="ruleForm.time_range_s">
+            <el-form-item prop="timeRangeS">
+              <el-input style="width: 120px" v-model="ruleForm.timeRangeS">
               </el-input>
             </el-form-item>
             <span style="margin: 0 5px 0 5px">持续</span>
@@ -109,15 +109,15 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item prop="max_error_count">
-              <el-input style="width: 120px" v-model="ruleForm.max_error_count">
+            <el-form-item prop="maxErrorCount">
+              <el-input style="width: 120px" v-model="ruleForm.maxErrorCount">
               </el-input>
             </el-form-item>
             <span style="margin: 0 5px 0 5px">次</span>
           </el-form-item>
-          <el-form-item label="报警时间间隔" prop="alarm_interval_s">
+          <el-form-item label="报警时间间隔" prop="alarmIntervalS">
             <el-input-number
-              v-model="ruleForm.alarm_interval_s"
+              v-model="ruleForm.alarmIntervalS"
               :min="1"
               :max="60"
             />
@@ -130,8 +130,8 @@
               <el-icon style="margin-left: 20px"><QuestionFilled /></el-icon>
             </el-tooltip>
           </el-form-item>
-          <el-form-item label="是否使用" prop="is_enable">
-            <el-radio-group v-model="ruleForm.is_enable">
+          <el-form-item label="是否使用" prop="isEnable">
+            <el-radio-group v-model="ruleForm.isEnable">
               <el-radio :label="1">使用</el-radio>
               <el-radio :label="0">禁用</el-radio>
             </el-radio-group>
@@ -185,13 +185,13 @@ import type { FormInstance, FormRules } from "element-plus";
 
 interface RuleForm {
   id: number;
-  error_type: string; // 错误类型
-  error_name: string; // 错误名称
+  errorType: string; // 错误类型
+  errorName: string; // 错误名称
   serviceType: string; // = > <
-  time_range_s: number | string; // 报警时间范围
-  max_error_count: number | string; // 报警错误阈值
-  alarm_interval_s: number | string; // 报警时间间隔
-  is_enable: number; // 是否开启本条报警配置1：是0：否
+  timeRangeS: number | string; // 报警时间范围
+  maxErrorCount: number | string; // 报警错误阈值
+  alarmIntervalS: number | string; // 报警时间间隔
+  isEnable: number; // 是否开启本条报警配置1：是0：否
   note: string; // 配置说明
   startHour: string; // 告警时间点
   endHour: string; // 告警时间点
@@ -249,27 +249,27 @@ export default {
     const ruleFormRef = ref<FormInstance>();
     const ruleForm: any = reactive<RuleForm>({
       id: 0,
-      error_type: "",
-      error_name: "",
+      errorType: "",
+      errorName: "",
       serviceType: "",
-      time_range_s: "",
-      max_error_count: "",
-      alarm_interval_s: "",
-      is_enable: 1,
+      timeRangeS: "",
+      maxErrorCount: "",
+      alarmIntervalS: "",
+      isEnable: 1,
       note: "",
       startHour: "",
       endHour: "",
       alertType: [],
     });
     const rules = reactive<FormRules<RuleForm>>({
-      error_type: [
+      errorType: [
         {
           required: true,
           message: "请选择错误类型",
           trigger: "blur",
         },
       ],
-      error_name: [
+      errorName: [
         {
           required: true,
           message: "请输入错误名称",
@@ -283,21 +283,21 @@ export default {
           trigger: "blur",
         },
       ],
-      time_range_s: [
+      timeRangeS: [
         {
           required: true,
           message: "请输入报警时间",
           trigger: "blur",
         },
       ],
-      max_error_count: [
+      maxErrorCount: [
         {
           required: true,
           message: "请输入报警阈值",
           trigger: "blur",
         },
       ],
-      alarm_interval_s: [
+      alarmIntervalS: [
         {
           required: true,
           message: "请输入报警时间间隔",
@@ -323,12 +323,12 @@ export default {
     const handleClose = () => {
       data.isShowPorjectPop = false;
       ruleForm.id = 0;
-      ruleForm.error_type = "";
-      ruleForm.error_name = "";
-      ruleForm.time_range_s = "";
-      ruleForm.max_error_count = "";
-      ruleForm.alarm_interval_s = "";
-      ruleForm.is_enable = 1;
+      ruleForm.errorType = "";
+      ruleForm.errorName = "";
+      ruleForm.timeRangeS = "";
+      ruleForm.maxErrorCount = "";
+      ruleForm.alarmIntervalS = "";
+      ruleForm.isEnable = 1;
       ruleForm.note = "";
       ruleForm.startHour = "";
       ruleForm.endHour = "";
@@ -397,12 +397,12 @@ export default {
     // 修改
     const showHandleDetail = (item: any) => {
       ruleForm.id = item.id;
-      ruleForm.error_type = item.error_type;
-      ruleForm.error_name = item.error_name;
-      ruleForm.time_range_s = item.time_range_s;
-      ruleForm.max_error_count = item.max_error_count;
-      ruleForm.alarm_interval_s = item.alarm_interval_s;
-      ruleForm.is_enable = item.is_enable;
+      ruleForm.errorType = item.errorType;
+      ruleForm.errorName = item.errorName;
+      ruleForm.timeRangeS = item.timeRangeS;
+      ruleForm.maxErrorCount = item.maxErrorCount;
+      ruleForm.alarmIntervalS = item.alarmIntervalS;
+      ruleForm.isEnable = item.isEnable;
       ruleForm.note = item.note;
       ruleForm.startHour = item.startHour;
       ruleForm.endHour = item.endHour;
