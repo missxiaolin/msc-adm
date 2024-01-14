@@ -77,7 +77,7 @@
           class="pop-form"
         >
           <el-form-item label="错误类型" prop="errorType">
-            <el-select v-model="ruleForm.errorType">
+            <el-select v-model="ruleForm.errorType" @change="errorTypeChange">
               <el-option
                 v-for="(item, index) in data.errorTypeOption"
                 :key="index"
@@ -95,7 +95,20 @@
               <el-input style="width: 120px" v-model="ruleForm.timeRangeS">
               </el-input>
             </el-form-item>
-            <span style="margin: 0 5px 0 5px">持续</span>
+            <el-form-item prop="whereType" style="margin: 0 0 0 5px">
+              <el-select
+                v-model="ruleForm.whereType"
+                style="margin-right: 5px; width: 140px"
+              >
+                <el-option
+                  v-for="(item, index) in data.whereTypeOption"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <!-- <span >持续</span> -->
             <el-form-item prop="serviceType">
               <el-select
                 v-model="ruleForm.serviceType"
@@ -187,6 +200,7 @@ interface RuleForm {
   id: number;
   errorType: string; // 错误类型
   errorName: string; // 错误名称
+  whereType: string; // sum avg
   serviceType: string; // = > <
   timeRangeS: number | string; // 报警时间范围
   maxErrorCount: number | string; // 报警错误阈值
@@ -244,6 +258,16 @@ export default {
           value: ">",
         },
       ],
+      whereTypeOption: <any>[
+        // {
+        //   name: "求和",
+        //   value: "sum",
+        // },
+        // {
+        //   name: "平均",
+        //   value: "avg",
+        // }
+      ],
     });
 
     const ruleFormRef = ref<FormInstance>();
@@ -252,6 +276,7 @@ export default {
       errorType: "",
       errorName: "",
       serviceType: "",
+      whereType: "",
       timeRangeS: "",
       maxErrorCount: "",
       alarmIntervalS: "",
@@ -277,6 +302,13 @@ export default {
         },
       ],
       serviceType: [
+        {
+          required: true,
+          message: "请选择参数",
+          trigger: "blur",
+        },
+      ],
+      whereType: [
         {
           required: true,
           message: "请选择参数",
@@ -333,7 +365,9 @@ export default {
       ruleForm.startHour = "";
       ruleForm.endHour = "";
       ruleForm.serviceType = "";
+      ruleForm.whereType = "";
       ruleForm.alertType = [];
+      data.whereTypeOption = []
     };
 
     const submitForm = async (formEl: FormInstance | undefined) => {
@@ -408,7 +442,31 @@ export default {
       ruleForm.endHour = item.endHour;
       ruleForm.alertType = item.alertType;
       ruleForm.serviceType = item.serviceType;
+      ruleForm.whereType = item.whereType;
+      errorTypeChange(item.errorType)
       data.isShowPorjectPop = true;
+    };
+
+    const errorTypeChange = (v: any) => {
+      if (v == "PAGE_PV" || v == "PAGE_UV") {
+        data.whereTypeOption = [
+          {
+            name: "求和",
+            value: "sum",
+          },
+        ];
+      } else {
+        data.whereTypeOption = [
+          {
+            name: "求和",
+            value: "sum",
+          },
+          {
+            name: "平均",
+            value: "avg",
+          },
+        ];
+      }
     };
 
     onMounted(() => {
@@ -428,6 +486,7 @@ export default {
       paginationData,
       handleCurrentChange,
       handleSizeChange,
+      errorTypeChange,
     };
   },
 };

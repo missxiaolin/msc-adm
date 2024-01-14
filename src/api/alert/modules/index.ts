@@ -1,6 +1,7 @@
 export interface AlertSaveRequestData {
   id?: number;
   serviceType: string; // 报警类别 = > <
+  whereType: string; // sum avg
   errorType: string; // 错误类型
   errorName: string; // 错误名称
   timeRangeS: number | string; // 报警时间范围
