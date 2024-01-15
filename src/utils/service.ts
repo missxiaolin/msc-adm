@@ -89,7 +89,7 @@ function createService() {
 
 let baseURL = "http://msc-serve.missxiaolin.com"
 
-if (window.location.href.indexOf('http://localhost') > -1) {
+if (window.location.href.indexOf('http://localhost') > -1 || window.location.href.indexOf("http://m.missxiaolin.com") > -1) {
   baseURL = "http://127.0.0.1:9001"
 }
 
