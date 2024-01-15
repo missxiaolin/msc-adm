@@ -223,7 +223,7 @@ export default {
           value: "JS_ERROR",
         },
         {
-          name: "网络请求告警",
+          name: "网络请求错误告警",
           value: "HTTP_LOG",
         },
         {
@@ -462,8 +462,8 @@ export default {
             value: "sum",
           },
           {
-            name: "平均",
-            value: "avg",
+            name: "单个",
+            value: "single",
           },
         ];
       }
