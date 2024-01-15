@@ -42,6 +42,9 @@
               <el-button type="text" @click="showHandleDetail(row)">
                 修改
               </el-button>
+              <el-button type="text" @click="clickHistory(row)">
+                查看历史告警记录
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -185,6 +188,7 @@
         </el-form>
       </div>
     </el-dialog>
+    <AlertHistoryTabel v-if="data.alarmId" :alarmId="data.alarmId" @handleClose="historyHandleClose" />
   </div>
 </template>
 
@@ -193,6 +197,7 @@ import { reactive, ref, onMounted } from "vue";
 import { projectAllList } from "@/api/project/index";
 import { alertSave, alertList } from "@/api/alert/index";
 import { usePagination } from "@/hooks/usePagination";
+import AlertHistoryTabel from './components/historyTabel.vue'
 import { ElMessage } from "element-plus";
 import type { FormInstance, FormRules } from "element-plus";
 
@@ -213,6 +218,9 @@ interface RuleForm {
 }
 
 export default {
+  components: {
+    AlertHistoryTabel
+  },
   setup() {
     let data = reactive({
       isShowPorjectPop: false,
@@ -268,6 +276,7 @@ export default {
         //   value: "avg",
         // }
       ],
+      alarmId: <number | string>''
     });
 
     const ruleFormRef = ref<FormInstance>();
@@ -469,6 +478,14 @@ export default {
       }
     };
 
+    const clickHistory = (item: any) => {
+      data.alarmId = item.id
+    }
+
+    const historyHandleClose = () => {
+      data.alarmId = ''
+    }
+
     onMounted(() => {
       getProject();
       handleSearch();
@@ -487,6 +504,8 @@ export default {
       handleCurrentChange,
       handleSizeChange,
       errorTypeChange,
+      clickHistory,
+      historyHandleClose
     };
   },
 };

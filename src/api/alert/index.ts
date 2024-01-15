@@ -27,3 +27,16 @@ export function alertSave(data: Alert.AlertSaveRequestData) {
     data,
   });
 }
+
+/**
+ * 告警历史
+ * @param data 
+ * @returns 
+ */
+export function aleryHistory(data: Alert.AleryHistoryRequestData) {
+  return request<Alert.AleryHistoryResponseData>({
+    url: "/adm/alert/history/list",
+    method: "post",
+    data,
+  });
+}

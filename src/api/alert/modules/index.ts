@@ -15,9 +15,19 @@ export interface AlertSaveRequestData {
 
 export type AlertSaveResponseData = ApiResponseData<any>;
 
+// 告警列表
 export interface AlertListRequestData {
   page: number;
   pageSize: number;
 }
 
 export type AlertListResponseData = ApiResponseData<any>;
+
+// 告警历史
+export interface AleryHistoryRequestData {
+  page: number;
+  pageSize: number;
+  alarmId: number | string;
+}
+
+export type AleryHistoryResponseData = ApiResponseData<any>;
