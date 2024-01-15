@@ -135,12 +135,12 @@
             <el-input-number
               v-model="ruleForm.alarmIntervalS"
               :min="1"
-              :max="60"
+              :max="3600"
             />
             <el-tooltip
               class="box-item"
               effect="dark"
-              content="报警后如果未恢复正常，间隔多久重新触发一次告警（最低60s）"
+              content="报警后如果未恢复正常，间隔多久重新触发一次告警（最低3600s）"
               placement="bottom-start"
             >
               <el-icon style="margin-left: 20px"><QuestionFilled /></el-icon>

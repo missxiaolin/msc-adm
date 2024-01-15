@@ -57,7 +57,8 @@ export default defineConfig({
       }
     },
     /** 打包后静态资源目录 */
-    assetsDir: "static"
+    assetsDir: "static",
+    sourcemap: true
   },
   /** Vite 插件 */
   plugins: [
