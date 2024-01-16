@@ -35,8 +35,8 @@ export const useGeneralStore = defineStore({
       setCookie("PROJECT_ALL", JSON.stringify(projectList));
       let currentProject = projectList[0]?.monitorAppId;
       if (currentProject && !getCookie("PROJECT_ID")) {
-        this.currentProjectId = currentProject.monitorAppId;
-        setCookie("PROJECT_ID", currentProject.monitorAppId);
+        this.currentProjectId = currentProject;
+        setCookie("PROJECT_ID", currentProject);
       }
     },
     // 获取系统有效的应用
