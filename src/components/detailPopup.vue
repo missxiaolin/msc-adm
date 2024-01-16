@@ -6,7 +6,7 @@
     direction="rtl"
     size="80%"
     :append-to-body="true"
-    :z-index="100"
+    :z-index="2000"
   >
     <div class="js-error-detail-content flex flex-1">
       <el-scroll
@@ -175,11 +175,11 @@ export default {
           let url = stackTraces.value[i].url;
           stackTraces.value[i].version = "";
           const filename =
-            url.substring(url.lastIndexOf("/") + 1).split("?")[0] + ".map";
+            url.substring(url.lastIndexOf("/") + 1).split("?")[0];
           stackTraces.value[i].filename = filename;
           try {
             stackTraces.value[i].versions = await getSourcemapVersionList(
-              filename
+              filename + ".map"
             );
           } catch (e) {
             stackTraces.value[i].versions = [];
