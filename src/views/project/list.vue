@@ -298,7 +298,6 @@ export default {
               type: "error",
             });
           }
-          console.log("submit!", ruleForm);
         } else {
           console.log("error submit!", fields);
         }

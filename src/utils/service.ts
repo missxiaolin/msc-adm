@@ -93,6 +93,10 @@ if (window.location.href.indexOf('http://localhost') > -1 || window.location.hre
   baseURL = "http://127.0.0.1:9001"
 }
 
+export {
+  baseURL
+}
+
 /** 创建请求方法 */
 function createRequest(service: AxiosInstance) {
   return function <T>(config: AxiosRequestConfig): Promise<T> {

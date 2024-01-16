@@ -210,7 +210,7 @@ export default {
     font-weight: 500;
     align-items: center;
     padding: 15px 0;
-    color: #000;
+    color: var(--el-text-color-regular);
     &::before {
       content: "";
       display: inline-block;
@@ -221,9 +221,9 @@ export default {
   }
   .line1 {
     padding-top: 10px;
-    color: #000;
+    color: var(--el-text-color-regular);
     p {
-      color: #000;
+      color: var(--el-text-color-regular);
       i,
       svg {
         margin-right: 10px;
@@ -246,16 +246,16 @@ export default {
           margin-right: 10px;
           margin-bottom: 10px;
           display: flex;
-          background: #fafafa;
+          background: var(--el-bg-color-overlay);
           border: 1px solid #ebebeb;
           line-height: 24px;
           label {
-            color: #000;
+            color: var(--el-text-color-regular);
           }
           label:first-child {
             padding: 0 10px;
             display: inline-block;
-            background-color: #fff;
+            background-color: var(--el-bg-color-overlay);
             border-right: 1px solid #ebebeb;
           }
           label:last-child {
@@ -277,7 +277,7 @@ export default {
     }
   }
   .line3 {
-    color: #000;
+    color: var(--el-text-color-regular);
     text-align: left;
   }
   h3.title {

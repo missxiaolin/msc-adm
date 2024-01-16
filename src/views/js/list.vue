@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-car shadow="never" class="search-wrapper">
+    <el-card shadow="never" class="search-wrapper">
       <el-form ref="searchFormRef" :inline="true" :model="searchData">
         <el-form-item prop="pageUrl" label="页面链接">
           <el-input v-model="searchData.pageUrl" placeholder="请输入页面链接" />
@@ -28,7 +28,7 @@
           <el-button @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
-    </el-car>
+    </el-card>
     <!-- 图表 -->
     <el-card shadow="never">
       <JsHoursEchart :params="searchData"></JsHoursEchart>

@@ -217,6 +217,29 @@ export const constantRoutes: any = [
         },
       },
     ],
+  },
+  {
+    path: "/sourcemap",
+    component: Layouts,
+    redirect: "/sourcemap/list",
+    name: "sourcemap",
+    meta: {
+      title: "Sourcemap管理",
+      elIcon: "Position",
+    },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/map/list.vue"),
+        hidden: false,
+        meta: {
+          title: "Sourcemap管理",
+          keepAlive: false,
+          elIcon: "Position",
+          affix: true,
+        },
+      },
+    ],
   }
 ];
 
