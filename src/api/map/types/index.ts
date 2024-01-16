@@ -9,3 +9,9 @@ export interface MapListRequestData {
 }
 
 export type MapListResponseData = ApiResponseData<any>;
+
+export interface MapVersionListRequestData {
+  [key: string]: any;
+}
+
+export type MapVersionListResponseData = ApiResponseData<any>;

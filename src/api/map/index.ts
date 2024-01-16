@@ -26,3 +26,16 @@ export function sourcemapList(data: Map.MapListRequestData) {
     data,
   });
 }
+
+/**
+ * sourcemap列表
+ * @param data 
+ * @returns 
+ */
+export function sourcemapVersionList(data: Map.MapVersionListRequestData) {
+  return request<Map.MapVersionListResponseData>({
+    url: "/adm/sourcemap/version/list",
+    method: "post",
+    data,
+  });
+}

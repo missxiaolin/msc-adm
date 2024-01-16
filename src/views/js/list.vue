@@ -139,7 +139,6 @@ export default {
      */
     const handleDetail = (row: any) => {
       perfNode.value = {};
-      console.log(perfNode)
       nextTick(() => (perfNode.value = row));
     };
 

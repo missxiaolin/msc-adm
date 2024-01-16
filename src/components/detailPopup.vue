@@ -6,7 +6,7 @@
     direction="rtl"
     size="80%"
     :append-to-body="true"
-    :z-index="9999"
+    :z-index="100"
   >
     <div class="js-error-detail-content flex flex-1">
       <el-scroll
@@ -81,16 +81,33 @@
             </h2>
             <dl class="line4">
               <dt>{{ perfNode.type }}： {{ perfNode.errorMsg }}</dt>
-              <dd
-                v-for="(item, index) in perfNode.stackTraces
-                  ? JSON.parse(perfNode.stackTraces)
-                  : []"
-                :key="index"
-              >
-                at functionName: {{ item.functionName }}（<cite
-                  >{{ resetFile(item.filename) }}:<b>{{ item.lineno }}</b
-                  >:<b>{{ item.colno }}</b></cite
-                >）
+              <dd v-for="(item, index) in stackTraces" :key="index">
+                <div>
+                  <span
+                    >at functionName: {{ item.filename }}（<cite
+                      >:<b>{{ item.lineno || item.line }}</b
+                      >:<b>{{ item.colno || item.col }}</b></cite
+                    >）</span
+                  >
+                  <span v-if="item.versions">
+                    <el-select
+                      v-model="stackTraces[index].version"
+                      placeholder="请选选择版本库"
+                      size="small"
+                      style="width: 130px"
+                    >
+                      <el-option
+                        v-for="(v, i) in item.versions"
+                        :key="i"
+                        :label="v.version"
+                        :value="v.version"
+                      />
+                    </el-select>
+                  </span>
+                  <span v-if="item.versions" style="margin-left: 5px">
+                    <el-button size="small" type="primary">解析</el-button>
+                  </span>
+                </div>
               </dd>
             </dl>
             <div
@@ -116,7 +133,8 @@
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
+import { ref, toRef, onMounted } from "vue";
+import { sourcemapVersionList } from "@/api/map/index";
 export default {
   props: {
     perfNode: {
@@ -125,8 +143,12 @@ export default {
     },
   },
   name: "",
-  setup() {
+  setup(props) {
+    const { perfNode } = props;
     const drawerVisible = ref(true);
+    let stackTraces = toRef(
+      perfNode.stackTraces ? JSON.parse(perfNode.stackTraces) : []
+    );
     const resetFile = (filename: string) => {
       if (!filename) return "";
       const reg = /\http(.+?)\.js/g;
@@ -134,9 +156,47 @@ export default {
       return result && result.length ? result[0] : "";
     };
 
+    const getSourcemapVersionList = async (filename: string) => {
+      let param = {
+        filename,
+      };
+      let res = await sourcemapVersionList(param);
+      if (res.success) {
+        return res.model;
+      } else {
+        return [];
+      }
+    };
+
+    const initVersions = async () => {
+      // js 独有的
+      if (perfNode.category == "JS_ERROR" && stackTraces.value.length > 0) {
+        for (let i = 0; i < stackTraces.value.length; i++) {
+          let url = stackTraces.value[i].url;
+          stackTraces.value[i].version = "";
+          const filename =
+            url.substring(url.lastIndexOf("/") + 1).split("?")[0] + ".map";
+          stackTraces.value[i].filename = filename;
+          try {
+            stackTraces.value[i].versions = await getSourcemapVersionList(
+              filename
+            );
+          } catch (e) {
+            stackTraces.value[i].versions = [];
+          }
+        }
+        console.log(stackTraces.value);
+      }
+    };
+
+    onMounted(() => {
+      initVersions();
+    });
+
     return {
       drawerVisible,
       resetFile,
+      stackTraces,
     };
   },
 };
