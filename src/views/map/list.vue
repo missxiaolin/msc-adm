@@ -20,8 +20,13 @@
       <div class="table-wrapper">
         <el-table border :data="data.tableData">
           <el-table-column prop="id" label="ID" align="center" />
-          <el-table-column prop="fileName" label="文件名" align="center" />
+          <el-table-column prop="filename" label="文件名" align="center" />
           <el-table-column prop="version" label="版本号" align="center" />
+          <el-table-column  label="存储大小" align="center">
+            <template #default="{ row }">
+              {{ (row.size / 1024).toFixed(2) }}
+            </template>
+          </el-table-column>
           <el-table-column prop="updateTime" label="上传时间" align="center" />
         </el-table>
       </div>
@@ -85,8 +90,9 @@
 </template>
 
 <script lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { usePagination } from "@/hooks/usePagination";
+import { sourcemapList } from '@/api/map/index'
 import type { FormInstance, FormRules, UploadInstance } from "element-plus";
 import { getCookie, getToken } from "@/utils/cache/cookies";
 import { baseURL } from "@/utils/service";
@@ -115,7 +121,19 @@ export default {
       usePagination(() => {
         initQuery();
       });
-    const initQuery = () => {};
+    const initQuery = async () => {
+      let param = {
+        page: paginationData.currentPage,
+        pageSize: paginationData.pageSize,
+        ...searchData.value
+      }
+      let res = await sourcemapList(param)
+      if (!res.success) {
+        return
+      }
+      paginationData.total = res.model.count;
+      data.tableData = res.model.list;
+    };
     const resetSearch = () => {
       searchData.value = {
         version: "",
@@ -161,7 +179,12 @@ export default {
         data.attFilesList = []
         ruleForm.version = ""
         data.isShowMapPop = false;
+        initQuery()
     }
+
+    onMounted(() => {
+      initQuery()
+    })
     return {
       searchData,
       data,

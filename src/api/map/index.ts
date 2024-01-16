@@ -13,3 +13,16 @@ export function sourcemapSave(data: Map.MapSaveRequestData) {
     data,
   });
 }
+
+/**
+ * sourcemap列表
+ * @param data 
+ * @returns 
+ */
+export function sourcemapList(data: Map.MapListRequestData) {
+  return request<Map.MapListResponseData>({
+    url: "/adm/sourcemap/list",
+    method: "post",
+    data,
+  });
+}

@@ -187,7 +187,7 @@ export const constantRoutes: any = [
         component: () => import("@/views/userBehavior/index.vue"),
         hidden: false,
         meta: {
-          title: "用户行为轨迹",
+          title: "行为轨迹详情",
           keepAlive: false,
           elIcon: "User",
           affix: true,
@@ -233,7 +233,7 @@ export const constantRoutes: any = [
         component: () => import("@/views/map/list.vue"),
         hidden: false,
         meta: {
-          title: "Sourcemap管理",
+          title: "Sourcemap列表",
           keepAlive: false,
           elIcon: "Position",
           affix: true,
