@@ -364,6 +364,7 @@ export default {
       ruleForm.watch = ["pageChange"];
       ruleForm.maxQueues = 1;
       ruleForm.cookieUserKey = "";
+      ruleForm.status = 1
     };
 
     // 分页
@@ -397,6 +398,7 @@ export default {
       ruleForm.watch = JSON.parse(item.watch);
       ruleForm.maxQueues = item.maxQueues;
       ruleForm.cookieUserKey = item.cookieUserKey;
+      ruleForm.status = Number(item.status);
       if (ruleForm.projectType == 2) {
         data.watchList[2].disabled = true;
         data.watchList[3].disabled = true;
