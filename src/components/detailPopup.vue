@@ -219,7 +219,7 @@ export default {
       if (perfNode.category == "JS_ERROR" && stackTraces.value.length > 0) {
         for (let i = 0; i < stackTraces.value.length; i++) {
           let url = stackTraces.value[i].url;
-          stackTraces.value[i].version = "1.0.0";
+          stackTraces.value[i].version = "";
           const filename = url
             .substring(url.lastIndexOf("/") + 1)
             .split("?")[0];

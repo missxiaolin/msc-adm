@@ -36,7 +36,7 @@
       </el-form>
     </el-card>
     <section
-      class="custom-main-contents visit-left-contents visit-right-contents"
+      class="custom-main-contents visit-left-contents"
       ref="mainRef"
     >
       <template v-if="data.userList && data.userList.length > 0">
