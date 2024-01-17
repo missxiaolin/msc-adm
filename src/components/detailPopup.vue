@@ -89,7 +89,7 @@
                       >:<b>{{ item.colno || item.col }}</b></cite
                     >）</span
                   >
-                  <span v-if="item.versions">
+                  <span v-if="item.versions" class="ml5">
                     <el-select
                       v-model="stackTraces[index].version"
                       placeholder="请选选择版本库"
@@ -104,8 +104,13 @@
                       />
                     </el-select>
                   </span>
-                  <span v-if="item.versions" style="margin-left: 5px">
-                    <el-button size="small" type="primary">解析</el-button>
+                  <span v-if="item.versions" class="ml5">
+                    <el-button
+                      size="small"
+                      type="primary"
+                      @click="mapAnalysis(item, index)"
+                      >解析</el-button
+                    >
                   </span>
                 </div>
               </dd>
@@ -134,7 +139,8 @@
 
 <script lang="ts">
 import { ref, toRef, onMounted } from "vue";
-import { sourcemapVersionList } from "@/api/map/index";
+import { ElMessage } from "element-plus";
+import { sourcemapVersionList, sourcemapAnalysis } from "@/api/map/index";
 export default {
   props: {
     perfNode: {
@@ -156,6 +162,31 @@ export default {
       return result && result.length ? result[0] : "";
     };
 
+    const mapAnalysis = async (item: any, index: number) => {
+      if (!item.version) {
+        ElMessage({
+          message: "请先选择版本",
+          type: "warning",
+        });
+        return false;
+      }
+      console.log(item)
+      const param = {
+        filename: item.filename + ".map",
+        version: item.version,
+        line: item.lineno,
+        column: item.colno,
+      };
+      let res = await sourcemapAnalysis(param);
+      if (!res.success) {
+        ElMessage({
+          message: res.errorMessage,
+          type: "error",
+        });
+        return;
+      }
+    };
+
     const getSourcemapVersionList = async (filename: string) => {
       let param = {
         filename,
@@ -174,8 +205,9 @@ export default {
         for (let i = 0; i < stackTraces.value.length; i++) {
           let url = stackTraces.value[i].url;
           stackTraces.value[i].version = "";
-          const filename =
-            url.substring(url.lastIndexOf("/") + 1).split("?")[0];
+          const filename = url
+            .substring(url.lastIndexOf("/") + 1)
+            .split("?")[0];
           stackTraces.value[i].filename = filename;
           try {
             stackTraces.value[i].versions = await getSourcemapVersionList(
@@ -185,7 +217,6 @@ export default {
             stackTraces.value[i].versions = [];
           }
         }
-        console.log(stackTraces.value);
       }
     };
 
@@ -197,6 +228,7 @@ export default {
       drawerVisible,
       resetFile,
       stackTraces,
+      mapAnalysis,
     };
   },
 };

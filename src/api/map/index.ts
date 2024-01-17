@@ -39,3 +39,17 @@ export function sourcemapVersionList(data: Map.MapVersionListRequestData) {
     data,
   });
 }
+
+/**
+ * 解析错误
+ * @param data 
+ * @returns 
+ */
+export function sourcemapAnalysis(data: Map.MapAnalysisRequestData) {
+  return request<Map.MapAnalysisResponseData>({
+    url: "/adm/sourcemap/analysis",
+    method: "post",
+    data,
+  });
+}
+

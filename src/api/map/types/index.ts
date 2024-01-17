@@ -15,3 +15,9 @@ export interface MapVersionListRequestData {
 }
 
 export type MapVersionListResponseData = ApiResponseData<any>;
+
+export interface MapAnalysisRequestData {
+  [key: string]: any;
+}
+
+export type MapAnalysisResponseData = ApiResponseData<any>;
