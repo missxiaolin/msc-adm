@@ -63,6 +63,7 @@
         </el-form-item>
         <el-form-item label="文件">
           <el-upload
+            multiple
             ref="uploadRef"
             class="upload-demo"
             :file-list="data.attFilesList"
@@ -170,6 +171,12 @@ export default {
         }
       });
     };
+
+    const resetForm = (formEl: FormInstance | undefined) => {
+      if (!formEl) return;
+      formEl.resetFields();
+      data.attFilesList = []
+    };
     // 上传成功回调
     const successFile = async (res: any) => {
         console.log(res)
@@ -199,7 +206,8 @@ export default {
       rules,
       submitForm,
       uploadRef,
-      successFile
+      successFile,
+      resetForm
     };
   },
 };
