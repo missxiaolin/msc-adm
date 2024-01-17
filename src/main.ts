@@ -53,6 +53,11 @@ import "vxe-table/lib/style.css";
 import "vxe-table-plugin-element/dist/style.css";
 import "@/assets/css/index.scss";
 
+// highlight 的样式，依赖包，组件
+import 'highlight.js/styles/atom-one-dark.css'
+import 'highlight.js/lib/common'
+import hljsVuePlugin from '@highlightjs/vue-plugin'
+
 const app = createApp(App);
 /** 加载插件 */
 loadPlugins(app);
@@ -60,6 +65,8 @@ loadPlugins(app);
 loadDirectives(app);
 /** 加载全局 SVG */
 loadSvg(app);
+
+app.use(hljsVuePlugin)
 
 app.use(store).use(router);
 

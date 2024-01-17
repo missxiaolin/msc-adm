@@ -113,6 +113,15 @@
                     >
                   </span>
                 </div>
+                <div codetype="JavaScript" class="mt20" v-if="item.code">
+                  <p>{{item.code.originalPosition.source}}: (line：{{item.code.originalPosition.line}} column：{{item.code.originalPosition.column}})</p>
+                  <highlight :htmlCode="item.code.sourcesContent" />
+                  <!-- <highlightjs
+                    language="JavaScript"
+                    :autodetect="false"
+                    :code="item.code.sourcesContent"
+                  ></highlightjs> -->
+                </div>
               </dd>
             </dl>
             <div
@@ -141,7 +150,12 @@
 import { ref, toRef, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import { sourcemapVersionList, sourcemapAnalysis } from "@/api/map/index";
+import highlight from '@/components/highlight/index.vue'
+
 export default {
+  components: {
+    highlight
+  },
   props: {
     perfNode: {
       type: Object,
@@ -170,7 +184,6 @@ export default {
         });
         return false;
       }
-      console.log(item)
       const param = {
         filename: item.filename + ".map",
         version: item.version,
@@ -185,6 +198,8 @@ export default {
         });
         return;
       }
+      console.log(res.model)
+      stackTraces.value[index].code = res.model;
     };
 
     const getSourcemapVersionList = async (filename: string) => {
@@ -204,7 +219,7 @@ export default {
       if (perfNode.category == "JS_ERROR" && stackTraces.value.length > 0) {
         for (let i = 0; i < stackTraces.value.length; i++) {
           let url = stackTraces.value[i].url;
-          stackTraces.value[i].version = "";
+          stackTraces.value[i].version = "1.0.0";
           const filename = url
             .substring(url.lastIndexOf("/") + 1)
             .split("?")[0];
