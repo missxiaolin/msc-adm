@@ -115,7 +115,7 @@
                 </div>
                 <div codetype="JavaScript" class="mt20" v-if="item.code">
                   <p>{{item.code.originalPosition.source}}: (line：{{item.code.originalPosition.line}} column：{{item.code.originalPosition.column}})</p>
-                  <highlight :htmlCode="item.code.sourcesContent" />
+                  <highlight :htmlCode="item.code.sourcesContent" :error-line="item.code.originalPosition.line" />
                   <!-- <highlightjs
                     language="JavaScript"
                     :autodetect="false"

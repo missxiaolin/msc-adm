@@ -1,6 +1,8 @@
 import "./code.scss";
 const vCode = {
-  mounted(el: any) {
+  mounted(el: any, binding, vnode) {
+    let errorLine = vnode.props.errorLine || 0
+    console.log(vnode.props)
     //获取代码片段
     let code = el.querySelector("code.hljs");
     let pre = document.getElementsByTagName("pre")[0];
@@ -9,12 +11,13 @@ const vCode = {
 
     //插入行数
     let ul = document.createElement("ul");
+    ul.id = 'hljs-url'
     for (let i = 1; i <= size; i++) {
       let li = document.createElement("li");
       li.innerText = i + "";
-      console.log(li)
-      if (i == 86) {
+      if (i == errorLine && errorLine != 0) {
         li.className = 'li-error-line'
+        li.id = 'li-error-line'
       }
       ul.appendChild(li);
     }
@@ -22,6 +25,9 @@ const vCode = {
     ul.classList.add("hljs-code-number");
 
     el.insertBefore(ul, pre);
+    let errorLi: any = document.getElementById("li-error-line")
+    let hljsContainer = document.getElementsByClassName('hljs-container')[0]
+    hljsContainer.scrollTop = errorLi.offsetTop - 50
 
     //插入复制功能
     let copy = document.createElement("div");
