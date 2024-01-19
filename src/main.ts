@@ -12,7 +12,7 @@ import store from "@/store";
 // import {init,  } from "../../../../monitor-sdk/packages/web/src/index";
 // import {init, getCookie } from "../../msc-sdk/packages/web/src/index";
 
-// var baseURL = "http://msc-serve.missxiaolin.com";
+// var baseURL = "https://msc-serve.missxiaolin.com";
 
 // if (window.location.href.indexOf("http://localhost") > -1) {
 //   baseURL = "http://127.0.0.1:9001";
