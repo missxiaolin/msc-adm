@@ -75,7 +75,7 @@
                         {{ item.method }} 请求方式:{{ item.type }} 接口状态:
                         {{ item.status }} 耗时:{{
                           item.duration
-                        }}
+                        }} ms
                       </p>
                       <p>pageUrl: {{ item.pageUrl }}</p>
                       <p>pathName: {{ item.pathName }}</p>
@@ -86,7 +86,7 @@
                       <p>
                         {{ item.subType }} 停留:{{
                           item.duration
-                        }}
+                        }}ms
                       </p>
                       <p>referrer: {{ item.referrer }}</p>
                       <p>from: {{ item.from }}</p>
