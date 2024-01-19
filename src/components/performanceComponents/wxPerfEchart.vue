@@ -28,27 +28,6 @@ export default {
   },
   name: "wxPerfEchart",
   setup(props) {
-    const ntFormat = (label: string) => {
-      // 默认去NT里时间
-      let row: any = props?.options;
-      if (!row || !Object.keys(row).length) return 0;
-      let time = row.NT[label] || 0;
-      const FP = row.FP || {}; // 白屏时间
-      const FCP = row.FCP || {}; //灰屏时间
-      const LCP = row.LCP || {}; 
-      const NT = row.NT || {}; 
-      if (label == "FCP" && FCP.startTime) {
-        time = FCP.startTime - NT.appLaunchStartTime;
-      }
-      if (label == "FP" && Object.keys(FP).length) {
-        time = FP.startTime - NT.appLaunchStartTime;
-      }
-      if (label == "LCP" && LCP.startTime) {
-        time = LCP.startTime - NT.appLaunchStartTime;
-      }
-      return Number((time || 0).toFixed(2));
-    };
-
     /**
      *  appLaunch: 0, // 小程序启动耗时。
 	 *	appLaunchStartTime: '',
@@ -65,14 +44,16 @@ export default {
      * @return {*}
      */
     const navigationEchart = computed(() => {
-      const NT: any = props.options?.NT || {};
+      console.log(props)
+      const NT: any = props.options?.nt || {};
+      console.log(NT)
       if (!NT || !Object.keys(NT).length) return {};
       const axisData = [
-        "firstRender",
-        "script",
-        "route",
-        "appLaunch",
-        "loadPackage",
+        "firstRenderduration",
+        "scriptduration",
+        "routeduration",
+        "appLaunchduration",
+        "loadPackageduration",
       ];
 
       const seriesData: any[] = [];
@@ -109,19 +90,20 @@ export default {
       });
       const {
         // firstRender = 0,
-        script = 0,
-        route = 0,
-        loadPackage = 0,
-        appLaunch = 0
+        scriptduration = 0,
+        routeduration = 0,
+        loadPackageduration = 0,
+        appLaunchduration = 0
       }: any = NT;
       // TODO 待优化
       const defaultSeriesData: any[] = [
         // `${appLaunch + loadPackage + route + script + firstRender}`,
-        `${appLaunch + loadPackage + route + script}`,
-        `${appLaunch + loadPackage + route}`,
-        `${appLaunch + loadPackage}`,
-        `${loadPackage}`,
+        `${appLaunchduration + loadPackageduration + routeduration + scriptduration}`,
+        `${appLaunchduration + loadPackageduration + routeduration}`,
+        `${appLaunchduration + loadPackageduration}`,
+        `${loadPackageduration}`,
       ];
+      console.log(defaultSeriesData)
 
       const option = {
         tooltip: {
@@ -215,7 +197,6 @@ export default {
     });
 
     return {
-      ntFormat,
       navigationEchart,
     };
   },

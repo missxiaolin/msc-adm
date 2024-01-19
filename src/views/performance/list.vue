@@ -100,12 +100,32 @@
           </el-table-column>
         </el-table>
         <el-table border :data="tableData" v-if="project.projectType == 2">
-          <el-table-column prop="pageUrl" label="url" align="center" />
-          <el-table-column prop="nt.appLaunch" label="小程序启动耗时" align="center" />
-          <el-table-column prop="nt.route" label="路由耗时" align="center" />
-          <el-table-column prop="nt.firstRender" label="页面渲染" align="center" />
-          <el-table-column prop="nt.script" label="js注入耗时" align="center" />
-          <el-table-column prop="nt.loadPackage" label="代码包下载耗时" align="center" />
+          <el-table-column prop="simpleUrl" label="url" align="center" />
+          <el-table-column label="小程序启动耗时" align="center">
+            <template #default="{ row }">
+              {{ row.textValue.appLaunchduration ? `${row.textValue.appLaunchduration}ms` : "-" }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="textValue.routeduration" label="路由耗时" align="center">
+            <template #default="{ row }">
+              {{ row.textValue.routeduration ? `${row.textValue.routeduration}ms` : "-" }}
+            </template>
+          </el-table-column>
+          <el-table-column label="页面渲染" align="center">
+            <template #default="{ row }">
+              {{ row.textValue.firstRenderviewLayerReadyTime ? `${row.textValue.firstRenderviewLayerRenderEndTime -  row.textValue.firstRenderviewLayerReadyTime}ms` : '-' }}
+              </template>
+          </el-table-column>
+          <el-table-column prop="textValue.evaluateScriptduration" label="js注入耗时" align="center">
+            <template #default="{ row }">
+              {{ row.textValue.evaluateScriptduration ? `${row.textValue.evaluateScriptduration}ms` : "-" }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="textValue.downloadPackageduration" label="代码包下载耗时" align="center">
+            <template #default="{ row }">
+              {{ row.textValue.downloadPackageduration ? `${row.textValue.downloadPackageduration}ms` : "-" }}
+            </template>
+          </el-table-column>
           
           <el-table-column label="性能图表" fixed="right" align="center">
             <template #default="{ row }">

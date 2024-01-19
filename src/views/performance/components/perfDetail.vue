@@ -28,25 +28,50 @@
           direction="all"
         >
           <div class="navigation-content">
-            <h2 class="title">会话性能指标</h2>
-            <dl class="flex navigation-target">
+            <h2 class="title" v-if="project.projectType == 1">会话性能指标</h2>
+            <dl class="flex navigation-target" v-if="project.projectType == 1">
               <dd>
-                CLS：{{ perfNode['cumulative-layout-shift'] && perfNode['cumulative-layout-shift'].numValue || 0 }} ms
+                CLS：{{
+                  (perfNode["cumulative-layout-shift"] &&
+                    perfNode["cumulative-layout-shift"].numValue) ||
+                  0
+                }}
+                ms
               </dd>
               <dd>
-                FCP：{{ perfNode['first-contentful-paint'] && perfNode['first-contentful-paint'].numValue || 0 }} ms
+                FCP：{{
+                  (perfNode["first-contentful-paint"] &&
+                    perfNode["first-contentful-paint"].numValue) ||
+                  0
+                }}
+                ms
               </dd>
               <dd>
-                FID：{{ perfNode['first-input-delay'] && perfNode['first-input-delay'].textValue.delay || 0 }} ms
+                FID：{{
+                  (perfNode["first-input-delay"] &&
+                    perfNode["first-input-delay"].textValue.delay) ||
+                  0
+                }}
+                ms
               </dd>
               <!-- <dd>
                 FMP： ms
               </dd> -->
               <dd>
-                FP：{{ perfNode['first-paint'] && perfNode['first-paint'].numValue || 0 }} ms
+                FP：{{
+                  (perfNode["first-paint"] &&
+                    perfNode["first-paint"].numValue) ||
+                  0
+                }}
+                ms
               </dd>
               <dd>
-                LCP：{{ perfNode['largest-contentful-paint'] && perfNode['largest-contentful-paint'].numValue || 0 }} ms
+                LCP：{{
+                  (perfNode["largest-contentful-paint"] &&
+                    perfNode["largest-contentful-paint"].numValue) ||
+                  0
+                }}
+                ms
               </dd>
               <!-- <dd>
                 MPFID：ms
@@ -57,12 +82,18 @@
             </dl>
             <h2 class="title">页面加载瀑布图</h2>
             <div>
-              <PerfEchart v-if="project.projectType == 1" :options="perfEchartOPtion"></PerfEchart>
-              <!-- <WxPerfEchart v-if="project.projectType == 2" :options="perfEchartOPtion"></WxPerfEchart> -->
+              <PerfEchart
+                v-if="project.projectType == 1"
+                :options="perfEchartOPtion"
+              ></PerfEchart>
+              <WxPerfEchart
+                v-if="project.projectType == 2"
+                :options="perfEchartOPtion"
+              ></WxPerfEchart>
             </div>
             <h2 class="title">会话性能指标</h2>
             <div>
-							<!-- <template v-if="perfNode?.fp && project.projectType == 1">
+              <!-- <template v-if="perfNode?.fp && project.projectType == 1">
 								<h3 class="title">FP 白屏资源</h3>
 								<PerfResTable :data="perfNode?.fp?.RF"></PerfResTable>
 							</template>
@@ -70,10 +101,24 @@
 								<h3 class="title">FCP 灰屏资源</h3>
 								<PerfResTable :data="perfNode?.fcp?.RF"></PerfResTable>
 							</template> -->
-							<h3 class="title">RF 资源</h3>
-							<PerfResTable v-if="project.projectType == 1" :data="(perfNode['resource-flow'] && perfNode['resource-flow'].textValue) ?  perfNode['resource-flow'].textValue : []"></PerfResTable>
-              <!-- <WxPerfResTable  v-if="project.projectType == 2" :data="perfNode?.rf"></WxPerfResTable> -->
-						</div>
+              <h3 class="title">RF 资源</h3>
+              <PerfResTable
+                v-if="project.projectType == 1"
+                :data="
+                  perfNode['resource-flow'] &&
+                  perfNode['resource-flow'].textValue
+                    ? perfNode['resource-flow'].textValue
+                    : []
+                "
+              ></PerfResTable>
+              <WxPerfResTable
+                v-if="project.projectType == 2"
+                :data="
+                  perfNode['wx-resource-flow'] &&
+                  perfNode['wx-resource-flow'].textValue
+                "
+              ></WxPerfResTable>
+            </div>
           </div>
         </el-scroll>
       </div>
@@ -83,16 +128,16 @@
 
 <script lang="ts">
 import PerfEchart from "@/components/performanceComponents/perfEchart.vue";
-// import WxPerfEchart from "@/components/performanceComponents/wxPerfEchart.vue";
+import WxPerfEchart from "@/components/performanceComponents/wxPerfEchart.vue";
 import PerfResTable from "./perfResTable.vue";
-import WxPerfResTable from './wxPerfResTable.vue'
+import WxPerfResTable from "./wxPerfResTable.vue";
 import { computed, ref } from "vue";
 export default {
   components: {
     PerfEchart,
-    // WxPerfEchart,
+    WxPerfEchart,
     WxPerfResTable,
-    PerfResTable
+    PerfResTable,
   },
   props: {
     perfNode: {
@@ -102,24 +147,35 @@ export default {
     project: {
       type: Object,
       required: true,
-    }
+    },
   },
   name: "perfDetail",
   setup(props) {
-    const { perfNode } = props
+    const { perfNode, project } = props;
     const drawerVisible = ref(true);
 
     const perfEchartOPtion = computed(() => {
-      const navigation = perfNode['navigation-timing'] || {};
-      return {
-        nt: navigation.textValue,
-        fp:  perfNode['first-paint'] || {}
-      };
+      const navigation = perfNode["navigation-timing"] || {};
+      let obj = {};
+      // web
+      if (project.projectType == 1) {
+        obj = {
+          nt: navigation.textValue,
+          fp: perfNode["first-paint"] || {},
+        };
+      }
+      // 微信小程序
+      if (project.projectType == 2) {
+        obj = {
+          nt: perfNode.textValue,
+        };
+      }
+      return obj;
     });
 
     return {
       drawerVisible,
-      perfEchartOPtion
+      perfEchartOPtion,
     };
   },
 };
