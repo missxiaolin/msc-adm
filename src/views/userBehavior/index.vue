@@ -74,7 +74,7 @@
                         {{ item.subType }}请求方式:
                         {{ item.method }} 请求方式:{{ item.type }} 接口状态:
                         {{ item.status }} 耗时:{{
-                          timeformatter(item.duration)
+                          item.duration
                         }}
                       </p>
                       <p>pageUrl: {{ item.pageUrl }}</p>
@@ -85,7 +85,7 @@
                     <template v-if="item.category == 'PAGE_CHANGE'">
                       <p>
                         {{ item.subType }} 停留:{{
-                          timeformatter(item.duration)
+                          item.duration
                         }}
                       </p>
                       <p>referrer: {{ item.referrer }}</p>
@@ -157,7 +157,7 @@
 
 <script lang="ts">
 import { reactive, onMounted, ref, nextTick } from "vue";
-import { timeQuantum, timeformatter } from "@/utils/index";
+import { timeQuantum } from "@/utils/index";
 import { userBehavior } from "@/api/userBehavior/index";
 import { usePagination } from "@/hooks/usePagination";
 import { ElMessage } from "element-plus";
@@ -244,7 +244,6 @@ export default {
       paginationData,
       handleCurrentChange,
       handleSizeChange,
-      timeformatter,
       mainRef,
     };
   },
