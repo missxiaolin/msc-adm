@@ -103,12 +103,12 @@
           <el-table-column prop="simpleUrl" label="url" align="center" />
           <el-table-column label="小程序启动耗时" align="center">
             <template #default="{ row }">
-              {{ row.textValue.appLaunchduration ? `${row.textValue.appLaunchduration}ms` : "-" }}
+              {{ row.textValue.appLaunchduration ? `${row.textValue.appLaunchduration.toFixed(2)}ms` : "-" }}
             </template>
           </el-table-column>
           <el-table-column prop="textValue.routeduration" label="路由耗时" align="center">
             <template #default="{ row }">
-              {{ row.textValue.routeduration ? `${row.textValue.routeduration}ms` : "-" }}
+              {{ row.textValue.routeduration ? `${row.textValue.routeduration.toFixed(2)}ms` : "-" }}
             </template>
           </el-table-column>
           <el-table-column label="页面渲染" align="center">
@@ -118,12 +118,12 @@
           </el-table-column>
           <el-table-column prop="textValue.evaluateScriptduration" label="js注入耗时" align="center">
             <template #default="{ row }">
-              {{ row.textValue.evaluateScriptduration ? `${row.textValue.evaluateScriptduration}ms` : "-" }}
+              {{ row.textValue.evaluateScriptduration ? `${row.textValue.evaluateScriptduration.toFixed(2)}ms` : "-" }}
             </template>
           </el-table-column>
           <el-table-column prop="textValue.downloadPackageduration" label="代码包下载耗时" align="center">
             <template #default="{ row }">
-              {{ row.textValue.downloadPackageduration ? `${row.textValue.downloadPackageduration}ms` : "-" }}
+              {{ row.textValue.downloadPackageduration ? `${row.textValue.downloadPackageduration.toFixed(2)}ms` : "-" }}
             </template>
           </el-table-column>
           
