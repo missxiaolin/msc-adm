@@ -134,7 +134,25 @@
           </el-form-item>
         </el-form>
         <div class="copy-code-area">
-          <h4>复制探针 <a href="http://www.missxiaolin.com/sdk/web.min.js" target="_blank">sdk 链接下载</a> </h4>
+          <h4 v-if="ruleForm.projectType == 1">
+            复制探针
+            <a href="http://www.missxiaolin.com/sdk/web.min.js" target="_blank"
+              >sdk 链接下载</a
+            >
+          </h4>
+          <h4 v-if="ruleForm.projectType == 2">
+            复制探针<el-tooltip
+            class="box-item"
+            effect="dark"
+            content="将sdk下载到app.js 同步目录下，import * as MITO from './wx-mini'"
+            placement="bottom-start"
+          >
+            <el-icon style="margin: 0 10px 0 10px"><QuestionFilled /></el-icon>
+          </el-tooltip>
+            <a href="http://www.missxiaolin.com/sdk/wx-mini.js" target="_blank"
+              >sdk 链接下载</a
+            >
+          </h4>
           <div class="code">
             <el-icon class="copy-btn" size="22" @click="probeCodeCopy">
               <CopyDocument />
@@ -332,7 +350,7 @@ export default {
 
       if (ruleForm.projectType == 2) {
         code =
-          'const r=`http://msc-serve.missxiaolin.com`;MITO.init({monitorAppId:`{monitorAppId}`,uuId:()=>MITO.getCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/update`,trackUrl:`${r}/api/tracker/update`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}})';
+          'const r=`http://msc-serve.missxiaolin.com`;MITO.init({monitorAppId:`{monitorAppId}`,uuId:()=>MITO.getUser("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/update`,trackUrl:`${r}/api/tracker/update`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}})';
       }
       code = code.replace(/\{monitorAppId\}/g, `${monitorAppId}`);
       code = code.replace(/\{cookieUserField\}/g, `${cookieUserKey}`);
@@ -364,7 +382,7 @@ export default {
       ruleForm.watch = ["pageChange"];
       ruleForm.maxQueues = 1;
       ruleForm.cookieUserKey = "";
-      ruleForm.status = 1
+      ruleForm.status = 1;
     };
 
     // 分页
