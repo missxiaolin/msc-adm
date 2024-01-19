@@ -84,9 +84,9 @@
               <el-tab-pane label="平均性能" v-if="data.project.projectType == 1">
                 <PerfEchart :options="data.perfEchartOPtion"></PerfEchart>
               </el-tab-pane>
-              <!-- <el-tab-pane label="平均性能" v-if="data.project.projectType == 2">
+              <el-tab-pane label="平均性能" v-if="data.project.projectType == 2">
                 <WxPerfEchart :options="data.perfEchartOPtion"></WxPerfEchart>
-              </el-tab-pane> -->
+              </el-tab-pane>
             </el-tabs>
           </el-card>
           <!-- 页面js 错误详情 -->

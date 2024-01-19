@@ -29,16 +29,6 @@ export default {
   name: "wxPerfEchart",
   setup(props) {
     /**
-     *  appLaunch: 0, // 小程序启动耗时。
-	 *	appLaunchStartTime: '',
-	 *	route: 0, // 路由耗时
- 	 *	routeStartTime: '',
-	 *	firstRender: 0, // 页面首次渲染耗时
-	 *	firstRenderStartTime: '',
-	 *	script: 0, // 逻辑层 JS 代码注入耗时
-	 *	scriptStartTime: '',
-	 *	loadPackage: 0, // 代码包下载耗时。(entryType: loadPackage)
-	 *	loadPackageStartTime: '',
      * @description: 性能指标图
      * @param {*} computed
      * @return {*}
@@ -103,7 +93,6 @@ export default {
         `${appLaunchduration + loadPackageduration}`,
         `${loadPackageduration}`,
       ];
-      console.log(defaultSeriesData)
 
       const option = {
         tooltip: {
