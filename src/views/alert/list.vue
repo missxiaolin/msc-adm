@@ -37,6 +37,11 @@
               {{ `${row.startHour}-${row.endHour}` }}
             </template>
           </el-table-column>
+          <el-table-column
+            prop="updateTime"
+            label="修改时间"
+            align="center"
+          />
           <el-table-column label="操作" align="center">
             <template #default="{ row }">
               <el-button type="text" @click="showHandleDetail(row)">
@@ -179,6 +184,9 @@
               <el-checkbox :label="1">钉钉</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
+          <el-form-item label="钉钉配置URL" prop="dingConfig" v-if="ruleForm.alertType.indexOf(1) > -1">
+            <el-input v-model="ruleForm.dingConfig"></el-input>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm(ruleFormRef)">
               {{ ruleForm.id && ruleForm.id != 0 ? "修改" : "添加" }}
@@ -215,6 +223,7 @@ interface RuleForm {
   startHour: string; // 告警时间点
   endHour: string; // 告警时间点
   alertType: number[]; // 告警方式
+  dingConfig: string;
 }
 
 export default {
@@ -294,6 +303,7 @@ export default {
       startHour: "",
       endHour: "",
       alertType: [],
+      dingConfig: ''
     });
     const rules = reactive<FormRules<RuleForm>>({
       errorType: [
@@ -377,6 +387,7 @@ export default {
       ruleForm.whereType = "";
       ruleForm.alertType = [];
       data.whereTypeOption = []
+      ruleForm.dingConfig = ''
     };
 
     const submitForm = async (formEl: FormInstance | undefined) => {
@@ -452,6 +463,7 @@ export default {
       ruleForm.alertType = item.alertType;
       ruleForm.serviceType = item.serviceType;
       ruleForm.whereType = item.whereType;
+      ruleForm.dingConfig = item.dingConfig || '';
       errorTypeChange(item.errorType)
       data.isShowPorjectPop = true;
     };
