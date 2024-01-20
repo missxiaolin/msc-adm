@@ -84,9 +84,7 @@
                     </template>
                     <template v-if="item.category == 'PAGE_CHANGE'">
                       <p>
-                        {{ item.subType }} 停留:{{
-                          item.duration
-                        }}ms
+                        {{ item.subType }} <span v-if="item.duration">停留:{{ item.duration }}ms</span>
                       </p>
                       <p>referrer: {{ item.referrer }}</p>
                       <p>from: {{ item.from }}</p>
