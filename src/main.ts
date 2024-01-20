@@ -54,9 +54,9 @@ import "vxe-table-plugin-element/dist/style.css";
 import "@/assets/css/index.scss";
 
 // highlight 的样式，依赖包，组件
-import 'highlight.js/styles/atom-one-dark.css'
-import 'highlight.js/lib/common'
-import hljsVuePlugin from '@highlightjs/vue-plugin'
+import "highlight.js/styles/atom-one-dark.css";
+import "highlight.js/lib/common";
+import hljsVuePlugin from "@highlightjs/vue-plugin";
 
 const app = createApp(App);
 /** 加载插件 */
@@ -66,10 +66,31 @@ loadDirectives(app);
 /** 加载全局 SVG */
 loadSvg(app);
 
-app.use(hljsVuePlugin)
+app.use(hljsVuePlugin);
 
 app.use(store).use(router);
 
 router.isReady().then(() => {
   app.mount("#app");
+  // app.vue写在script里面  main.js写在app挂载完之后 解决报错: ResizeObserver loop completed with undelivered notifications.
+
+  const debounce = (fn: any, delay: any) => {
+    let timer: any;
+    return (...args: any) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        fn(...args);
+      }, delay);
+    };
+  };
+
+  const _ResizeObserver = window.ResizeObserver;
+  window.ResizeObserver = class ResizeObserver extends _ResizeObserver {
+    constructor(callback: any) {
+      callback = debounce(callback, 200);
+      super(callback);
+    }
+  };
 });
