@@ -96,17 +96,26 @@ export default {
         initialConnection = 0,
         dnsLookup = 0
       }: any = NT;
-      const defaultSeriesData: any[] = [
-        `${pageLoad + domReady + resourceLoad + domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
-        `${domReady + resourceLoad + domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
-        `${resourceLoad + domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
-        `${domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
-        `${contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
-        `${ttfb + ssl + initialConnection + dnsLookup}`,
-        `${ssl + initialConnection + dnsLookup}`,
-        `${initialConnection + dnsLookup}`,
-        `${dnsLookup}`,
-      ];
+      // const defaultSeriesData: any[] = [
+      //   `${pageLoad + domReady + resourceLoad + domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
+      //   `${domReady + resourceLoad + domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
+      //   `${resourceLoad + domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
+      //   `${domParse + contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
+      //   `${contentDownload + ttfb + ssl + initialConnection + dnsLookup}`,
+      //   `${ttfb + ssl + initialConnection + dnsLookup}`,
+      //   `${ssl + initialConnection + dnsLookup}`,
+      //   `${initialConnection + dnsLookup}`,
+      //   `${dnsLookup}`,
+      // ];
+
+      const ntSeriesData: number[] = [+pageLoad.toFixed(2), +domReady.toFixed(2), +resourceLoad.toFixed(2), +domParse.toFixed(2), +contentDownload.toFixed(2), +ttfb.toFixed(2), +ssl.toFixed(2), +initialConnection.toFixed(2), +dnsLookup.toFixed(2)]
+      const defaultSeriesData: any[] = [];
+      for(let i = 0; i < ntSeriesData.length; i++) {
+        const sum = JSON.parse(JSON.stringify(ntSeriesData)).reverse().slice(0, i + 1).reduce((a, b) => a + b);
+        defaultSeriesData.unshift(+sum.toFixed(2));
+      }
+
+      const { placeholderData } = getSeriesData(defaultSeriesData.reverse());
 
       const option = {
         tooltip: {
@@ -190,14 +199,46 @@ export default {
                 color: "transparent",
               },
             },
-            data: defaultSeriesData,
+            data: placeholderData.reverse(),
           },
-          ...seriesData,
+          // ...seriesData,
+          {
+            name: 'Income',
+            type: 'bar',
+            stack: 'Total',
+            label: {
+              show: true,
+              position: 'right'
+            },
+            data: ntSeriesData
+          },
         ],
       };
       // console.log("option---", option);
       return option;
     });
+
+    function getSeriesData(oData: any[]) {
+      const placeholderData: number[] = [0];
+      const data1: number[] = [oData[0]];
+      const data2: number|string[] = ['-'];
+
+      oData.forEach((item, inx) => {
+        if (inx !== oData.length - 1) {
+          const diffVal = oData[inx + 1] - item;
+          if (diffVal > 0) {
+            placeholderData.push(item);
+            data1.push(diffVal);
+            data2.push('-');
+          } else {
+            placeholderData.push(item + diffVal);
+            data1.push(0);
+            data2.push(Math.abs(diffVal));
+          }
+        }
+      })
+      return { placeholderData, data1, data2 };
+    }
 
     return {
       navigationEchart,
