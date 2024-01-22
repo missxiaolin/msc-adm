@@ -201,17 +201,17 @@ export default {
             },
             data: placeholderData.reverse(),
           },
-          // ...seriesData,
-          {
-            name: 'Income',
-            type: 'bar',
-            stack: 'Total',
-            label: {
-              show: true,
-              position: 'right'
-            },
-            data: ntSeriesData
-          },
+          ...seriesData,
+          // {
+          //   name: 'Income',
+          //   type: 'bar',
+          //   stack: 'Total',
+          //   label: {
+          //     show: true,
+          //     position: 'right'
+          //   },
+          //   data: ntSeriesData
+          // },
         ],
       };
       // console.log("option---", option);
