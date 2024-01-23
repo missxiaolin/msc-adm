@@ -139,6 +139,7 @@
             <a href="http://www.missxiaolin.com/sdk/web.min.js" target="_blank"
               >sdk 链接下载</a
             >
+            <a href="https://github.com/missxiaolin/msc-sdk" target="_blank" class="ml5">详细接入文档</a>
           </h4>
           <h4 v-if="ruleForm.projectType == 2">
             复制探针<el-tooltip
@@ -152,6 +153,7 @@
             <a href="http://www.missxiaolin.com/sdk/wx-mini.js" target="_blank"
               >sdk 链接下载</a
             >
+            <a href="https://github.com/missxiaolin/msc-sdk" target="_blank" class="ml5">详细接入文档</a>
           </h4>
           <div class="code">
             <el-icon class="copy-btn" size="22" @click="probeCodeCopy">
