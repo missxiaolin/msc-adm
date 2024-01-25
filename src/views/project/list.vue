@@ -452,7 +452,7 @@ export default {
     const projectTypeChange = (v: any) => {
       // 微信小程序
       ruleForm.watch = ["pageChange"];
-      if (v == 2) {
+      if (v == 2 || v == 3) {
         data.watchList[2].disabled = true;
         data.watchList[3].disabled = true;
         data.watchList[4].disabled = true;
