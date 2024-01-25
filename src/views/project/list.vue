@@ -155,6 +155,20 @@
             >
             <a href="https://github.com/missxiaolin/msc-sdk" target="_blank" class="ml5">详细接入文档</a>
           </h4>
+          <h4 v-if="ruleForm.projectType == 3">
+            复制探针<el-tooltip
+            class="box-item"
+            effect="dark"
+            content="将sdk下载到app.js 同步目录下，import * as MITO from './wx-mini'"
+            placement="bottom-start"
+          >
+            <el-icon style="margin: 0 10px 0 10px"><QuestionFilled /></el-icon>
+          </el-tooltip>
+            <a href="http://www.missxiaolin.com/sdk/alipay-mini.js" target="_blank"
+              >sdk 链接下载</a
+            >
+            <a href="https://github.com/missxiaolin/msc-sdk" target="_blank" class="ml5">详细接入文档</a>
+          </h4>
           <div class="code">
             <el-icon class="copy-btn" size="22" @click="probeCodeCopy">
               <CopyDocument />
@@ -258,6 +272,10 @@ export default {
           value: 2,
           label: "微信小程序",
         },
+        {
+          value: 3,
+          label: "支付宝小程序",
+        },
       ],
     });
     const ruleFormRef = ref<FormInstance>();
@@ -350,7 +368,7 @@ export default {
       let code =
         '<script>;(function(w,d,s){n=()=>{const r=`https://msc-serve.missxiaolin.com`;MITO.init({monitorAppId:`{monitorAppId}`,uuId:()=>MITO.getCookie("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/update`,trackUrl:`${r}/api/tracker/update`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}})};(()=>{const e=d.createElement("script");e.readyState?e.onreadystatechange=function(){"loaded"!==e.readyState&&"complete"!==e.readyState||(e.onreadystatechange=null,n())}:e.onload=function(){n()},e.src=s,d.head.append(e)})()})(window,document,"http://www.missxiaolin.com/sdk/web.min.js");<\/script>';
 
-      if (ruleForm.projectType == 2) {
+      if (ruleForm.projectType == 2 || ruleForm.projectType == 3) {
         code =
           'const r=`https://msc-serve.missxiaolin.com`;MITO.init({monitorAppId:`{monitorAppId}`,uuId:()=>MITO.getUser("{cookieUserField}"),watch:{monitorWatch},report:{url:`${r}/api/update`,trackUrl:`${r}/api/tracker/update`,encryption:{monitorEncryption},maxQueues:{monitorMaxQueues},reportType:{monitorReportType},delay: {monitorDelay}}})';
       }
@@ -419,7 +437,7 @@ export default {
       ruleForm.maxQueues = item.maxQueues;
       ruleForm.cookieUserKey = item.cookieUserKey;
       ruleForm.status = Number(item.status);
-      if (ruleForm.projectType == 2) {
+      if (ruleForm.projectType == 2 || ruleForm.projectType == 3) {
         data.watchList[2].disabled = true;
         data.watchList[3].disabled = true;
         data.watchList[4].disabled = true;
