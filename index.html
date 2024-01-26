@@ -8,8 +8,8 @@
     <script src="/web.min.js"></script>
     <script>
       var baseURL = "https://msc-serve.missxiaolin.com";
-
-      if (window.location.href.indexOf("http://localhost") > -1 || window.location.href.indexOf("http://m.missxiaolin.com") > -1) {
+      var urls = ['127.0.0.1:9001', "localhost", "m.missxiaolin.com"]
+      if (urls.indexOf(window.location.host) > -1) {
         baseURL = "http://127.0.0.1:9001";
       }
       MITO.init({
