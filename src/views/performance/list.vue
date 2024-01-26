@@ -24,6 +24,7 @@
     </el-card>
     <el-card v-loading="loading" shadow="never">
       <div class="table-wrapper">
+        <!-- web -->
         <el-table border :data="tableData" v-if="project.projectType == 1">
           <el-table-column prop="simpleUrl" label="url" align="center" />
           <el-table-column label="会话性能指标" align="center">
@@ -99,7 +100,47 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 微信小程序 -->
         <el-table border :data="tableData" v-if="project.projectType == 2">
+          <el-table-column prop="simpleUrl" label="url" align="center" />
+          <el-table-column label="小程序启动耗时" align="center">
+            <template #default="{ row }">
+              {{ row.textValue.appLaunchduration ? `${row.textValue.appLaunchduration.toFixed(2)}ms` : "-" }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="textValue.routeduration" label="路由耗时" align="center">
+            <template #default="{ row }">
+              {{ row.textValue.routeduration ? `${row.textValue.routeduration.toFixed(2)}ms` : "-" }}
+            </template>
+          </el-table-column>
+          <el-table-column label="页面渲染" align="center">
+            <template #default="{ row }">
+              {{ row.textValue.firstRenderviewLayerReadyTime ? `${row.textValue.firstRenderviewLayerRenderEndTime -  row.textValue.firstRenderviewLayerReadyTime}ms` : '-' }}
+              </template>
+          </el-table-column>
+          <el-table-column prop="textValue.evaluateScriptduration" label="js注入耗时" align="center">
+            <template #default="{ row }">
+              {{ row.textValue.evaluateScriptduration ? `${row.textValue.evaluateScriptduration.toFixed(2)}ms` : "-" }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="textValue.downloadPackageduration" label="代码包下载耗时" align="center">
+            <template #default="{ row }">
+              {{ row.textValue.downloadPackageduration ? `${row.textValue.downloadPackageduration.toFixed(2)}ms` : "-" }}
+            </template>
+          </el-table-column>
+          
+          <el-table-column label="性能图表" fixed="right" align="center">
+            <template #default="{ row }">
+              <el-button type="text" @click="handleDetail(row)">
+                <el-icon style="vertical-align: middle">
+                  <Histogram />
+                </el-icon>
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- 支付宝小程序 -->
+        <el-table border :data="tableData" v-if="project.projectType == 3">
           <el-table-column prop="simpleUrl" label="url" align="center" />
           <el-table-column label="小程序启动耗时" align="center">
             <template #default="{ row }">

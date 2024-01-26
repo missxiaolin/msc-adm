@@ -90,6 +90,8 @@
                 v-if="project.projectType == 2"
                 :options="perfEchartOPtion"
               ></WxPerfEchart>
+              <AliPerfEchart v-if="project.projectType == 3"
+              :options="perfEchartOPtion"></AliPerfEchart>
             </div>
             <h2 class="title">会话性能指标</h2>
             <div>
@@ -118,6 +120,13 @@
                   perfNode['wx-resource-flow'].textValue
                 "
               ></WxPerfResTable>
+              <AliPerfResTable v-if="project.projectType == 3"
+              :data="
+                perfNode['ali-resource-flow'] &&
+                perfNode['ali-resource-flow'].textValue
+              ">
+
+              </AliPerfResTable>
             </div>
           </div>
         </el-scroll>
@@ -129,15 +138,19 @@
 <script lang="ts">
 import PerfEchart from "@/components/performanceComponents/perfEchart.vue";
 import WxPerfEchart from "@/components/performanceComponents/wxPerfEchart.vue";
+import AliPerfEchart from "@/components/performanceComponents/aliPerfEchart.vue";
 import PerfResTable from "./perfResTable.vue";
 import WxPerfResTable from "./wxPerfResTable.vue";
+import AliPerfResTable from "./aliPerfResTable.vue";
 import { computed, ref } from "vue";
 export default {
   components: {
     PerfEchart,
     WxPerfEchart,
     WxPerfResTable,
+    AliPerfEchart,
     PerfResTable,
+    AliPerfResTable
   },
   props: {
     perfNode: {
@@ -166,6 +179,12 @@ export default {
       }
       // 微信小程序
       if (project.projectType == 2) {
+        obj = {
+          nt: perfNode.textValue,
+        };
+      }
+      // 微信小程序
+      if (project.projectType == 3) {
         obj = {
           nt: perfNode.textValue,
         };

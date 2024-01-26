@@ -1,15 +1,4 @@
 <template>
-  <div class="flex flex-row justify-between" style="width: 100%">
-    <!-- <el-statistic title="白屏时间" :value="ntFormat('FP')">
-      <template #suffix>ms</template>
-    </el-statistic>
-    <el-statistic title="DOM Ready" :value="ntFormat('FCP')">
-      <template #suffix>ms</template>
-    </el-statistic>
-    <el-statistic title="首次可交互时间" :value="ntFormat('LCP')">
-      <template #suffix>ms</template>
-    </el-statistic> -->
-  </div>
   <Echarts :options="navigationEchart"></Echarts>
 </template>
 
@@ -26,7 +15,7 @@ export default {
       required: true,
     },
   },
-  name: "wxPerfEchart",
+  name: "aliPerfEchart",
   setup(props) {
     /**
      * @description: 性能指标图
@@ -34,16 +23,14 @@ export default {
      * @return {*}
      */
     const navigationEchart = computed(() => {
-      console.log(props)
       const NT: any = props.options?.nt || {};
-      console.log(NT)
       if (!NT || !Object.keys(NT).length) return {};
       const axisData = [
         "firstRenderduration",
         "evaluateScriptduration",
         "routeduration",
         "appLaunchduration",
-        "loadPackageduration",
+        "downloadPackageduration",
       ];
 
       const seriesData: any[] = [];
@@ -83,15 +70,14 @@ export default {
         evaluateScriptduration = 0,
         routeduration = 0,
         appLaunchduration = 0,
-        loadPackageduration = 0
+        downloadPackageduration = 0,
       }: any = NT;
-
       const ntSeriesData: number[] = [
         +firstRenderduration.toFixed(2),
         +evaluateScriptduration.toFixed(2),
         +routeduration.toFixed(2),
         +appLaunchduration.toFixed(2),
-        +loadPackageduration.toFixed(2),
+        +downloadPackageduration.toFixed(2),
       ];
       const defaultSeriesData: any[] = [];
       for (let i = 0; i < ntSeriesData.length; i++) {
@@ -115,9 +101,9 @@ export default {
               let { name, value, seriesName, color } = params[i];
               if (value !== "-") {
                 return `${name}</br><span style="display:flex; align-items: center;">
-					<i style="display:block;margin-right:5px;border-radius:50%;width:10px;height:10px;left:5px;background-color:${color}"></i>${seriesName}:
-					<i style="padding-left: 30px;">${value}</i>
-				</span>`;
+                      <i style="display:block;margin-right:5px;border-radius:50%;width:10px;height:10px;left:5px;background-color:${color}"></i>${seriesName}:
+                      <i style="padding-left: 30px;">${value}</i>
+                  </span>`;
               }
             }
           },
