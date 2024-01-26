@@ -183,7 +183,7 @@ export default {
           nt: perfNode.textValue,
         };
       }
-      // 微信小程序
+      // 支付宝小程序
       if (project.projectType == 3) {
         obj = {
           nt: perfNode.textValue,

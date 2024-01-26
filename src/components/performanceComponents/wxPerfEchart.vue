@@ -34,16 +34,14 @@ export default {
      * @return {*}
      */
     const navigationEchart = computed(() => {
-      console.log(props)
       const NT: any = props.options?.nt || {};
-      console.log(NT)
-      if (!NT || !Object.keys(NT).length) return {};
+      // if (!NT || !Object.keys(NT).length) return {};
       const axisData = [
         "firstRenderduration",
         "evaluateScriptduration",
         "routeduration",
         "appLaunchduration",
-        "loadPackageduration",
+        "downloadPackageduration"
       ];
 
       const seriesData: any[] = [];
@@ -83,7 +81,7 @@ export default {
         evaluateScriptduration = 0,
         routeduration = 0,
         appLaunchduration = 0,
-        loadPackageduration = 0
+        downloadPackageduration = 0
       }: any = NT;
 
       const ntSeriesData: number[] = [
@@ -91,7 +89,7 @@ export default {
         +evaluateScriptduration.toFixed(2),
         +routeduration.toFixed(2),
         +appLaunchduration.toFixed(2),
-        +loadPackageduration.toFixed(2),
+        +downloadPackageduration.toFixed(2),
       ];
       const defaultSeriesData: any[] = [];
       for (let i = 0; i < ntSeriesData.length; i++) {

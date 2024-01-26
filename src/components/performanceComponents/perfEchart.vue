@@ -36,7 +36,7 @@ export default {
     const navigationEchart = computed(() => {
 
       const NT: any = props.options?.nt || {};
-      if (!NT || !Object.keys(NT).length) return {};
+      // if (!NT || !Object.keys(NT).length) return {};
       const axisData = [
         "pageLoad",
         "domReady",
