@@ -88,9 +88,9 @@ function createService() {
 }
 
 let baseURL = "https://msc-serve.missxiaolin.com"
-const urls = ['127.0.0.1:9001', "localhost", "m.missxiaolin.com"]
+const urls = ['127.0.0.1', "localhost", "m.missxiaolin.com"]
 
-if (urls.indexOf(window.location.host) > -1) {
+if (urls.indexOf(window.location.hostname) > -1) {
   baseURL = "http://127.0.0.1:9001";
 }
 
