@@ -5,7 +5,6 @@ import vueJsx from "@vitejs/plugin-vue-jsx"
 import svgLoader from "vite-svg-loader"
 import UnoCSS from "unocss/vite"
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons"
-import eslint from 'vite-plugin-eslint' // 新增
 
 // https://vitejs.dev/config/
 export default defineConfig({

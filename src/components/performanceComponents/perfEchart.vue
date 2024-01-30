@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row justify-between" style="width: 100%">
-    <el-statistic title="白屏时间" :value="options.fp.value || 0">
+    <el-statistic title="白屏时间" :value="options.fp.numValue || 0">
       <template #suffix>ms</template>
     </el-statistic>
     <el-statistic title="DOM完成加载" :value="(options.nt && options.nt.domReady) ? options.nt.domReady : 0">
