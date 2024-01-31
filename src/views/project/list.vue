@@ -253,6 +253,11 @@ export default {
           disabled: false,
         },
         {
+          label: "白屏监控",
+          value: "whiteScreen",
+          disabled: false,
+        },
+        {
           label: "错误录屏上报",
           value: "recordScreen",
           disabled: false,
@@ -434,6 +439,7 @@ export default {
       ruleForm.status = Number(item.status);
       if (ruleForm.projectType == 2 || ruleForm.projectType == 3) {
         data.watchList[2].disabled = true;
+        data.watchList[3].disabled = true;
         data.watchList[4].disabled = true;
         data.watchList[8].disabled = true;
       }
@@ -448,11 +454,13 @@ export default {
       ruleForm.watch = ["pageChange"];
       if (v == 2 || v == 3) {
         data.watchList[2].disabled = true;
+        data.watchList[3].disabled = true;
         data.watchList[4].disabled = true;
         data.watchList[8].disabled = true;
       } else {
         ruleForm.watch = ["pageChange"];
         data.watchList[2].disabled = false;
+        data.watchList[3].disabled = false;
         data.watchList[4].disabled = false;
         data.watchList[8].disabled = false;
       }
