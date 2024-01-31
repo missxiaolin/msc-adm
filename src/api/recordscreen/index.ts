@@ -12,3 +12,12 @@ export function recordscreenList(data: Recordscreen.RecordscreenListRequestData)
     data,
   });
 }
+
+
+export function recordscreenDetail(data: Recordscreen.RecordscreenDetailRequestData) {
+  return request<Recordscreen.RecordscreenDetailResponseData>({
+    url: "/adm/recordscreen/video",
+    method: "post",
+    data,
+  });
+}

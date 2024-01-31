@@ -231,8 +231,13 @@ export default {
     const mainRef = ref<any | null>(null);
 
     onMounted(() => {
-      const { uuId } = proxy.$route.query;
-      data.searchData.uuId = uuId;
+      const { obj } = proxy.$route.query;
+      if (obj) {
+        const queryObj = JSON.parse(obj);
+        data.searchData.uuId = queryObj.uuId;
+        data.searchData.data = [queryObj.startTime, queryObj.endTime]
+      }
+      // data.searchData.uuId = uuId;
       nextTick(() => {
         data.height = mainRef.value.offsetHeight - 100;
       });
