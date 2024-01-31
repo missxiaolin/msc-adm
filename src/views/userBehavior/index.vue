@@ -154,7 +154,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, onMounted, ref, nextTick } from "vue";
+import { reactive, onMounted, ref, nextTick, getCurrentInstance } from "vue";
 import { timeQuantum } from "@/utils/index";
 import { userBehavior } from "@/api/userBehavior/index";
 import { usePagination } from "@/hooks/usePagination";
@@ -162,6 +162,7 @@ import { ElMessage } from "element-plus";
 
 export default {
   setup() {
+    const { proxy }: any = getCurrentInstance();
     let data = reactive({
       height: 500,
       searchData: {
@@ -230,6 +231,8 @@ export default {
     const mainRef = ref<any | null>(null);
 
     onMounted(() => {
+      const { uuId } = proxy.$route.query;
+      data.searchData.uuId = uuId;
       nextTick(() => {
         data.height = mainRef.value.offsetHeight - 100;
       });

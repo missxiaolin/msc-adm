@@ -240,6 +240,29 @@ export const constantRoutes: any = [
         },
       },
     ],
+  },
+  {
+    path: "/error",
+    component: Layouts,
+    redirect: "/error/video",
+    name: "error",
+    meta: {
+      title: "错误视频管理",
+      elIcon: "View",
+    },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/error-video/list.vue"),
+        hidden: false,
+        meta: {
+          title: "错误视频列表",
+          keepAlive: false,
+          elIcon: "View",
+          affix: true,
+        },
+      },
+    ],
   }
 ];
 
