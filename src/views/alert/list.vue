@@ -185,7 +185,15 @@
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="钉钉配置URL" prop="dingConfig" v-if="ruleForm.alertType.indexOf(1) > -1">
-            <el-input v-model="ruleForm.dingConfig"></el-input>
+            <el-input style="width: 90%;" v-model="ruleForm.dingConfig"></el-input>
+            <el-tooltip
+            class="box-item"
+            effect="dark"
+            content="钉钉项目关键词需要包含“项目”2个字"
+            placement="bottom-start"
+          >
+            <el-icon style="margin-left: 20px"><QuestionFilled /></el-icon>
+          </el-tooltip>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm(ruleFormRef)">
