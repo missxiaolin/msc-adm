@@ -87,7 +87,7 @@ function createService() {
   return service;
 }
 
-let baseURL = "https://msc-serve.missxiaolin.com"
+let baseURL = "http://msc-serve.missxiaolin.com"
 const urls = ['127.0.0.1', "localhost", "m.missxiaolin.com"]
 
 if (urls.indexOf(window.location.hostname) > -1) {
