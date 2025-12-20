@@ -8,8 +8,8 @@ import router from "@/router";
 function logout() {
   // location.reload();
   router.push({
-    path: '/login'
-  })
+    path: "/login",
+  });
 }
 
 /** 创建请求实例 */
@@ -87,16 +87,14 @@ function createService() {
   return service;
 }
 
-let baseURL = "http://msc-serve.missxiaolin.com"
-const urls = ['127.0.0.1', "localhost", "m.missxiaolin.com"]
+let baseURL = "http://msc-serve.missxiaolin.com";
+const urls = ["127.0.0.1", "localhost", "m.missxiaolin.com"];
 
 if (urls.indexOf(window.location.hostname) > -1) {
   baseURL = "http://127.0.0.1:9001";
 }
 
-export {
-  baseURL
-}
+export { baseURL };
 
 /** 创建请求方法 */
 function createRequest(service: AxiosInstance) {

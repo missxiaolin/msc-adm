@@ -139,35 +139,56 @@
             <a href="http://www.missxiaolin.com/sdk/web.min.js" target="_blank"
               >sdk 链接下载</a
             >
-            <a href="https://github.com/missxiaolin/msc-sdk" target="_blank" class="ml5">详细接入文档</a>
+            <a
+              href="https://github.com/missxiaolin/msc-sdk"
+              target="_blank"
+              class="ml5"
+              >详细接入文档</a
+            >
           </h4>
           <h4 v-if="ruleForm.projectType == 2">
             复制探针<el-tooltip
-            class="box-item"
-            effect="dark"
-            content="将sdk下载到app.js 同步目录下，import * as MITO from './wx-mini'"
-            placement="bottom-start"
-          >
-            <el-icon style="margin: 0 10px 0 10px"><QuestionFilled /></el-icon>
-          </el-tooltip>
+              class="box-item"
+              effect="dark"
+              content="将sdk下载到app.js 同步目录下，import * as MITO from './wx-mini'"
+              placement="bottom-start"
+            >
+              <el-icon style="margin: 0 10px 0 10px"
+                ><QuestionFilled
+              /></el-icon>
+            </el-tooltip>
             <a href="http://www.missxiaolin.com/sdk/wx-mini.js" target="_blank"
               >sdk 链接下载</a
             >
-            <a href="https://github.com/missxiaolin/msc-sdk" target="_blank" class="ml5">详细接入文档</a>
+            <a
+              href="https://github.com/missxiaolin/msc-sdk"
+              target="_blank"
+              class="ml5"
+              >详细接入文档</a
+            >
           </h4>
           <h4 v-if="ruleForm.projectType == 3">
             复制探针<el-tooltip
-            class="box-item"
-            effect="dark"
-            content="将sdk下载到app.js 同步目录下，import * as MITO from './wx-mini'"
-            placement="bottom-start"
-          >
-            <el-icon style="margin: 0 10px 0 10px"><QuestionFilled /></el-icon>
-          </el-tooltip>
-            <a href="http://www.missxiaolin.com/sdk/alipay-mini.js" target="_blank"
+              class="box-item"
+              effect="dark"
+              content="将sdk下载到app.js 同步目录下，import * as MITO from './wx-mini'"
+              placement="bottom-start"
+            >
+              <el-icon style="margin: 0 10px 0 10px"
+                ><QuestionFilled
+              /></el-icon>
+            </el-tooltip>
+            <a
+              href="http://www.missxiaolin.com/sdk/alipay-mini.js"
+              target="_blank"
               >sdk 链接下载</a
             >
-            <a href="https://github.com/missxiaolin/msc-sdk" target="_blank" class="ml5">详细接入文档</a>
+            <a
+              href="https://github.com/missxiaolin/msc-sdk"
+              target="_blank"
+              class="ml5"
+              >详细接入文档</a
+            >
           </h4>
           <div class="code">
             <el-icon class="copy-btn" size="22" @click="probeCodeCopy">
